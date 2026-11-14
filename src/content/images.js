@@ -35,14 +35,6 @@ export const PHOTOS = {
     alt: 'A physician going through a folder with a visitor in a clinic',
     source: 'https://www.pexels.com/photo/male-doctor-talking-to-a-patient-6129441/',
   },
-  'doctor-conversation': {
-    base: '/assets/photos/doctor-conversation',
-    widths: [800, 1600],
-    width: 1600,
-    height: 864,
-    alt: 'A physician and a visitor talking across a desk in a bright office',
-    source: 'https://www.pexels.com/photo/doctor-talking-with-woman-in-white-long-sleeve-shirt-12599544/',
-  },
   'lab-flasks': {
     base: '/assets/photos/lab-flasks',
     widths: [800, 1600],
@@ -66,6 +58,15 @@ export const PHOTOS = {
     height: 1067,
     alt: 'A woman working at a laptop at a white desk by a window',
     source: 'https://www.pexels.com/photo/woman-in-black-long-blazer-using-a-laptop-7679583/',
+  },
+  'reviewing-dashboard': {
+    base: '/assets/photos/reviewing-dashboard',
+    widths: [800, 1600],
+    width: 1600,
+    height: 1067,
+    alt: 'Two men at a desk looking at a bar chart on a laptop',
+    source: 'https://www.pexels.com/photo/men-in-an-office-discussing-graphs-on-a-laptop-6285079/',
+    photographer: 'Gustavo Fring',
   },
   'sticky-notes-glass': {
     base: '/assets/photos/sticky-notes-glass',

@@ -85,14 +85,23 @@ export default function HomePage({ content }) {
       <CardGrid
         eyebrow="Four Principles for Evaluating Any AI Partner"
         heading="How do you know if AI is actually working in your organization?"
-        lead={<>Most biopharma L&D leaders can't answer that question with confidence because the data that matters isn't in the dashboard.<br /><br />These four principles are how Proxa Labs diagnoses whether AI is actually delivering, and how our practitioners have built 25 years of award-winning work around them.</>}
+        lead={<>Most biopharma L&D leaders can't answer that question with confidence.<br /><br />These four principles are how Proxa Labs diagnoses whether AI is actually delivering, and how our practitioners have built 25 years of award-winning work around them.</>}
         columns={2}
         cards={DIFFERENTIATORS}
         cardStyle="feature"
         background="tinted"
         centerHeader
         leadMaxWidth={920}
-        media={<PhotoBand name="doctor-conversation" position="50% 38%" />}
+        media={
+          <PhotoBand
+            name="reviewing-dashboard"
+            position="50% 22%"
+            caption={{
+              title: "The data that matters isn't in the dashboard.",
+              text: "Rep readiness, call quality and launch execution speed. Not module completion.",
+            }}
+          />
+        }
       />
 
       <CardGrid

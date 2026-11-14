@@ -226,7 +226,7 @@ export default function LoopCanvas({ layout, active, onSelect }) {
         preventScrolling={false}
         proOptions={PRO_OPTIONS}
       >
-        <Background variant={BackgroundVariant.Dots} gap={18} size={1.5} color="#343b49" />
+        <Background variant={BackgroundVariant.Dots} gap={18} size={1.5} color="rgba(255,255,255,.34)" />
         <Refit fit={fit} />
       </ReactFlow>
     </ActiveStep.Provider>
