@@ -1,4 +1,6 @@
 import AppLogo from '../components/AppLogo';
+import PhotoBand from '../components/media/PhotoBand';
+import ProductStage from '../components/sections/ProductStage';
 import LoopVisual from '../components/LoopVisual';
 import EditorialHero from '../components/sections/EditorialHero';
 import StatBand from '../components/sections/StatBand';
@@ -90,6 +92,7 @@ export default function HomePage({ content }) {
         background="tinted"
         centerHeader
         leadMaxWidth={920}
+        media={<PhotoBand name="doctor-conversation" position="50% 38%" />}
       />
 
       <CardGrid
@@ -108,9 +111,22 @@ export default function HomePage({ content }) {
         centerHeader
       />
 
+      <ProductStage
+        eyebrow="Inside Proxa Cue"
+        heading="The learner's view, not a mock-up."
+        body="Courses, competencies and suggested next steps, as a sales rep sees them on a laptop and on a phone."
+        cta={{ label: "Explore the platform", href: hrefFor("platform") }}
+        note="Screens from Proxa Cue running demo content."
+        desktop="cue-lms-desktop"
+        mobile="cue-lms-mobile"
+        url="cue.proxalabs.com"
+      />
+
       <PullQuote
         quote="We had been trying to make AI work for 18 months. Two pilots, two postmortems, and a CCO who was starting to ask whether L&D could actually lead this. What Proxa Labs did differently was refuse to let us skip the hard part — defining what success actually looked like before we built anything. We walked into our budget review with evidence, not a pitch deck."
         author={{ name: "Sarah Chen", title: "VP, Commercial Learning & Development", company: "Mid-Size Oncology Biopharma · Series C" }}
+        photo="team-round-table"
+        photoPosition="70% 50%"
         stats={[
           { n: "23%", l: "improvement in manager-assessed call quality" },
           { n: "0",   l: "MLR compliance flags across all sessions" },

@@ -3,6 +3,8 @@ import LongForm from '../components/sections/LongForm';
 import CardGrid from '../components/sections/CardGrid';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
+import HeroPhoto from '../components/media/HeroPhoto';
+import PhotoBand from '../components/media/PhotoBand';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
 
@@ -48,6 +50,13 @@ export default function ProxaLabsPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        visual={(
+          <HeroPhoto
+            name="lab-flasks"
+            position="38% 50%"
+            chip={{ mark: <Icon name="pilot" size={18} />, title: 'Structured pilots', text: 'Evidence before you scale' }}
+          />
+        )}
         primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
@@ -65,6 +74,7 @@ export default function ProxaLabsPage({ content }) {
       <CardGrid
         eyebrow={c('failures.eyebrow')}
         heading={c('failures.heading')}
+        media={<PhotoBand name="sticky-notes-glass" position="50% 42%" />}
         lead={c('failures.lead')}
         columns={3}
         cards={FAILURE_PATTERNS}

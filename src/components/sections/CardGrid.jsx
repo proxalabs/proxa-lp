@@ -10,6 +10,7 @@ export default function CardGrid({
   background = 'light',
   centerHeader = false,
   leadMaxWidth = 600,
+  media,
   className = '',
 }) {
   const bg = background === 'tinted' ? 'section-tinted' : background === 'dark' ? 'section-dark' : 'section-light';
@@ -25,6 +26,7 @@ export default function CardGrid({
             {lead && <p className="t-lead" style={{ maxWidth: leadMaxWidth, margin: centerHeader ? '0 auto' : 0 }}>{lead}</p>}
           </div>
         )}
+        {media && <div className="card-grid-media">{media}</div>}
         <div className={`card-grid card-grid-${columns}`}>
           {cards.map((c, i) => {
             // A card with an href is one big link; without one it is plain content.

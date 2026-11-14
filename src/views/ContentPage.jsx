@@ -1,5 +1,7 @@
 import EditorialHero from '../components/sections/EditorialHero';
 import CTABand from '../components/sections/CTABand';
+import HeroPhoto from '../components/media/HeroPhoto';
+import Icon from '../components/Icon';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
 
@@ -25,6 +27,13 @@ export default function ContentPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        visual={(
+          <HeroPhoto
+            name="author-at-laptop"
+            position="48% 50%"
+            chip={{ mark: <Icon name="content" size={18} />, title: 'MLR-compliant content', text: 'AI-generated or human-led' }}
+          />
+        )}
         primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 

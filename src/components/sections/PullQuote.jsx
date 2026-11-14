@@ -1,8 +1,12 @@
-export default function PullQuote({ quote, author, stats, background = 'tinted' }) {
+import Photo from '../media/Photo';
+
+/** `photo` (a name from content/images.js) sets the quote over a photograph instead of the tinted card. */
+export default function PullQuote({ quote, author, stats, photo, photoPosition, background = 'tinted' }) {
   const bg = background === 'tinted' ? 'section-tinted' : background === 'dark' ? 'section-dark' : 'section-light';
   return (
     <section className={`section ${bg}`}>
-      <div className="pull-quote">
+      <div className={photo ? 'pull-quote pull-quote-photo' : 'pull-quote'}>
+        {photo && <Photo name={photo} position={photoPosition} sizes="(max-width: 1212px) 100vw, 1100px" className="pull-quote-bg" />}
         <div className="pull-quote-mark">"</div>
         <div className="pull-quote-content" style={{ gridTemplateColumns: stats?.length ? '1fr 220px' : '1fr' }}>
           <div>

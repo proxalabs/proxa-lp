@@ -4,6 +4,7 @@ import CardGrid from '../components/sections/CardGrid';
 import UpgradeComparison from '../components/sections/UpgradeComparison';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
+import HeroPhoto from '../components/media/HeroPhoto';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
 
@@ -110,6 +111,13 @@ export default function InsiteXPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        visual={(
+          <HeroPhoto
+            name="learner-laptop"
+            position="62% 50%"
+            chip={{ mark: <Icon name="lms" size={18} />, title: 'InsiteX LMS', text: 'Built for biopharma compliance' }}
+          />
+        )}
         primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 

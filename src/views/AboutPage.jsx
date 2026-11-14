@@ -2,6 +2,8 @@ import EditorialHero from '../components/sections/EditorialHero';
 import LongForm from '../components/sections/LongForm';
 import StatBand from '../components/sections/StatBand';
 import CTABand from '../components/sections/CTABand';
+import HeroPhoto from '../components/media/HeroPhoto';
+import PhotoMosaic from '../components/media/PhotoMosaic';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
 
@@ -35,6 +37,7 @@ export default function AboutPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        visual={<HeroPhoto name="team-round-table" position="55% 50%" />}
         className="about-hero-section"
       />
 
@@ -47,6 +50,12 @@ export default function AboutPage({ content }) {
         <p>{c('story.p2')}</p>
         <p>{c('story.p3')}</p>
       </LongForm>
+
+      <section className="section section-light about-photos-section">
+        <div className="mw">
+          <PhotoMosaic photos={['team-at-laptop', 'learner-window-desk', 'training-session']} positions={['40% 50%', '70% 50%', '50% 35%']} />
+        </div>
+      </section>
 
       <StatBand stats={proofStats} />
 

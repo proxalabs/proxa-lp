@@ -3,7 +3,7 @@ import ProductShowcase from '../components/sections/ProductShowcase';
 import UpgradeComparison from '../components/sections/UpgradeComparison';
 import CTABand from '../components/sections/CTABand';
 import ForgeShowcase from '../components/showcase/ForgeShowcase';
-import AtlasShowcase from '../components/showcase/AtlasShowcase';
+import ProductGlimpse from '../components/media/ProductGlimpse';
 import EchoShowcase from '../components/showcase/EchoShowcase';
 import CertifyShowcase from '../components/showcase/CertifyShowcase';
 import LoopVisual from '../components/LoopVisual';
@@ -80,7 +80,12 @@ export default function PlatformPage({ content }) {
           "Manager dashboards with predictive readiness scoring",
           "Integrates with InsiteX LMS and Veeva",
         ]}
-        mockup={<AtlasShowcase />}
+        mockup={(
+          <div className="product-showcase-real">
+            <ProductGlimpse desktop="cue-competencies-desktop" mobile="cue-dashboard-mobile" url="cue.proxalabs.com" />
+            <div className="product-showcase-real-note">Proxa Cue, running demo content</div>
+          </div>
+        )}
         reverse
         background="tinted"
       />

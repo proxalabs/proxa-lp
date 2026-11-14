@@ -2,6 +2,8 @@ import EditorialHero from '../components/sections/EditorialHero';
 import LongForm from '../components/sections/LongForm';
 import PullQuote from '../components/sections/PullQuote';
 import CTABand from '../components/sections/CTABand';
+import HeroPhoto from '../components/media/HeroPhoto';
+import Icon from '../components/Icon';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
 
@@ -36,6 +38,13 @@ export default function AdvisoryPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        visual={(
+          <HeroPhoto
+            name="strategy-whiteboard"
+            position="42% 60%"
+            chip={{ mark: <Icon name="strategy" size={18} />, title: 'AI readiness roadmap', text: 'Strategy before any technology decision' }}
+          />
+        )}
       />
 
       <LongForm
@@ -71,6 +80,8 @@ export default function AdvisoryPage({ content }) {
       </section>
 
       <PullQuote
+        photo="advisor-conversation"
+        photoPosition="62% 30%"
         quote={c('testimonial.quote')}
         author={{ name: c('testimonial.author.name'), title: c('testimonial.author.title'), company: c('testimonial.author.company') }}
       />

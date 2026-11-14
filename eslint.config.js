@@ -35,5 +35,7 @@ export default defineConfig([
     'src/payload-types.ts',
     'src/migrations/**',
     'src/app/(payload)/**',
+    // Third-party components copied in unmodified (see the licence in that folder).
+    'src/components/reactbits/**',
   ]),
 ])

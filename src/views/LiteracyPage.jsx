@@ -5,6 +5,8 @@ import StatBand from '../components/sections/StatBand';
 import SplitFeature from '../components/sections/SplitFeature';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
+import HeroPhoto from '../components/media/HeroPhoto';
+import PhotoBand from '../components/media/PhotoBand';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
 
@@ -91,6 +93,13 @@ export default function LiteracyPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        visual={(
+          <HeroPhoto
+            name="training-question"
+            position="56% 40%"
+            chip={{ mark: <Icon name="literacy" size={18} />, title: 'AI fluency by role', text: 'Reps, managers, medical affairs' }}
+          />
+        )}
         primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
@@ -108,6 +117,7 @@ export default function LiteracyPage({ content }) {
       <CardGrid
         eyebrow={c('tracks.eyebrow')}
         heading={c('tracks.heading')}
+        media={<PhotoBand name="training-session" position="50% 45%" />}
         lead={c('tracks.lead')}
         columns={3}
         cards={TRACKS}

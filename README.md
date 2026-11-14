@@ -83,6 +83,24 @@ navigation, redirects or a landing page's custom code.
 
 `node scripts/verify-site.mjs` checks all of this against a running server, and CI runs it on every pull request together with `scripts/e2e-check.mjs`.
 
+## Photographs and product screens
+
+The marketing pages use real photographs and real screens of the apps. All of them are
+listed, with their size and description, in `src/content/images.js`; the files are in
+`public/assets/photos` and `public/assets/product`.
+
+- **Photographs** are stock photos from Pexels (free for commercial use, no attribution
+  required). Each entry records the page it came from. The people in them are models, so
+  never place one beside a named quote or present it as a member of staff or a customer.
+- **Product screens** were captured from a local preview of Proxa Cue running demo content.
+- **To add one:** `node scripts/optimize-image.mjs <source> public/assets/photos/<name> 1600 800`,
+  then add an entry to `src/content/images.js` (a test checks the files exist).
+- **To show one:** `<Photo name="…" />`, or one of the layouts in `src/components/media`
+  (`HeroPhoto`, `PhotoBand`, `PhotoMosaic`, `ProductGlimpse`).
+
+The floating effect is React Bits' TiltedCard, copied into `src/components/reactbits` with
+its licence.
+
 ## Layout
 
 ```
