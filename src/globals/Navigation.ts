@@ -5,6 +5,7 @@ import { DEFAULT_MENUS, MENU_LABELS } from '../content/navConfig.js'
 import { destinationFields } from '../fields/link'
 import { logGlobalChange } from '../hooks/activityLog'
 import { revalidateGlobal } from '../hooks/revalidate'
+import { previewPath } from '../lib/preview'
 
 const menu = (name: string): Field => ({
   name,
@@ -20,7 +21,7 @@ const menu = (name: string): Field => ({
 // The three header dropdowns. An empty menu falls back to its in-code default.
 export const Navigation: GlobalConfig = {
   slug: 'navigation',
-  admin: { group: 'Site' },
+  admin: { group: 'Site', livePreview: { url: () => previewPath('/') }, preview: () => previewPath('/') },
   access: { read: anyone, update: isAdmin },
   versions: { max: 30 },
   hooks: { afterChange: [revalidateGlobal([], { layout: true }), logGlobalChange] },

@@ -3,12 +3,17 @@ import type { CollectionConfig } from 'payload'
 import { isStaff, publishedOrStaff } from '../access'
 import { seoTab } from '../fields/seo'
 import { slugField } from '../fields/slug'
+import { previewPath } from '../lib/preview'
 import { contentHooks, draftVersions } from './shared'
 
 export const CaseStudies: CollectionConfig = {
   slug: 'case-studies',
   labels: { singular: 'Case study', plural: 'Case studies' },
-  admin: { group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'client', '_status', 'updatedAt'] },
+  admin: {
+    group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'client', '_status', 'updatedAt'],
+    livePreview: { url: ({ data }) => previewPath(data?.slug ? `/case-studies/${data.slug}` : null) },
+    preview: (doc) => previewPath(doc?.slug ? `/case-studies/${doc.slug}` : null),
+  },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   trash: true,
   versions: draftVersions,

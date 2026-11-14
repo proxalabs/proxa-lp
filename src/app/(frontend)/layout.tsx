@@ -6,6 +6,8 @@ import Analytics from '@/components/Analytics'
 import Footer from '@/components/Footer'
 import JsonLd from '@/components/JsonLd'
 import Nav from '@/components/Nav'
+import PreviewBar from '@/components/PreviewBar'
+import { isDraft } from '@/lib/data/payload'
 import { getNavMenus } from '@/lib/data/sitePages'
 import { buildSiteLd } from '@/lib/jsonLd'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
@@ -47,6 +49,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const menus = await getNavMenus()
+  const draft = await isDraft()
 
   return (
     <html lang="en" className={manrope.variable}>
@@ -59,6 +62,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <main>{children}</main>
         <Footer />
         <Analytics />
+        {draft && <PreviewBar />}
       </body>
     </html>
   )

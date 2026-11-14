@@ -47,6 +47,13 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: ' · Proxa Labs CMS' },
+    livePreview: {
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 390, height: 844 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
   },
   collections: [Posts, CaseStudies, Videos, Pages, Authors, Categories, Media, Files, Leads, Users, ActivityLog, RateLimits],
   globals: [Navigation, ...sitePageGlobals],
@@ -54,6 +61,12 @@ export default buildConfig({
   // Public form endpoints, under /api. They replace the Firebase Cloud Functions.
   endpoints: [contactEndpoint, newsletterEndpoint, eventRegisterEndpoint, submitFormEndpoint, gatedFileEndpoint],
   editor: lexicalEditor(),
+  // Scheduled publishing: check the queue every minute, inside this server.
+  // (For a serverless host, drop autoRun and call /api/payload-jobs/run on a timer.)
+  jobs: {
+    autoRun: [{ cron: '* * * * *', queue: 'default', limit: 25 }],
+    tasks: [],
+  },
   email,
   secret: process.env.PAYLOAD_SECRET || '',
   db: postgresAdapter({

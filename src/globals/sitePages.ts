@@ -5,6 +5,7 @@ import { MANIFEST } from '../content/manifest.js'
 import { logGlobalChange } from '../hooks/activityLog'
 import { revalidateGlobal } from '../hooks/revalidate'
 import { fieldName } from '../lib/pageContent.js'
+import { previewPath } from '../lib/preview'
 import { PAGE_PATHS } from '../lib/routes.js'
 
 type ManifestField = { key: string; label: string; type: 'text' | 'textarea' | 'image'; default: string }
@@ -50,6 +51,8 @@ function pageGlobal(pageId: string, page: ManifestPage): GlobalConfig {
     admin: {
       group: 'Site pages',
       description: 'Leave a field empty to use the built-in copy shown in grey.',
+      livePreview: { url: () => previewPath(path) },
+      preview: () => previewPath(path),
     },
     access: { read: anyone, update: isAdmin },
     versions: { max: 30 },

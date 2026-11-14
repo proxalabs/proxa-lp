@@ -4,12 +4,12 @@ import { searchPlugin } from '@payloadcms/plugin-search'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, Plugin } from 'payload'
 
-import { revalidatePath } from 'next/cache'
-
 import { anyone, isAdmin, isStaff, isStaffField, publishedOrStaff } from './access'
 import { draftVersions } from './collections/shared'
 import { slugField } from './fields/slug'
 import { logCollectionChange, logCollectionDelete } from './hooks/activityLog'
+import { safeRevalidate } from './hooks/revalidate'
+import { previewPath } from './lib/preview'
 import { lexicalToText } from './lib/lexical.js'
 import { SITE_NAME, SITE_URL } from './lib/site.js'
 
@@ -19,17 +19,17 @@ const PREFIX: Record<string, string> = { posts: '/blog', 'case-studies': '/case-
 // old address has to be refreshed when a rule is added, changed or removed.
 const refreshRedirect: CollectionAfterChangeHook = ({ doc, previousDoc, req: { context } }) => {
   if (context.disableRevalidate) return doc
-  for (const from of new Set([doc?.from, previousDoc?.from])) if (typeof from === 'string' && from) revalidatePath(from)
+  for (const from of new Set([doc?.from, previousDoc?.from])) if (typeof from === 'string' && from) safeRevalidate(from)
   return doc
 }
 const refreshRedirectOnDelete: CollectionAfterDeleteHook = ({ doc, req: { context } }) => {
-  if (!context.disableRevalidate && typeof doc?.from === 'string' && doc.from) revalidatePath(doc.from)
+  if (!context.disableRevalidate && typeof doc?.from === 'string' && doc.from) safeRevalidate(doc.from)
   return doc
 }
 
 // A form can be embedded in any landing page, so refresh every page when one changes.
 const refreshForms: CollectionAfterChangeHook = ({ doc, req: { context } }) => {
-  if (!context.disableRevalidate) revalidatePath('/', 'layout')
+  if (!context.disableRevalidate) safeRevalidate('/', 'layout')
   return doc
 }
 
@@ -57,7 +57,12 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: { payment: false, state: false, country: false },
     formOverrides: {
-      admin: { group: 'Forms', useAsTitle: 'title' },
+      admin: {
+        group: 'Forms',
+        useAsTitle: 'title',
+        livePreview: { url: ({ data }) => previewPath(data?.slug ? `/forms/${data.slug}` : null) },
+        preview: (doc) => previewPath(doc?.slug ? `/forms/${doc.slug}` : null),
+      },
       access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
       versions: draftVersions,
       hooks: { afterChange: [refreshForms, logCollectionChange], afterDelete: [logCollectionDelete] },

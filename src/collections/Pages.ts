@@ -4,13 +4,18 @@ import { isAdminField, isStaff, publishedOrStaff } from '../access'
 import { PAGE_BLOCKS } from '../blocks/page'
 import { seoTab } from '../fields/seo'
 import { slugField } from '../fields/slug'
+import { previewPath } from '../lib/preview'
 import { contentHooks, draftVersions } from './shared'
 
 // Landing pages a marketer builds from the section kit. They live at /<slug>.
 export const Pages: CollectionConfig = {
   slug: 'pages',
   labels: { singular: 'Landing page', plural: 'Landing pages' },
-  admin: { group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'slug', '_status', 'updatedAt'] },
+  admin: {
+    group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
+    livePreview: { url: ({ data }) => previewPath(data?.slug ? `/${data.slug}` : null) },
+    preview: (doc) => previewPath(doc?.slug ? `/${doc.slug}` : null),
+  },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   defaultPopulate: { title: true, slug: true },
   trash: true,

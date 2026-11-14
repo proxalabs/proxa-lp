@@ -4,6 +4,7 @@ import { isStaff, publishedOrStaff } from '../access'
 import { articleEditor, simpleEditor } from '../fields/richText'
 import { seoTab } from '../fields/seo'
 import { slugField } from '../fields/slug'
+import { previewPath } from '../lib/preview'
 import { contentHooks, draftVersions } from './shared'
 
 export const Posts: CollectionConfig = {
@@ -13,6 +14,8 @@ export const Posts: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedDate', '_status', 'updatedAt'],
+    livePreview: { url: ({ data }) => previewPath(data?.slug ? `/blog/${data.slug}` : null) },
+    preview: (doc) => previewPath(doc?.slug ? `/blog/${doc.slug}` : null),
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   defaultPopulate: { title: true, slug: true, category: true, publishedDate: true, readTime: true },

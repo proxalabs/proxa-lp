@@ -14,8 +14,21 @@ export const FEED_PATHS = ['/sitemap.xml', '/llms.txt', '/blog/rss.xml']
 
 type AnyDoc = { _status?: string | null; [key: string]: unknown }
 
+/**
+ * revalidatePath that never throws. Scheduled publishing runs from a timer, where
+ * Next.js has no request to revalidate from; there the routes' own `revalidate`
+ * timer picks the change up within five minutes instead.
+ */
+export function safeRevalidate(path: string, type?: 'layout' | 'page') {
+  try {
+    revalidatePath(path, type)
+  } catch {
+    /* outside a request: the timed revalidation covers it */
+  }
+}
+
 const refresh = (paths: string[]) => {
-  for (const path of new Set(paths)) revalidatePath(path)
+  for (const path of new Set(paths)) safeRevalidate(path)
 }
 
 /**
@@ -50,7 +63,7 @@ export function revalidateCollection(pathsFor: (doc: AnyDoc) => string[]): {
 export function revalidateGlobal(paths: string[], opts: { layout?: boolean } = {}): GlobalAfterChangeHook {
   return ({ doc, req: { context } }) => {
     if (context.disableRevalidate) return doc
-    if (opts.layout) revalidatePath('/', 'layout')
+    if (opts.layout) safeRevalidate('/', 'layout')
     refresh(paths)
     return doc
   }

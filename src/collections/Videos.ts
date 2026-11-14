@@ -2,11 +2,16 @@ import type { CollectionConfig } from 'payload'
 
 import { isStaff, publishedOrStaff } from '../access'
 import { slugField } from '../fields/slug'
+import { previewPath } from '../lib/preview'
 import { contentHooks, draftVersions } from './shared'
 
 export const Videos: CollectionConfig = {
   slug: 'videos',
-  admin: { group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'topic', '_status', 'updatedAt'] },
+  admin: {
+    group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'topic', '_status', 'updatedAt'],
+    livePreview: { url: ({ data }) => previewPath('/videos') },
+    preview: (doc) => previewPath('/videos'),
+  },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   trash: true,
   versions: draftVersions,
