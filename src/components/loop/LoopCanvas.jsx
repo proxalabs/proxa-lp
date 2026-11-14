@@ -15,8 +15,8 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/base.css';
 
+import AppLogo from '../AppLogo';
 import { HexMark } from '../HexMark';
-import Icon from '../Icon';
 import { LAYOUTS, STEPS, labelSpot, loopEdges } from './loopLayout';
 
 // The step that is running. Cards and edges read it from here, so advancing the
@@ -43,7 +43,7 @@ function ProductNode({ data }) {
       style={{ '--c': step.color, '--ink': step.ink, '--i': data.index }}
     >
       <Handle type="target" position={SIDE[data.in]} isConnectable={false} className="loop-port loop-port-in" />
-      <span className="loop-node-icon"><Icon name={step.icon} size={17} strokeWidth={1.9} /></span>
+      <AppLogo app={step.id} size={30} className="loop-node-icon" />
       <span className="loop-node-name">{step.name}</span>
       <span className="loop-node-no">{`0${data.index + 1}`}</span>
       <span className="loop-node-sub">{step.sub}</span>

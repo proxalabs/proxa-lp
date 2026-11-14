@@ -1,17 +1,29 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
+import { APP_LOGOS } from '../appLogos.js'
 import { LABEL_GAP, LAYOUTS, STEPS, STACK_BELOW, labelSpot, loopEdges, pickLayout } from './loopLayout.js'
 
 const overlaps = (a, b) => a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height
 
-test('the loop runs Forge, Cue, Stage, Trace in the site product colours', () => {
+test('the loop runs Forge, Cue, Stage, Trace, each in the colour of its official logo', () => {
   assert.deepEqual(STEPS.map((s) => s.id), ['forge', 'cue', 'stage', 'trace'])
-  assert.deepEqual(STEPS.map((s) => s.color), ['#f5825f', '#9ca979', '#5e6b7a', '#75abc0'])
+  assert.deepEqual(STEPS.map((s) => s.color), ['#f5825f', '#9ca979', '#75abc0', '#7e9da1'])
   for (const step of STEPS) {
-    for (const key of ['name', 'sub', 'icon', 'ink', 'handoff', 'detail']) {
+    assert.equal(step.color, APP_LOGOS[step.id].color, `${step.id} does not match its logo`)
+    for (const key of ['name', 'sub', 'ink', 'handoff', 'detail']) {
       assert.ok(step[key], `${step.id} is missing ${key}`)
     }
+  }
+})
+
+test('every app logo has a tile colour and a glyph to draw', () => {
+  assert.deepEqual(Object.keys(APP_LOGOS), ['forge', 'cue', 'stage', 'trace'])
+  for (const [app, logo] of Object.entries(APP_LOGOS)) {
+    assert.match(logo.color, /^#[0-9a-f]{6}$/, `${app} colour`)
+    assert.match(logo.viewBox, /^[\d.]+ [\d.]+ [\d.]+ [\d.]+$/, `${app} viewBox`)
+    assert.match(logo.d, /^M [\d. MLCZ-]+$/, `${app} path`)
+    assert.ok(logo.name.startsWith('Proxa '), `${app} name`)
   }
 })
 

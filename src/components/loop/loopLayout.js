@@ -1,15 +1,16 @@
 // The closed loop: what each product does, what it hands to the next one, and
 // where the four cards sit on the canvas. Pure data, so it can be unit-tested.
 
-/** `color` is the product colour used across the site; `ink` is a darker shade that stays readable as small text. */
+import { APP_LOGOS } from '../appLogos.js'
+
+/** `color` is the colour of the app's official logo; `ink` is a darker shade that stays readable as small text. */
 export const STEPS = [
   {
     id: 'forge',
     name: 'Forge',
     verb: 'Build',
     sub: 'Builds MLR-compliant content',
-    icon: 'agent',
-    color: '#f5825f',
+    color: APP_LOGOS.forge.color,
     ink: '#b9502e',
     handoff: 'content published',
     detail: 'AI agents generate MLR-compliant content from your PI, CSRs, and brand assets, with every claim cited automatically.',
@@ -19,8 +20,7 @@ export const STEPS = [
     name: 'Cue',
     verb: 'Deliver',
     sub: 'Delivers adaptive learning',
-    icon: 'pathway',
-    color: '#9ca979',
+    color: APP_LOGOS.cue.color,
     ink: '#5f6e3f',
     handoff: 'readiness reached',
     detail: 'Adaptive learning pathways deliver competency-targeted content and close knowledge gaps before reps reach the field.',
@@ -30,9 +30,8 @@ export const STEPS = [
     name: 'Stage',
     verb: 'Assess',
     sub: 'Assesses in live HCP roleplay',
-    icon: 'roleplay',
-    color: '#5e6b7a',
-    ink: '#3a4350',
+    color: APP_LOGOS.stage.color,
+    ink: '#2f6a85',
     handoff: 'competency demonstrated',
     detail: 'Live HCP roleplay assesses readiness with real-time compliance monitoring and behavioral scoring against benchmarks.',
   },
@@ -41,9 +40,8 @@ export const STEPS = [
     name: 'Trace',
     verb: 'Verify',
     sub: 'Verifies behavioral competency',
-    icon: 'audit',
-    color: '#75abc0',
-    ink: '#2f6a85',
+    color: APP_LOGOS.trace.color,
+    ink: '#4a6a6e',
     handoff: 'gap → rebuild',
     detail: 'Competency-gated certification verifies demonstrated field readiness. Gaps automatically trigger Forge to rebuild.',
   },
