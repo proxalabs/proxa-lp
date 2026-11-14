@@ -118,12 +118,13 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 }
 .loop-canvas .loop-flow { position:absolute; inset:0; width:auto; height:auto; background:transparent; animation:loopIn .7s ease-out both; }
 @keyframes loopIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-/* Home hero, side by side with the headline: lift the card towards the menu bar and, on
-   short screens, shrink its diagram, so the whole card sits in the first view.
-   268px = the card's top (108px) + the steps and description under the diagram. */
+/* Beside other content (home hero, platform page): on short screens the diagram shrinks so
+   the whole card fits the screen. 268px = the home card's top (108px) + the steps and
+   description under the diagram. On the home hero the card is also lifted towards the
+   menu bar, so it sits in the first view. */
 @media (min-width:961px) {
   .hero-with-loop .editorial-hero-visual { align-self:start; margin-top:-40px; }
-  .hero-with-loop .loop-canvas { max-height:max(320px,min(560px,calc(100vh - 268px))); max-height:max(320px,min(560px,calc(100svh - 268px))); }
+  .hero-with-loop .loop-canvas, .platform-loop-visual .loop-canvas { max-height:max(320px,min(560px,calc(100vh - 268px))); max-height:max(320px,min(560px,calc(100svh - 268px))); }
 }
 /* Nothing pans or zooms, so let touches scroll the page as usual. */
 .loop-flow .react-flow__pane { touch-action:auto; cursor:default; }
@@ -1581,7 +1582,10 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .platform-loop-header .t-h2 { margin-bottom: var(--space-3); }
 .platform-loop-slice {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  /* The diagram column is capped so the whole card fits a laptop screen under the menu bar.
+     When space is short the text column gives way first, down to 320px. */
+  grid-template-columns: min(520px, calc(100% - var(--space-7) - 320px)) minmax(320px, 520px);
+  justify-content: center;
   gap: var(--space-7);
   align-items: center;
 }
