@@ -28,7 +28,9 @@ export default function NewsIndexPage({ articles }) {
           <div className="blog-grid">
             {news.map((a) => (
               <Link key={a.id} className="blog-card as-block" href={hrefFor('article', { slug: a.slug })}>
-                <div className="blog-card-img" style={cardImg(a) ? { backgroundImage: `url(${cardImg(a)})` } : undefined} />
+                <div className="blog-card-img">
+                  {cardImg(a) && <img src={cardImg(a)} alt={a.cardImageAlt || ''} loading="lazy" decoding="async" />}
+                </div>
                 <p className="card-pillar">{a.pillar}</p>
                 <p className="card-title">{a.title}</p>
                 <p className="card-meta">{a.date}{a.readTime ? ` • ${a.readTime}` : ''}</p>

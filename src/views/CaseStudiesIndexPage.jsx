@@ -19,7 +19,9 @@ export default function CaseStudiesIndexPage({ caseStudies }) {
           <div className="blog-grid">
             {caseStudies.map((c) => (
               <Link key={c.id} className="blog-card as-block" href={hrefFor('caseStudy', { slug: c.slug })}>
-                <div className="blog-card-img" style={c.heroImage ? { backgroundImage: `url(${c.heroImage})` } : undefined} />
+                <div className="blog-card-img">
+                  {c.heroImage && <img src={c.heroImage} alt={c.heroImageAlt || ''} loading="lazy" decoding="async" />}
+                </div>
                 <p className="card-pillar">{c.industry || c.client || 'Case study'}</p>
                 <p className="card-title">{c.title}</p>
                 {c.client && <p className="card-meta">{c.client}</p>}

@@ -4,8 +4,10 @@ import type { ReactNode } from 'react'
 
 import Analytics from '@/components/Analytics'
 import Footer from '@/components/Footer'
+import JsonLd from '@/components/JsonLd'
 import Nav from '@/components/Nav'
 import { getNavMenus } from '@/lib/data/sitePages'
+import { buildSiteLd } from '@/lib/jsonLd'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
 
 import '../../fonts.css'
@@ -31,6 +33,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   formatDetection: { telephone: false },
+  alternates: { types: { 'application/rss+xml': [{ url: '/blog/rss.xml', title: `${SITE_NAME} Blog` }] } },
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
     : undefined,
@@ -51,6 +54,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <link rel="preload" href="/fonts/dm-sans-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>
+        <JsonLd data={buildSiteLd()} />
         <Nav menus={menus} />
         <main>{children}</main>
         <Footer />

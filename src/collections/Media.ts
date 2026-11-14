@@ -30,11 +30,14 @@ export const Media: CollectionConfig = {
     mimeTypes: ['image/*', 'application/pdf', 'text/vtt'],
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Resized on upload, so pages never ship an image larger than they show.
+    // WebP for the site; the share image stays JPEG because social scrapers
+    // do not all read WebP.
     imageSizes: [
-      { name: 'thumbnail', width: 400 },
-      { name: 'card', width: 800 },
-      { name: 'hero', width: 1600 },
-      { name: 'og', width: 1200, height: 630, crop: 'center' },
+      { name: 'thumbnail', width: 400, formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'card', width: 800, formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'hero', width: 1600, formatOptions: { format: 'webp', options: { quality: 82 } } },
+      { name: 'og', width: 1200, height: 630, crop: 'center', formatOptions: { format: 'jpeg', options: { quality: 85 } } },
     ],
   },
 }

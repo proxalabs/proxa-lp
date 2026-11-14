@@ -147,7 +147,7 @@ export default function ArticleLayout({ article }) {
                 if (!b.src) return null;
                 return (
                   <figure key={i} className="body-img">
-                    <img src={b.src} alt={b.alt || ''} loading="lazy" />
+                    <img src={b.src} alt={b.alt || ''} loading="lazy" decoding="async" />
                     {b.caption && <figcaption>{b.caption}</figcaption>}
                   </figure>
                 );
@@ -184,7 +184,7 @@ export default function ArticleLayout({ article }) {
 
           {!hideAuthor && !!(author.name || '').trim() && (
             <div className="biocard">
-              {author.headshot && <img className="headshot" src={author.headshot} alt={author.name} />}
+              {author.headshot && <img className="headshot" src={author.headshot} alt={author.name} loading="lazy" decoding="async" />}
               <div>
                 <p className="bio-name">{author.name}</p>
                 <p className="bio-role">{author.role}</p>

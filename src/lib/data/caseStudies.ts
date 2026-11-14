@@ -2,7 +2,7 @@ import { cache } from 'react'
 
 import type { CaseStudy } from '@/payload-types'
 
-import { displayDate, getPayloadClient, mediaUrl, readOptions } from './payload'
+import { displayDate, getPayloadClient, mediaAlt, mediaUrl, readOptions } from './payload'
 
 export type CaseStudyView = {
   id: number
@@ -16,6 +16,7 @@ export type CaseStudyView = {
   solution: string
   results: string
   heroImage: string
+  heroImageAlt: string
   date: string
   isoDate: string | null
   updatedAt: string
@@ -39,6 +40,7 @@ const toView = (cs: CaseStudy): CaseStudyView => ({
   solution: cs.solution || '',
   results: cs.results || '',
   heroImage: mediaUrl(cs.heroImage, 'card'),
+  heroImageAlt: mediaAlt(cs.heroImage),
   date: displayDate(cs.publishedDate),
   isoDate: cs.publishedDate || null,
   updatedAt: cs.updatedAt,

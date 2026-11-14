@@ -4,7 +4,7 @@ import { dateTs } from '@/lib/blog'
 import { lexicalToBody, lexicalToInlineHtml, lexicalToText, readTimeFor } from '@/lib/lexical'
 import type { Author, Category, Post } from '@/payload-types'
 
-import { displayDate, getPayloadClient, mediaUrl, readOptions } from './payload'
+import { displayDate, getPayloadClient, mediaAlt, mediaUrl, readOptions } from './payload'
 
 // Posts come out in the shape ArticleLayout and the blog cards have always taken.
 
@@ -24,6 +24,7 @@ export type ArticleCard = {
   author: { name: string; role: string; bio: string; headshot: string }
   thumb: string
   cardImage: string
+  cardImageAlt: string
   description: string
   noindex: boolean
 }
@@ -67,6 +68,7 @@ function toCard(post: Post): ArticleCard {
     },
     thumb: mediaUrl(post.heroImage, 'hero'),
     cardImage: mediaUrl(post.cardImage, 'card') || mediaUrl(post.heroImage, 'card'),
+    cardImageAlt: mediaAlt(post.cardImage) || mediaAlt(post.heroImage),
     description: post.meta?.description?.trim() || lexicalToText(post.summary).slice(0, 300),
     noindex: Boolean(post.meta?.noindex),
   }

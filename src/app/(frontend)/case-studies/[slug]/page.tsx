@@ -48,8 +48,9 @@ export default async function Page({ params }: Props) {
     <>
       <JsonLd
         data={buildArticleLd(
-          { title: cs.title, description: cs.description, thumb: cs.ogImage, isoDate: cs.isoDate, updatedAt: cs.updatedAt },
+          { title: cs.title, description: cs.description, ogImage: cs.ogImage, isoDate: cs.isoDate, updatedAt: cs.updatedAt },
           url,
+          'Article',
         )}
       />
       <JsonLd
