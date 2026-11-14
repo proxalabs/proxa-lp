@@ -118,6 +118,13 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 }
 .loop-canvas .loop-flow { position:absolute; inset:0; width:auto; height:auto; background:transparent; animation:loopIn .7s ease-out both; }
 @keyframes loopIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+/* Home hero, side by side with the headline: lift the card towards the menu bar and, on
+   short screens, shrink its diagram, so the whole card sits in the first view.
+   268px = the card's top (108px) + the steps and description under the diagram. */
+@media (min-width:961px) {
+  .hero-with-loop .editorial-hero-visual { align-self:start; margin-top:-40px; }
+  .hero-with-loop .loop-canvas { max-height:max(320px,min(560px,calc(100vh - 268px))); max-height:max(320px,min(560px,calc(100svh - 268px))); }
+}
 /* Nothing pans or zooms, so let touches scroll the page as usual. */
 .loop-flow .react-flow__pane { touch-action:auto; cursor:default; }
 .loop-flow .react-flow__node { touch-action:auto; }

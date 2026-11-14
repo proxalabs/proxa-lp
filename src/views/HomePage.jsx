@@ -59,6 +59,7 @@ export default function HomePage({ content }) {
         subhead={c('hero.subhead')}
         primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("platform") }}
         visual={<LoopVisual />}
+        className="hero-with-loop"
       />
 
       <div className="logo-band">

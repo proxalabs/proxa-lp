@@ -214,6 +214,8 @@ export default function LoopCanvas({ layout, active, onSelect }) {
         maxZoom={1.2}
         nodeExtent={[[-12, -12], [width + 12, height + 12]]}
         nodesDraggable={draggable}
+        // The canvas itself never moves: without this, a card held against an edge scrolls it.
+        autoPanOnNodeDrag={false}
         nodesConnectable={false}
         nodesFocusable={false}
         edgesFocusable={false}
