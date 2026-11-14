@@ -1,6 +1,7 @@
 import AppLogo from '../components/AppLogo';
 import PhotoBand from '../components/media/PhotoBand';
-import ProductStage from '../components/sections/ProductStage';
+import ProductTour from '../components/sections/ProductTour';
+import { PRODUCT_TOUR } from '../content/productTour';
 import LoopVisual from '../components/LoopVisual';
 import EditorialHero from '../components/sections/EditorialHero';
 import StatBand from '../components/sections/StatBand';
@@ -97,8 +98,8 @@ export default function HomePage({ content }) {
             name="reviewing-dashboard"
             position="50% 22%"
             caption={{
-              title: "The data that matters isn't in the dashboard.",
-              text: "Rep readiness, call quality and launch execution speed. Not module completion.",
+              title: "Measure performance, not completion.",
+              text: "The CCO scorecard tracks rep readiness, call quality and launch execution speed.",
             }}
           />
         }
@@ -120,15 +121,12 @@ export default function HomePage({ content }) {
         centerHeader
       />
 
-      <ProductStage
-        eyebrow="Inside Proxa Cue"
-        heading="The learner's view, not a mock-up."
-        body="Courses, competencies and suggested next steps, as a sales rep sees them on a laptop and on a phone."
+      <ProductTour
+        eyebrow="Inside the platform"
+        heading={<>Real screens, not <span style={{ whiteSpace: "nowrap" }}>mock-ups.</span></>}
         cta={{ label: "Explore the platform", href: hrefFor("platform") }}
-        note="Screens from Proxa Cue running demo content."
-        desktop="cue-lms-desktop"
-        mobile="cue-lms-mobile"
-        url="cue.proxalabs.com"
+        note="Screens from the four Proxa apps running demo content."
+        slides={PRODUCT_TOUR}
       />
 
       <PullQuote

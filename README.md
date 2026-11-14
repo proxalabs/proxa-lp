@@ -92,7 +92,10 @@ listed, with their size and description, in `src/content/images.js`; the files a
 - **Photographs** are stock photos from Pexels (free for commercial use, no attribution
   required). Each entry records the page it came from. The people in them are models, so
   never place one beside a named quote or present it as a member of staff or a customer.
-- **Product screens** were captured from a local preview of Proxa Cue running demo content.
+- **Product screens** are real screens of Forge, Cue, Stage and Trace, captured from local
+  runs on throwaway data holding demo content only (made-up organisations, people and
+  training text). The home page's product tour (`src/content/productTour.js`) lists which
+  screen each product shows.
 - **To add one:** `node scripts/optimize-image.mjs <source> public/assets/photos/<name> 1600 800`,
   then add an entry to `src/content/images.js` (a test checks the files exist).
 - **To show one:** `<Photo name="…" />`, or one of the layouts in `src/components/media`

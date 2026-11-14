@@ -7,8 +7,8 @@
 // from. The people in them are models, not Proxa Labs staff or customers, so never place
 // one next to a named quote or present it as a real person.
 //
-// SCREENS are real screens of the Proxa apps, captured from a local preview running demo
-// content.
+// SCREENS are real screens of the four Proxa apps, captured from local runs on throwaway
+// data holding demo content only (made-up organisations, people and training text).
 
 export const PHOTOS = {
   'advisor-conversation': {
@@ -127,12 +127,12 @@ export const SCREENS = {
     height: 1125,
     alt: 'Proxa Cue learner dashboard with suggested next steps and the active pathway',
   },
-  'cue-lms-desktop': {
-    base: '/assets/product/cue-lms-desktop',
+  'cue-lesson-desktop': {
+    base: '/assets/product/cue-lesson-desktop',
     widths: [900, 1800],
     width: 1800,
     height: 1125,
-    alt: 'Proxa Cue course library showing three demo courses',
+    alt: 'A lesson in a Proxa Cue demo course, with the course outline beside the lesson text',
   },
   'cue-competencies-desktop': {
     base: '/assets/product/cue-competencies-desktop',
@@ -148,12 +148,12 @@ export const SCREENS = {
     height: 1688,
     alt: 'Proxa Cue learner dashboard on a phone',
   },
-  'cue-lms-mobile': {
-    base: '/assets/product/cue-lms-mobile',
+  'cue-lesson-mobile': {
+    base: '/assets/product/cue-lesson-mobile',
     widths: [390, 780],
     width: 780,
     height: 1688,
-    alt: 'Proxa Cue course library on a phone',
+    alt: 'A lesson in a Proxa Cue demo course on a phone',
   },
   'cue-competencies-mobile': {
     base: '/assets/product/cue-competencies-mobile',
@@ -161,6 +161,48 @@ export const SCREENS = {
     width: 780,
     height: 1688,
     alt: 'Proxa Cue competency scores on a phone',
+  },
+  'forge-workflow-desktop': {
+    base: '/assets/product/forge-workflow-desktop',
+    widths: [900, 1800],
+    width: 1800,
+    height: 1125,
+    alt: 'Proxa Forge workflow canvas: a training content pipeline of seven agents, an approval step and an export to Cue',
+  },
+  'forge-agents-mobile': {
+    base: '/assets/product/forge-agents-mobile',
+    widths: [390, 780],
+    width: 780,
+    height: 1688,
+    alt: 'Proxa Forge list of agents on a phone',
+  },
+  'stage-roleplays-desktop': {
+    base: '/assets/product/stage-roleplays-desktop',
+    widths: [900, 1800],
+    width: 1800,
+    height: 1125,
+    alt: 'Proxa Stage roleplay library with assigned practice conversations and their last scores',
+  },
+  'stage-briefing-mobile': {
+    base: '/assets/product/stage-briefing-mobile',
+    widths: [390, 780],
+    width: 780,
+    height: 1688,
+    alt: 'Proxa Stage briefing for a roleplay with a cardiologist, on a phone',
+  },
+  'trace-report-desktop': {
+    base: '/assets/product/trace-report-desktop',
+    widths: [900, 1800],
+    width: 1800,
+    height: 1125,
+    alt: 'Proxa Trace programme health report with a readiness index and completion rates by stage and region',
+  },
+  'trace-team-mobile': {
+    base: '/assets/product/trace-team-mobile',
+    widths: [390, 780],
+    width: 780,
+    height: 1688,
+    alt: 'Proxa Trace team report on a phone, showing the readiness index',
   },
 }
 
