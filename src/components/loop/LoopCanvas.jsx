@@ -16,7 +16,6 @@ import {
 import '@xyflow/react/dist/base.css';
 
 import AppLogo from '../AppLogo';
-import { HexMark } from '../HexMark';
 import { LAYOUTS, STEPS, labelSpot, loopEdges } from './loopLayout';
 
 // The step that is running. Cards and edges read it from here, so advancing the
@@ -33,6 +32,10 @@ const FIT = {
   stack: { padding: { top: '62px', bottom: '20px', left: '46px', right: '16px' } },
 };
 const SNAP_MS = 420;
+// The library's corner credit is hidden at the site owner's request. React Flow is free
+// to use this way, and asks sites that hide the credit to support it:
+// https://reactflow.dev/remove-attribution
+const PRO_OPTIONS = { hideAttribution: true };
 
 function ProductNode({ data }) {
   const active = useContext(ActiveStep);
@@ -52,14 +55,9 @@ function ProductNode({ data }) {
   );
 }
 
-/** The mark in the middle of the ring. Not a step: it cannot be dragged or clicked. */
+/** The caption in the middle of the ring. Not a step: it cannot be dragged or clicked. */
 function CoreNode() {
-  return (
-    <div className="loop-core">
-      <HexMark size={30} color="#f5825f" strokeWidth={1.3} />
-      <span>Intelligent<br />Commercial<br />Readiness</span>
-    </div>
-  );
+  return <div className="loop-core">Intelligent<br />Commercial<br />Readiness</div>;
 }
 
 function LoopEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data }) {
@@ -113,7 +111,7 @@ function buildNodes(name) {
     data: { index, in: n.in, out: n.out, layout: name },
   }));
   if (name === 'ring') {
-    const [w, h] = [132, 96];
+    const [w, h] = [140, 56];
     nodes.push({
       id: 'core',
       type: 'core',
@@ -226,8 +224,9 @@ export default function LoopCanvas({ layout, active, onSelect }) {
         zoomOnPinch={false}
         zoomOnDoubleClick={false}
         preventScrolling={false}
+        proOptions={PRO_OPTIONS}
       >
-        <Background variant={BackgroundVariant.Dots} gap={18} size={1.5} color="#cfd4dc" />
+        <Background variant={BackgroundVariant.Dots} gap={18} size={1.5} color="#bcc4d0" />
         <Refit fit={fit} />
       </ReactFlow>
     </ActiveStep.Provider>

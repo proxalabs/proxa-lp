@@ -42,7 +42,7 @@ export default function LoopVisual() {
   return (
     <div ref={cardRef} className="loop-card" data-paused={paused}>
       <div ref={stageRef} className="loop-stage">
-        <div className="loop-label">The Closed Loop <span>Intelligent Commercial Readiness</span></div>
+        <div className="loop-label">Proxa Labs Loop <span>Intelligent Commercial Readiness</span></div>
         <div className="loop-canvas">
           {layout && <LoopCanvas key={layout} layout={layout} active={active} onSelect={setActive} />}
         </div>
@@ -53,7 +53,7 @@ export default function LoopVisual() {
         onPointerEnter={(event) => event.pointerType === 'mouse' && setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <div className="loop-steps" role="group" aria-label="Steps of the closed loop">
+        <div className="loop-steps" role="group" aria-label="Steps of the Proxa Labs loop">
           {STEPS.map((step, i) => (
             <button
               key={step.id}
@@ -73,7 +73,7 @@ export default function LoopVisual() {
           <button
             type="button"
             className="loop-toggle"
-            aria-label={playing ? 'Pause the closed loop animation' : 'Play the closed loop animation'}
+            aria-label={playing ? 'Pause the loop animation' : 'Play the loop animation'}
             onClick={() => setPlaying((value) => !value)}
           >
             <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
