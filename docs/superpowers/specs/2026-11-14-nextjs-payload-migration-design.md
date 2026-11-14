@@ -2,7 +2,7 @@
 
 **Status:** Approved in chat 2026-11-14 ("that is right… start now"). Build in progress.
 **Date:** 2026-11-14
-**Branch:** `cleanup-root-files` (the user asked for all commits here; no new branch).
+**Branch:** `redesign` (the user asked for all commits here; no new branch).
 
 ## Intent
 
@@ -55,7 +55,7 @@ also plans to host on AWS, where a Postgres-backed Payload fits and Firebase doe
 | Look and URLs | Unchanged |
 | Existing content | Copied in by reading the live site's public endpoints |
 | Admin address | `/admin` (was `/noonewillfindthis`) |
-| Branch | `cleanup-root-files`, all commits here |
+| Branch | `redesign`, all commits here |
 
 ## Decisions that are my call
 
@@ -74,6 +74,10 @@ also plans to host on AWS, where a Postgres-backed Payload fits and Firebase doe
   revalidate the affected paths on publish, so pages are both cached and fresh.
 - **`src/pages` is renamed to `src/views`** — Next.js would treat `src/pages` as its
   Pages Router.
+- **`CLAUDE.md`:** only the Project Notes and the "Start" command section are
+  updated, because they name Vite, port 5173 and the old build. The rules about
+  `main`, previews and secrets are left exactly as they are. Setting up the EC2
+  preview box (Docker, Postgres, content import) is deployment work and out of scope.
 - **Privacy / Terms footer links** stay inert (they are today) but lose their `href`
   so crawlers do not follow them to a 404.
 

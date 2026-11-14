@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- All commits on branch `cleanup-root-files`. No new branch. Never push to `main`.
+- All commits on branch `redesign`. No new branch. Never push to `main`.
 - Nothing is deployed. Do not touch the Firebase project or AWS.
 - Do not modify: `functions/`, `firebase.json`, `.firebaserc`, `firestore.rules`, `firestore.indexes.json`, `storage.rules`, `scripts/seed.mjs`, `scripts/seed-emulator.cjs`, `scripts/sync-redirects.mjs`, `.github/workflows/deploy.yml`.
 - Same design, same URLs. No copy changes.

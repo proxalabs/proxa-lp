@@ -4,19 +4,19 @@
  * override when present, otherwise the default — so the site always works even
  * with no overrides. Add a page/fields here, then read them via usePageContent.
  */
-import platform from './pages/platform';
-import advisory from './pages/advisory';
-import literacy from './pages/literacy';
-import insitex from './pages/insitex';
-import content from './pages/content';
-import proxalab from './pages/proxalab';
-import about from './pages/about';
-import news from './pages/news';
-import resources from './pages/resources';
-import newsletter from './pages/newsletter';
-import contact from './pages/contact';
-import futureproof from './pages/futureproof';
-import innovation from './pages/innovation';
+import platform from './pages/platform.js';
+import advisory from './pages/advisory.js';
+import literacy from './pages/literacy.js';
+import insitex from './pages/insitex.js';
+import content from './pages/content.js';
+import proxalab from './pages/proxalab.js';
+import about from './pages/about.js';
+import news from './pages/news.js';
+import resources from './pages/resources.js';
+import newsletter from './pages/newsletter.js';
+import contact from './pages/contact.js';
+import futureproof from './pages/futureproof.js';
+import innovation from './pages/innovation.js';
 
 export const MANIFEST = {
   home: {
