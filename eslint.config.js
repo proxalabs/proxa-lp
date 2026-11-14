@@ -27,6 +27,7 @@ export default defineConfig([
   globalIgnores([
     '.next/**',
     'dist/**',
+    '.superpowers/**',
     'next-env.d.ts',
     'functions/**',
     'media/**',

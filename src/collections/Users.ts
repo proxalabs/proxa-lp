@@ -14,7 +14,7 @@ export const Users: CollectionConfig = {
     lockTime: 15 * 60 * 1000,
   },
   access: {
-    admin: isStaff,
+    admin: ({ req }) => Boolean(req.user),
     read: isStaff,
     create: isAdmin,
     update: ({ req: { user }, id }) => (user as { role?: string } | null)?.role === 'admin' || user?.id === id,

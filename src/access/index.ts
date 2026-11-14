@@ -14,6 +14,8 @@ export const isAdmin: Access = ({ req: { user } }) => roleOf(user) === 'admin'
 
 export const isAdminField: FieldAccess = ({ req: { user } }) => roleOf(user) === 'admin'
 
+export const isStaffField: FieldAccess = ({ req: { user } }) => Boolean(user)
+
 /** Staff see everything; the public sees published documents only. */
 export const publishedOrStaff: Access = ({ req: { user } }) => {
   if (user) return true
