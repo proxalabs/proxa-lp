@@ -27,8 +27,13 @@ const refreshRedirectOnDelete: CollectionAfterDeleteHook = ({ doc, req: { contex
   return doc
 }
 
-// A form can be embedded in any landing page, so refresh every page when one changes.
+// A form can be embedded in any landing page, so refresh every page when one
+// changes or is deleted.
 const refreshForms: CollectionAfterChangeHook = ({ doc, req: { context } }) => {
+  if (!context.disableRevalidate) safeRevalidate('/', 'layout')
+  return doc
+}
+const refreshFormsOnDelete: CollectionAfterDeleteHook = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) safeRevalidate('/', 'layout')
   return doc
 }
@@ -65,9 +70,11 @@ export const plugins: Plugin[] = [
       },
       access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
       versions: draftVersions,
-      hooks: { afterChange: [refreshForms, logCollectionChange], afterDelete: [logCollectionDelete] },
+      hooks: { afterChange: [refreshForms, logCollectionChange], afterDelete: [refreshFormsOnDelete, logCollectionDelete] },
       fields: ({ defaultFields }) => [
-        ...defaultFields,
+        // The plugin's own "emails" list (autoresponders: to, cc, bcc) holds
+        // addresses, so like notifyEmail it is not part of the public definition.
+        ...defaultFields.map((field) => ('name' in field && field.name === 'emails' ? { ...field, access: { read: isStaffField } } : field)),
         slugField(),
         { name: 'intro', type: 'textarea', label: 'Intro text', admin: { description: 'Shown under the title on the form’s own page (/forms/…).' } },
         {

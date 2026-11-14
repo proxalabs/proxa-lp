@@ -40,7 +40,7 @@ export default function BlogIndexPage({ articles }) {
   return (
     <div className="proxa-article">
       <section className="shell blog-index">
-        <p className="eyebrow blog-eyebrow"><img src={SYMBOL} alt="Proxa Labs" />Blog</p>
+        <p className="eyebrow blog-eyebrow"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" />Blog</p>
         <h1 className="blog-title">Perspectives on commercial readiness</h1>
         <p className="blog-sub">
           Field notes and frameworks from inside biopharma commercial learning, on closing the gap between AI ambition and a field that is demonstrably ready.

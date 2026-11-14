@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isAdminField, isStaff, publishedOrStaff } from '../access'
+import { isAdminField, isStaff, publishedNotTrashedOrStaff } from '../access'
 import { PAGE_BLOCKS } from '../blocks/page'
 import { seoTab } from '../fields/seo'
 import { slugField } from '../fields/slug'
@@ -16,11 +16,13 @@ export const Pages: CollectionConfig = {
     livePreview: { url: ({ data }) => previewPath(data?.slug ? `/${data.slug}` : null) },
     preview: (doc) => previewPath(doc?.slug ? `/${doc.slug}` : null),
   },
-  access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
+  access: { read: publishedNotTrashedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   defaultPopulate: { title: true, slug: true },
   trash: true,
   versions: draftVersions,
-  hooks: contentHooks((doc) => [`/${doc.slug}`]),
+  // A landing page can be linked from the header menus and from buttons on any
+  // page, so a change to its address or visibility refreshes the whole site.
+  hooks: contentHooks((doc) => [`/${doc.slug}`], { layout: true }),
   fields: [
     { name: 'title', type: 'text', required: true },
     {

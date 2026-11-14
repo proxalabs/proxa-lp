@@ -1,9 +1,10 @@
 import type { CollectionConfig } from 'payload'
 
-import { isStaff, publishedOrStaff } from '../access'
+import { isStaff, publishedNotTrashedOrStaff } from '../access'
 import { articleEditor, simpleEditor } from '../fields/richText'
 import { seoTab } from '../fields/seo'
 import { slugField } from '../fields/slug'
+import { ALL_ARTICLES } from '../hooks/revalidate'
 import { previewPath } from '../lib/preview'
 import { contentHooks, draftVersions } from './shared'
 
@@ -17,13 +18,13 @@ export const Posts: CollectionConfig = {
     livePreview: { url: ({ data }) => previewPath(data?.slug ? `/blog/${data.slug}` : null) },
     preview: (doc) => previewPath(doc?.slug ? `/blog/${doc.slug}` : null),
   },
-  access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
+  access: { read: publishedNotTrashedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   defaultPopulate: { title: true, slug: true, category: true, publishedDate: true, readTime: true },
   trash: true,
   versions: draftVersions,
   // A post shows on its own page, the blog index, the news hub, and as a
   // "keep reading" card on other posts.
-  hooks: contentHooks((doc) => [`/blog/${doc.slug}`, '/blog', '/news', '/blog/[slug]']),
+  hooks: contentHooks((doc) => [`/blog/${doc.slug}`, '/blog', '/news', ALL_ARTICLES]),
   fields: [
     { name: 'title', type: 'text', required: true },
     {

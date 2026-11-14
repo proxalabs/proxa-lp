@@ -152,3 +152,10 @@ test('short contents labels replace long headings in the table of contents, in o
   // The headings themselves are untouched.
   assert.equal(body[0].text, 'Commercial and learning define what capable means')
 })
+
+test('a body image carries its pixel size when the media has one, so the page can reserve the space', () => {
+  const upload = (value) => ({ type: 'upload', relationTo: 'media', value, fields: {}, version: 3 })
+  const { body } = lexicalToBody(state(upload({ url: '/a.png', alt: 'A', width: 1600, height: 900 }), upload({ url: '/b.png', alt: 'B' })))
+  assert.deepEqual(body[0], { type: 'image', src: '/a.png', alt: 'A', caption: '', width: 1600, height: 900 })
+  assert.deepEqual(body[1], { type: 'image', src: '/b.png', alt: 'B', caption: '' })
+})

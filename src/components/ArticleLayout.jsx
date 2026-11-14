@@ -95,7 +95,7 @@ export default function ArticleLayout({ article }) {
                 ? { name: 'News', page: 'newsHub' }
                 : { name: 'Blog', page: 'blog' },
             ]} />
-            <p className="eyebrow"><img src={SYMBOL} alt="Proxa Labs" />{article.pillar}</p>
+            <p className="eyebrow"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" />{article.pillar}</p>
             <h1>{article.title}</h1>
             <div className="byline">
               {!hideAuthor && <span className="b-name">{author.name}</span>}
@@ -138,7 +138,7 @@ export default function ArticleLayout({ article }) {
               if (b.type === 'quote') {
                 return (
                   <blockquote key={i} className="pull">
-                    <img className="pmark" src={QUOTE_BARS} alt="" />
+                    <img className="pmark" src={QUOTE_BARS} alt="" width="220" height="425" loading="lazy" decoding="async" />
                     <p>{b.text}</p>
                   </blockquote>
                 );
@@ -147,7 +147,7 @@ export default function ArticleLayout({ article }) {
                 if (!b.src) return null;
                 return (
                   <figure key={i} className="body-img">
-                    <img src={b.src} alt={b.alt || ''} loading="lazy" decoding="async" />
+                    <img src={b.src} alt={b.alt || ''} width={b.width} height={b.height} loading="lazy" decoding="async" />
                     {b.caption && <figcaption>{b.caption}</figcaption>}
                   </figure>
                 );
@@ -180,11 +180,11 @@ export default function ArticleLayout({ article }) {
             })}
           </div>
 
-          <div className="endmark"><img src={SYMBOL} alt="Proxa Labs" /></div>
+          <div className="endmark"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" /></div>
 
           {!hideAuthor && !!(author.name || '').trim() && (
             <div className="biocard">
-              {author.headshot && <img className="headshot" src={author.headshot} alt={author.name} loading="lazy" decoding="async" />}
+              {author.headshot && <img className="headshot" src={author.headshot} alt={author.name} width="66" height="66" loading="lazy" decoding="async" />}
               <div>
                 <p className="bio-name">{author.name}</p>
                 <p className="bio-role">{author.role}</p>

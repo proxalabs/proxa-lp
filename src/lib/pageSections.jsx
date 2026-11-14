@@ -12,20 +12,13 @@ import { hrefFor } from './routes';
 
 /*
  * The "kit of ready-made sections" (Mercy's S3). Each section type wraps a real
- * on-brand site component: it declares the fields a marketer fills and how to
- * turn that data into the component's props. Buttons link with hrefFor(pageKey).
+ * on-brand site component and turns a section's data into that component's
+ * props. The fields a marketer fills are defined by the CMS blocks in
+ * src/blocks/page.ts. Buttons link with hrefFor(pageKey).
  */
 export const SECTION_KIT = {
   hero: {
     label: 'Hero banner',
-    fields: [
-      { key: 'eyebrow', label: 'Eyebrow (small label)', type: 'text' },
-      { key: 'headline', label: 'Headline', type: 'text' },
-      { key: 'subhead', label: 'Subheading', type: 'textarea' },
-      { key: 'ctaLabel', label: 'Button text', type: 'text' },
-      { key: 'ctaPage', label: 'Button links to', type: 'page' },
-      { key: 'dark', label: 'Dark background', type: 'boolean' },
-    ],
     render: (d) => (
       <EditorialHero eyebrow={d.eyebrow} headline={d.headline} subhead={d.subhead} dark={!!d.dark}
         primaryCta={d.ctaLabel ? { label: d.ctaLabel, href: hrefFor(d.ctaPage || 'contact') } : undefined} />
@@ -33,13 +26,6 @@ export const SECTION_KIT = {
   },
   split: {
     label: 'Text + image',
-    fields: [
-      { key: 'eyebrow', label: 'Eyebrow', type: 'text' },
-      { key: 'heading', label: 'Heading', type: 'text' },
-      { key: 'body', label: 'Body text', type: 'textarea' },
-      { key: 'image', label: 'Image', type: 'image' },
-      { key: 'reverse', label: 'Put the image on the left', type: 'boolean' },
-    ],
     render: (d) => (
       <SplitFeature eyebrow={d.eyebrow} heading={d.heading} body={d.body} reverse={!!d.reverse}
         visual={d.image ? <img src={d.image} alt={d.imageAlt || ''} loading="lazy" style={{ width: '100%', borderRadius: 16, display: 'block' }} /> : null} />
@@ -47,20 +33,10 @@ export const SECTION_KIT = {
   },
   richText: {
     label: 'Formatted text',
-    fields: [
-      { key: 'heading', label: 'Heading (optional)', type: 'text' },
-      { key: 'body', label: 'Text', type: 'richtext' },
-    ],
     render: (d) => <RichTextSection heading={d.heading} body={d.body} />,
   },
   cards: {
     label: 'Feature cards',
-    fields: [
-      { key: 'eyebrow', label: 'Eyebrow', type: 'text' },
-      { key: 'heading', label: 'Heading', type: 'text' },
-      { key: 'lead', label: 'Intro text', type: 'textarea' },
-      { key: 'cards', label: 'Cards', type: 'cardlist' },
-    ],
     render: (d) => (
       <CardGrid eyebrow={d.eyebrow} heading={d.heading} lead={d.lead} centerHeader
         cards={(d.cards || []).map((c) => ({ title: c.title, body: c.body }))} />
@@ -68,25 +44,14 @@ export const SECTION_KIT = {
   },
   stats: {
     label: 'Stat band',
-    fields: [{ key: 'stats', label: 'Stats', type: 'statlist' }],
     render: (d) => <StatBand stats={(d.stats || []).map((s) => ({ n: s.value, l: s.label, source: s.source || undefined }))} />,
   },
   quote: {
     label: 'Pull quote',
-    fields: [
-      { key: 'quote', label: 'Quote', type: 'textarea' },
-      { key: 'author', label: 'Author', type: 'text' },
-    ],
     render: (d) => <PullQuote quote={d.quote} author={d.author} />,
   },
   cta: {
     label: 'Call to action',
-    fields: [
-      { key: 'heading', label: 'Heading', type: 'text' },
-      { key: 'body', label: 'Body text', type: 'textarea' },
-      { key: 'ctaLabel', label: 'Button text', type: 'text' },
-      { key: 'ctaPage', label: 'Button links to', type: 'page' },
-    ],
     render: (d) => (
       <CTABand heading={d.heading} body={d.body}
         primaryCta={d.ctaLabel ? { label: d.ctaLabel, href: hrefFor(d.ctaPage || 'contact') } : undefined} />
@@ -94,26 +59,14 @@ export const SECTION_KIT = {
   },
   faq: {
     label: 'FAQ',
-    fields: [
-      { key: 'heading', label: 'Heading', type: 'text' },
-      { key: 'items', label: 'Questions & answers', type: 'faqlist' },
-    ],
     render: (d) => <FaqSection heading={d.heading} items={d.items} />,
   },
   logoStrip: {
     label: 'Logo strip',
-    fields: [
-      { key: 'heading', label: 'Heading (e.g. “Trusted by”)', type: 'text' },
-      { key: 'logos', label: 'Logos', type: 'logolist' },
-    ],
     render: (d) => <LogoStrip heading={d.heading} logos={d.logos} />,
   },
   form: {
     label: 'Form',
-    fields: [
-      { key: 'heading', label: 'Heading', type: 'text' },
-      { key: 'formSlug', label: 'Which form', type: 'formpicker' },
-    ],
     render: (d) => <FormSectionBlock heading={d.heading} form={d.form} />,
   },
 };

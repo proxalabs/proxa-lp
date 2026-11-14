@@ -2,6 +2,9 @@ import FixedPage from '@/components/FixedPage'
 import { fixedPageMetadata } from '@/lib/data/sitePages'
 import View from '@/views/AdvisoryPage'
 
+// CMS edits refresh this page at once; the timer is only a backstop.
+export const revalidate = 3600
+
 export const generateMetadata = () => fixedPageMetadata('advisory')
 
 export default function Page() {

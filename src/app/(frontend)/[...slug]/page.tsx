@@ -17,6 +17,15 @@ type Props = { params: Promise<{ slug: string[] }> }
 
 export const revalidate = 300
 
+// A malformed escape ("%E0%A4%A") must end as a 404, not a server error.
+const safeDecode = (segment: string) => {
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
+
 const isPageSlug = (segments: string[]) => segments.length === 1 && /^[a-z0-9][a-z0-9-]*$/.test(segments[0])
 
 export async function generateStaticParams() {
@@ -41,7 +50,7 @@ export default async function Page({ params }: Props) {
   const { slug } = await params
   const page = isPageSlug(slug) ? await getCmsPage(slug[0]) : null
   if (!page) {
-    const to = await findRedirect('/' + slug.map(decodeURIComponent).join('/'))
+    const to = await findRedirect('/' + slug.map(safeDecode).join('/'))
     if (to) permanentRedirect(to)
     notFound()
   }

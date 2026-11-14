@@ -23,7 +23,8 @@ async function record(req: PayloadRequest, action: Action, target: string, docId
         role: user?.role || 'system',
       },
       overrideAccess: true,
-      req,
+      // No `req`: the log row is written outside the save's transaction, so a
+      // failed log write can never roll the save back.
     })
   } catch (err) {
     // The log must never block the save it describes.

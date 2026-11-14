@@ -148,7 +148,7 @@ export default function InnovationCollectivePage({ content }) {
           <div className="ic-speakers-grid">
             {[0, 1, 2].map((i) => (
               <div className="ic-speaker" key={i}>
-                <div className="ic-speaker-photo-wrap"><img src={c(`speakers.${i}.photo`)} alt={c(`speakers.${i}.name`)} /></div>
+                <div className="ic-speaker-photo-wrap"><img src={c(`speakers.${i}.photo`)} alt={c(`speakers.${i}.name`)} loading="lazy" decoding="async" /></div>
                 <div className="ic-speaker-name">{c(`speakers.${i}.name`)}</div>
                 <div className="ic-speaker-co">{c(`speakers.${i}.company`)}</div>
               </div>
@@ -193,7 +193,7 @@ export default function InnovationCollectivePage({ content }) {
           <h2 className="ic-h2">{c('report.heading')}</h2>
           <p className="ic-report-intro">{c('report.intro')}</p>
           <div className="ic-report-slice">
-            <img className="ic-report-cover" src={c('report.cover')} alt="The State of AI in Commercial L&D for Life Sciences — Executive Edition cover" />
+            <img className="ic-report-cover" loading="lazy" decoding="async" src={c('report.cover')} alt="The State of AI in Commercial L&D for Life Sciences — Executive Edition cover" />
             <div className="ic-report-body">
               <p className="ic-report-lead">{c('report.lead')}</p>
               <ul>

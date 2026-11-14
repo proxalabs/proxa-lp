@@ -97,7 +97,8 @@ function toArticle(post: Post): Article {
     related,
     metaTitle: post.meta?.title?.trim() || '',
     canonical: post.meta?.canonical?.trim() || '',
-    ogImage: mediaUrl(post.meta?.image, 'og'),
+    // Social scrapers do not all read WebP, so the share image is always the JPEG variant.
+    ogImage: mediaUrl(post.meta?.image, 'og') || mediaUrl(post.heroImage, 'og'),
   }
 }
 

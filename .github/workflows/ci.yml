@@ -59,3 +59,17 @@ jobs:
       - name: Migrate and build
         run: npm run ci
 
+      # Serve the build and check it the way a crawler and an editor would:
+      # status codes, metadata, structured data, sitemap; then publish, edit,
+      # unpublish and trash content through the CMS API and watch the public site.
+      - name: Check the running site
+        run: |
+          npm start > server.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/robots.txt && break; sleep 1; done
+          node scripts/verify-site.mjs
+          node scripts/e2e-check.mjs
+
+      - name: Server log
+        if: failure()
+        run: tail -n 100 server.log
+

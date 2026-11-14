@@ -200,6 +200,13 @@
           "notNull": false,
           "default": false
         },
+        "generate_slug": {
+          "name": "generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -898,6 +905,13 @@
           "primaryKey": false,
           "notNull": false,
           "default": false
+        },
+        "version_generate_slug": {
+          "name": "version_generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "version_slug": {
           "name": "version_slug",
@@ -1677,6 +1691,13 @@
           "notNull": false,
           "default": false
         },
+        "generate_slug": {
+          "name": "generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -2054,6 +2075,13 @@
           "notNull": false,
           "default": false
         },
+        "version_generate_slug": {
+          "name": "version_generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "version_slug": {
           "name": "version_slug",
           "type": "varchar",
@@ -2412,6 +2440,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "generate_slug": {
+          "name": "generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -2670,6 +2705,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "version_generate_slug": {
+          "name": "version_generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "version_slug": {
           "name": "version_slug",
@@ -4739,6 +4781,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "generate_slug": {
+          "name": "generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -6737,6 +6786,13 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
+        },
+        "version_generate_slug": {
+          "name": "version_generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "version_slug": {
           "name": "version_slug",
@@ -9707,6 +9763,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "generate_slug": {
+          "name": "generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -11079,6 +11142,13 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
+        },
+        "version_generate_slug": {
+          "name": "version_generate_slug",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         },
         "version_slug": {
           "name": "version_slug",
@@ -22166,6 +22236,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "38bc9df0-2d94-449c-a523-3ff70a98d0a1",
+  "id": "848e775e-ceee-482b-a0ac-acbc3080a81e",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

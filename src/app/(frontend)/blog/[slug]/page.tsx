@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
+import { preload } from 'react-dom'
 
 import ArticleLayout from '@/components/ArticleLayout'
 import JsonLd from '@/components/JsonLd'
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: article.description,
     path: `/blog/${article.slug}`,
     canonical: article.canonical,
-    image: article.ogImage || article.thumb,
+    image: article.ogImage,
     noindex: article.noindex,
     type: 'article',
     publishedTime: article.isoDate,
@@ -45,6 +46,10 @@ export default async function Page({ params }: Props) {
     if (to) permanentRedirect(to)
     notFound()
   }
+
+  // The hero is a CSS background and the page's largest paint, so the browser
+  // would otherwise find it late; ask for it up front.
+  if (article.showHero && article.thumb) preload(article.thumb, { as: 'image', fetchPriority: 'high' })
 
   const url = article.canonical || `${SITE_URL}/blog/${article.slug}`
   const news = isNewsCategory(article.pillar)

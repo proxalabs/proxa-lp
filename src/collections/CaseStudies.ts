@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isStaff, publishedOrStaff } from '../access'
+import { isStaff, publishedNotTrashedOrStaff } from '../access'
 import { seoTab } from '../fields/seo'
 import { slugField } from '../fields/slug'
 import { previewPath } from '../lib/preview'
@@ -14,7 +14,7 @@ export const CaseStudies: CollectionConfig = {
     livePreview: { url: ({ data }) => previewPath(data?.slug ? `/case-studies/${data.slug}` : null) },
     preview: (doc) => previewPath(doc?.slug ? `/case-studies/${doc.slug}` : null),
   },
-  access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
+  access: { read: publishedNotTrashedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   trash: true,
   versions: draftVersions,
   hooks: contentHooks((doc) => [`/case-studies/${doc.slug}`, '/case-studies']),

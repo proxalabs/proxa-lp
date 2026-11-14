@@ -1,11 +1,12 @@
 # Local development database only. Port 5433 so it never collides with another
-# project's Postgres on the default 5432.
+# project's Postgres on the default 5432, and bound to this machine only (the
+# password below is a development default).
 services:
   db:
     image: postgres:16
     restart: unless-stopped
     ports:
-      - '5433:5432'
+      - '127.0.0.1:5433:5432'
     environment:
       POSTGRES_USER: proxa
       POSTGRES_PASSWORD: proxa

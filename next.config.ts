@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
       // Development needs eval and a websocket for hot reload, so the policy is
       // enforced in production builds only.
       ...(process.env.NODE_ENV === 'production'
-        ? [{ source: '/((?!admin|api|_next).*)', headers: [{ key: 'Content-Security-Policy', value: CSP }] }]
+        ? [{ source: '/((?!admin(?:/|$)|api(?:/|$)|_next/).*)', headers: [{ key: 'Content-Security-Policy', value: CSP }] }]
         : []),
       // Self-hosted fonts never change; brand images change rarely.
       { source: '/fonts/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },

@@ -271,7 +271,11 @@ export interface Post {
     noindex?: boolean | null;
   };
   /**
-   * The web address. Lowercase letters, numbers and hyphens. Leave empty to create it from the title.
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  /**
+   * The web address: lowercase letters, numbers and hyphens.
    */
   slug: string;
   publishedDate?: string | null;
@@ -402,7 +406,11 @@ export interface CaseStudy {
     noindex?: boolean | null;
   };
   /**
-   * The web address. Lowercase letters, numbers and hyphens. Leave empty to create it from the title.
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  /**
+   * The web address: lowercase letters, numbers and hyphens.
    */
   slug: string;
   publishedDate?: string | null;
@@ -439,7 +447,11 @@ export interface Video {
   transcript?: string | null;
   captions?: (number | null) | Media;
   /**
-   * The web address. Lowercase letters, numbers and hyphens. Leave empty to create it from the title.
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  /**
+   * The web address: lowercase letters, numbers and hyphens.
    */
   slug: string;
   publishedDate?: string | null;
@@ -643,7 +655,11 @@ export interface Page {
    */
   customCode?: string | null;
   /**
-   * The web address. Lowercase letters, numbers and hyphens. Leave empty to create it from the title.
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  /**
+   * The web address: lowercase letters, numbers and hyphens.
    */
   slug: string;
   updatedAt: string;
@@ -796,7 +812,11 @@ export interface Form {
       }[]
     | null;
   /**
-   * The web address. Lowercase letters, numbers and hyphens. Leave empty to create it from the title.
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  /**
+   * The web address: lowercase letters, numbers and hyphens.
    */
   slug: string;
   /**
@@ -1263,6 +1283,7 @@ export interface PostsSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
+  generateSlug?: T;
   slug?: T;
   publishedDate?: T;
   featured?: T;
@@ -1301,6 +1322,7 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         canonical?: T;
         noindex?: T;
       };
+  generateSlug?: T;
   slug?: T;
   publishedDate?: T;
   order?: T;
@@ -1322,6 +1344,7 @@ export interface VideosSelect<T extends boolean = true> {
   description?: T;
   transcript?: T;
   captions?: T;
+  generateSlug?: T;
   slug?: T;
   publishedDate?: T;
   order?: T;
@@ -1469,6 +1492,7 @@ export interface PagesSelect<T extends boolean = true> {
       };
   structuredType?: T;
   customCode?: T;
+  generateSlug?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1768,6 +1792,7 @@ export interface FormsSelect<T extends boolean = true> {
         message?: T;
         id?: T;
       };
+  generateSlug?: T;
   slug?: T;
   intro?: T;
   consentText?: T;

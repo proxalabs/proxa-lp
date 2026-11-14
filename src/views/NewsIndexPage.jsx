@@ -16,7 +16,7 @@ export default function NewsIndexPage({ articles }) {
   return (
     <div className="proxa-article">
       <section className="shell blog-index">
-        <p className="eyebrow blog-eyebrow"><img src={SYMBOL} alt="Proxa Labs" />News</p>
+        <p className="eyebrow blog-eyebrow"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" />News</p>
         <h1 className="blog-title">The latest from Proxa Labs</h1>
         <p className="blog-sub">
           Product releases, company announcements, and research milestones from Proxa Labs and The Lab.

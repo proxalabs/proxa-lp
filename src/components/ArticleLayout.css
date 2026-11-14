@@ -220,7 +220,7 @@
 
 /* inline images in the article body */
 .prose .body-img { margin: 34px 0; }
-.prose .body-img img { display: block; width: 100%; border-radius: 14px; }
+.prose .body-img img { display: block; width: 100%; height: auto; border-radius: 14px; }
 .prose .body-img figcaption { margin-top: 10px; font-size: 0.86rem; color: #7b8794; text-align: center; }
 
 /* key-takeaways box */

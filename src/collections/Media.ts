@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { anyone, isStaff } from '../access'
-import { auditHooks } from './shared'
+import { contentHooks } from './shared'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -13,7 +13,9 @@ export const Media: CollectionConfig = {
   labels: { singular: 'Media item', plural: 'Media' },
   admin: { group: 'Content', defaultColumns: ['filename', 'alt', 'updatedAt'] },
   access: { read: anyone, create: isStaff, update: isStaff, delete: isStaff },
-  hooks: auditHooks,
+  // An image can be used anywhere (page copy, posts, share images), so replacing
+  // or deleting one refreshes every page rather than leaving a broken image cached.
+  hooks: contentHooks(() => ['/'], { layout: true }),
   fields: [
     {
       name: 'alt',

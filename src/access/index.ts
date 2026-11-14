@@ -1,4 +1,4 @@
-import type { Access, FieldAccess } from 'payload'
+import type { Access, FieldAccess, Where } from 'payload'
 
 type Role = 'admin' | 'editor'
 const roleOf = (user: unknown): Role | null =>
@@ -20,4 +20,16 @@ export const isStaffField: FieldAccess = ({ req: { user } }) => Boolean(user)
 export const publishedOrStaff: Access = ({ req: { user } }) => {
   if (user) return true
   return { _status: { equals: 'published' } }
+}
+
+/**
+ * The same, for collections with a trash. Moving a document to the trash leaves it
+ * "published", and the API's `?trash=true` switch lifts the usual trash filter, so
+ * the public must be kept out of the trash explicitly.
+ */
+export const publishedNotTrashedOrStaff: Access = ({ req: { user } }) => {
+  if (user) return true
+  const published: Where = { _status: { equals: 'published' } }
+  const notTrashed: Where = { deletedAt: { exists: false } }
+  return { and: [published, notTrashed] }
 }

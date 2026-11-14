@@ -11,10 +11,14 @@ export const draftVersions: CollectionConfig['versions'] = {
 
 type AnyDoc = { [key: string]: unknown }
 
-/** Revalidate the pages a document appears on, and log the change. */
-export const contentHooks = (pathsFor: (doc: AnyDoc) => string[]): CollectionConfig['hooks'] => {
-  const revalidate = revalidateCollection(pathsFor)
+/**
+ * Revalidate the pages a document appears on, and log the change. `layout: true`
+ * also refreshes every page, for content that can appear anywhere on the site.
+ */
+export const contentHooks = (pathsFor: (doc: AnyDoc) => string[], opts: { layout?: boolean } = {}): CollectionConfig['hooks'] => {
+  const revalidate = revalidateCollection(pathsFor, opts)
   return {
+    beforeChange: [revalidate.beforeChange],
     afterChange: [revalidate.afterChange, logCollectionChange],
     afterDelete: [revalidate.afterDelete, logCollectionDelete],
   }

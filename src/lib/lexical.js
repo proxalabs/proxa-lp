@@ -118,7 +118,10 @@ export function lexicalToBody(state, opts = {}) {
     } else if (node.type === 'upload') {
       const media = node.value && typeof node.value === 'object' ? node.value : null
       if (media && media.url) {
-        body.push({ type: 'image', src: media.url, alt: media.alt || '', caption: (node.fields && node.fields.caption) || '' })
+        const image = { type: 'image', src: media.url, alt: media.alt || '', caption: (node.fields && node.fields.caption) || '' }
+        // Pixel size lets the page reserve the image's space before it loads.
+        if (media.width && media.height) Object.assign(image, { width: media.width, height: media.height })
+        body.push(image)
       }
     } else if (node.type === 'block' && node.fields) {
       const items = Array.isArray(node.fields.items) ? node.fields.items : []

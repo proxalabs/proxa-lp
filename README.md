@@ -42,6 +42,7 @@ That script only reads the live site's public endpoints. It is safe to run again
 | `npm run ci` | `payload migrate && next build`: what a deploy pipeline should run. |
 | `npm start` | Serve the production build. |
 | `node scripts/verify-site.mjs [url]` | Crawl the running site the way a search engine does and check every SEO basic. |
+| `node scripts/e2e-check.mjs [url]` | Against a production build: publish, edit, unpublish and trash content through the CMS API and check what visitors and crawlers then see. Creates and removes its own "E2E" content; not for a live site. |
 | `npm run generate:types` | Regenerate `src/payload-types.ts` after changing a collection. |
 | `npm run payload -- migrate:create <name>` | Create a migration after changing a collection or global. |
 
@@ -76,7 +77,7 @@ navigation, redirects or a landing page's custom code.
 - All navigation is real `<a href>` links.
 - Fonts are self-hosted (`public/fonts`, `src/fonts.css`). Uploaded images are resized to WebP.
 
-`node scripts/verify-site.mjs` checks all of this against a running server.
+`node scripts/verify-site.mjs` checks all of this against a running server, and CI runs it on every pull request together with `scripts/e2e-check.mjs`.
 
 ## Layout
 

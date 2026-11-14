@@ -22,7 +22,9 @@ export const Leads: CollectionConfig = {
       ],
     },
     { name: 'name', type: 'text' },
-    { name: 'email', type: 'email' },
+    // Plain text: the endpoints validate the address, and a second, stricter
+    // check here would turn an unusual but valid one into a server error.
+    { name: 'email', type: 'text' },
     { name: 'company', type: 'text' },
     { name: 'data', type: 'json', admin: { description: 'Everything the visitor submitted.' } },
   ],
