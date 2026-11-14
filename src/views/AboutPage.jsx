@@ -2,15 +2,16 @@ import EditorialHero from '../components/sections/EditorialHero';
 import LongForm from '../components/sections/LongForm';
 import StatBand from '../components/sections/StatBand';
 import CTABand from '../components/sections/CTABand';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Plain-text defaults for the two rich (italic) headings — when an editor
 // overrides them we render a plain string; otherwise the JSX default is kept.
 const ABOUT_HERO_HEADLINE_DEFAULT = "Built by someone who's been in your seat.";
 const ABOUT_CTA_HEADING_DEFAULT = "Work with a team that's been in your seat.";
 
-export default function AboutPage({ setPage }) {
-  const c = usePageContent('about');
+export default function AboutPage({ content }) {
+  const c = makeGetter(content);
 
   const heroHeadlineRaw = c('hero.headline');
   const heroHeadline = heroHeadlineRaw === ABOUT_HERO_HEADLINE_DEFAULT
@@ -52,7 +53,7 @@ export default function AboutPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

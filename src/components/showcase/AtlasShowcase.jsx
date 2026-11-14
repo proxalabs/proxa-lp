@@ -11,7 +11,7 @@ export default function AtlasShowcase() {
       <div style={{ padding: '14px 18px', borderBottom: '1px solid #E3E5EA', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 11, color: '#9ca979', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>Cue · Rep Pathway</div>
-          <div style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Sarah Chen · Oncology Onboarding</div>
+          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Sarah Chen · Oncology Onboarding</div>
         </div>
         <div style={{ fontSize: 10, color: '#5C6370' }}>Week 6 of 12</div>
       </div>

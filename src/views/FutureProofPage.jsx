@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
 
 /*
  * Gated lead-gen landing page — /future-proof-your-organization
@@ -16,8 +18,8 @@ const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // this, render the JSX default; otherwise render the plain override string.
 const HERO_HEADING_DEFAULT = 'Future-proof your organization';
 
-export default function FutureProofPage() {
-  const c = usePageContent('futureproof');
+export default function FutureProofPage({ content }) {
+  const c = makeGetter(content);
   const hh = c('hero.heading');
   const heroHeading = hh === HERO_HEADING_DEFAULT
     ? <><em>Future-proof</em><br />your organization</>
@@ -44,7 +46,7 @@ export default function FutureProofPage() {
 
   // Capture the lead for tracking. Fire-and-forget so asset delivery is never blocked.
   const captureLead = (asset) => {
-    const url = import.meta.env.VITE_CONTACT_FUNCTION_URL || '/api/contact';
+    const url = '/api/contact';
     try {
       fetch(url, {
         method: 'POST',

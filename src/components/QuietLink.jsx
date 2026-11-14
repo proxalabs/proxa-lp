@@ -1,8 +1,10 @@
-export default function QuietLink({ onClick, children, color }) {
+import Link from 'next/link';
+
+export default function QuietLink({ href, children, color }) {
   return (
-    <button className="quiet-link" onClick={onClick} style={color ? { color } : undefined}>
+    <Link className="quiet-link as-btn" href={href} style={color ? { color } : undefined}>
       {children}
       <span className="quiet-link-arrow">→</span>
-    </button>
+    </Link>
   );
 }

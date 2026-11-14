@@ -1,15 +1,14 @@
-import { useState, useMemo, useEffect } from 'react';
-import { usePublishedVideos, parseYouTubeId } from '../lib/videos';
-import { setJsonLd, toIsoDate, absUrl } from '../lib/jsonLd';
+'use client';
+
+import { useState, useMemo } from 'react';
+import { parseYouTubeId, youTubeThumb } from '../lib/videos';
 import '../components/ArticleLayout.css';
 import './VideoGalleryPage.css';
-
-const ytThumb = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 
 function VideoCard({ video }) {
   const [playing, setPlaying] = useState(false);
   const ytId = parseYouTubeId(video.videoUrl);
-  const thumb = video.thumbnail || (ytId ? ytThumb(ytId) : '');
+  const thumb = video.thumbnail || (ytId ? youTubeThumb(ytId) : '');
   return (
     <div className="vid-card">
       <div className="vid-frame">
@@ -47,34 +46,13 @@ function VideoCard({ video }) {
   );
 }
 
-export default function VideoGalleryPage() {
-  const { videos, loading, error } = usePublishedVideos();
+// The list is rendered on the server (with VideoObject structured data); only the
+// topic filter and the click-to-play players run in the browser.
+export default function VideoGalleryPage({ videos }) {
   const [topic, setTopic] = useState('');
 
   const topics = useMemo(() => [...new Set(videos.map((v) => v.topic).filter(Boolean))].sort(), [videos]);
   const shown = useMemo(() => videos.filter((v) => !topic || v.topic === topic), [videos, topic]);
-
-  // VideoObject structured data (AEO) — transcripts help these get quoted.
-  useEffect(() => {
-    if (!videos.length) { setJsonLd('ld-videos', null); return; }
-    // VideoObject requires name + thumbnailUrl + uploadDate to be valid for rich
-    // results — only emit a node for videos that have them (skip the rest rather
-    // than ship an invalid object Google will reject).
-    const graph = videos.map((v) => {
-      const ytId = parseYouTubeId(v.videoUrl);
-      const thumb = absUrl(v.thumbnail || (ytId ? ytThumb(ytId) : null));
-      const uploadDate = toIsoDate(v.date);
-      if (!thumb || !uploadDate) return null;
-      const ld = { '@type': 'VideoObject', name: v.title, thumbnailUrl: thumb, uploadDate };
-      if (v.description) ld.description = v.description;
-      if (ytId) ld.embedUrl = `https://www.youtube.com/embed/${ytId}`;
-      else if (v.videoUrl) ld.contentUrl = v.videoUrl;
-      if (v.transcript) ld.transcript = v.transcript;
-      return ld;
-    }).filter(Boolean);
-    setJsonLd('ld-videos', graph.length ? { '@context': 'https://schema.org', '@graph': graph } : null);
-    return () => setJsonLd('ld-videos', null);
-  }, [videos]);
 
   return (
     <div className="proxa-article">
@@ -83,7 +61,7 @@ export default function VideoGalleryPage() {
         <h1 className="blog-title">Watch &amp; learn</h1>
         <p className="blog-sub">Short, practical videos on AI in biopharma commercial learning — strategy, evidence, and the field.</p>
 
-        {!loading && !error && topics.length > 1 && (
+        {topics.length > 1 && (
           <div className="blog-filters">
             <label className="blog-filter">
               <span>Topic</span>
@@ -95,11 +73,7 @@ export default function VideoGalleryPage() {
           </div>
         )}
 
-        {loading ? (
-          <p className="blog-sub">Loading…</p>
-        ) : error ? (
-          <p className="blog-sub">Couldn’t load videos. Please refresh.</p>
-        ) : videos.length === 0 ? (
+        {videos.length === 0 ? (
           <p className="blog-sub">No videos published yet — check back soon.</p>
         ) : shown.length === 0 ? (
           <p className="blog-sub">No videos match this topic.</p>

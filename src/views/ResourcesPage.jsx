@@ -3,7 +3,8 @@ import CardGrid from '../components/sections/CardGrid';
 import LongForm from '../components/sections/LongForm';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Plain-text equivalents of the two headings that carry inline <em> markup.
 // When the editable value matches the plain default, render the rich JSX;
@@ -11,16 +12,16 @@ import { usePageContent } from '../lib/content';
 const RESOURCES_HERO_HEADLINE_DEFAULT = 'Tools and frameworks you can use before you commit to anything.';
 const RESOURCES_CTA_HEADING_DEFAULT = 'The frameworks are free. The conversations matter more.';
 
-export default function ResourcesPage({ setPage }) {
-  const c = usePageContent('resources');
+export default function ResourcesPage({ content }) {
+  const c = makeGetter(content);
 
   const FRAMEWORKS = [
-    { icon: <Icon name="checklist" size={22} />,    tag: c('frameworks.cards.0.tag'), title: c('frameworks.cards.0.title'), body: c('frameworks.cards.0.body'), linkLabel: c('frameworks.cards.0.linkLabel'), onClick: () => setPage("contact") },
-    { icon: <Icon name="gap" size={22} />,          tag: c('frameworks.cards.1.tag'), title: c('frameworks.cards.1.title'), body: c('frameworks.cards.1.body'), linkLabel: c('frameworks.cards.1.linkLabel'), onClick: () => setPage("contact") },
-    { icon: <Icon name="template" size={22} />,     tag: c('frameworks.cards.2.tag'), title: c('frameworks.cards.2.title'), body: c('frameworks.cards.2.body'), linkLabel: c('frameworks.cards.2.linkLabel'), onClick: () => setPage("contact") },
-    { icon: <Icon name="research" size={22} />,     tag: c('frameworks.cards.3.tag'), title: c('frameworks.cards.3.title'), body: c('frameworks.cards.3.body'), linkLabel: c('frameworks.cards.3.linkLabel'), onClick: () => setPage("contact") },
-    { icon: <Icon name="compliance" size={22} />,   tag: c('frameworks.cards.4.tag'), title: c('frameworks.cards.4.title'), body: c('frameworks.cards.4.body'), linkLabel: c('frameworks.cards.4.linkLabel'), onClick: () => setPage("contact") },
-    { icon: <Icon name="literacy" size={22} />,     tag: c('frameworks.cards.5.tag'), title: c('frameworks.cards.5.title'), body: c('frameworks.cards.5.body'), linkLabel: c('frameworks.cards.5.linkLabel'), onClick: () => setPage("contact") },
+    { icon: <Icon name="checklist" size={22} />,    tag: c('frameworks.cards.0.tag'), title: c('frameworks.cards.0.title'), body: c('frameworks.cards.0.body'), linkLabel: c('frameworks.cards.0.linkLabel'), href: hrefFor("contact") },
+    { icon: <Icon name="gap" size={22} />,          tag: c('frameworks.cards.1.tag'), title: c('frameworks.cards.1.title'), body: c('frameworks.cards.1.body'), linkLabel: c('frameworks.cards.1.linkLabel'), href: hrefFor("contact") },
+    { icon: <Icon name="template" size={22} />,     tag: c('frameworks.cards.2.tag'), title: c('frameworks.cards.2.title'), body: c('frameworks.cards.2.body'), linkLabel: c('frameworks.cards.2.linkLabel'), href: hrefFor("contact") },
+    { icon: <Icon name="research" size={22} />,     tag: c('frameworks.cards.3.tag'), title: c('frameworks.cards.3.title'), body: c('frameworks.cards.3.body'), linkLabel: c('frameworks.cards.3.linkLabel'), href: hrefFor("contact") },
+    { icon: <Icon name="compliance" size={22} />,   tag: c('frameworks.cards.4.tag'), title: c('frameworks.cards.4.title'), body: c('frameworks.cards.4.body'), linkLabel: c('frameworks.cards.4.linkLabel'), href: hrefFor("contact") },
+    { icon: <Icon name="literacy" size={22} />,     tag: c('frameworks.cards.5.tag'), title: c('frameworks.cards.5.title'), body: c('frameworks.cards.5.body'), linkLabel: c('frameworks.cards.5.linkLabel'), href: hrefFor("contact") },
   ];
 
   const RESEARCH = [
@@ -45,7 +46,7 @@ export default function ResourcesPage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("newsletter") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("newsletter") }}
       />
 
       <div id="frameworks">
@@ -79,7 +80,7 @@ export default function ResourcesPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

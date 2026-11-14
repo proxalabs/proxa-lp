@@ -5,7 +5,8 @@ import StatBand from '../components/sections/StatBand';
 import SplitFeature from '../components/sections/SplitFeature';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Headings with inline <em> markup keep their rich JSX default but render a plain
 // string when overridden. These constants must match the manifest defaults so the
@@ -73,8 +74,8 @@ function DeliveryInfrastructureCard() {
   );
 }
 
-export default function LiteracyPage({ setPage }) {
-  const c = usePageContent('literacy');
+export default function LiteracyPage({ content }) {
+  const c = makeGetter(content);
   // Rich (italic) headings keep their JSX default, but render a plain string if overridden.
   const heroH = c('hero.heading');
   const heroHeadline = heroH === LITERACY_HERO_HEADING_DEFAULT
@@ -90,7 +91,7 @@ export default function LiteracyPage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
       <LongForm
@@ -143,7 +144,7 @@ export default function LiteracyPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

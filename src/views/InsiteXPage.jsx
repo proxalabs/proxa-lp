@@ -4,7 +4,8 @@ import CardGrid from '../components/sections/CardGrid';
 import UpgradeComparison from '../components/sections/UpgradeComparison';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Plain-text defaults for the headings that carry inline markup. While the
 // content value equals one of these, the page renders the rich JSX version;
@@ -78,8 +79,8 @@ function InsiteXProofPanel() {
   );
 }
 
-export default function InsiteXPage({ setPage }) {
-  const c = usePageContent('insitex');
+export default function InsiteXPage({ content }) {
+  const c = makeGetter(content);
 
   // Headings with inline markup: keep the rich JSX default, render plain string
   // when overridden.
@@ -109,7 +110,7 @@ export default function InsiteXPage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
       <LongForm
@@ -139,7 +140,7 @@ export default function InsiteXPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

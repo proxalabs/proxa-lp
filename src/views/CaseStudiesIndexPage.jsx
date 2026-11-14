@@ -1,10 +1,9 @@
-import { usePublishedCaseStudies } from '../lib/caseStudies';
+import Link from 'next/link';
+import { hrefFor } from '../lib/routes';
 import '../components/ArticleLayout.css';
 
 // Public index of published case studies.
-export default function CaseStudiesIndexPage({ setPage }) {
-  const { caseStudies, loading, error } = usePublishedCaseStudies();
-
+export default function CaseStudiesIndexPage({ caseStudies }) {
   return (
     <div className="proxa-article">
       <section className="shell blog-index">
@@ -14,21 +13,17 @@ export default function CaseStudiesIndexPage({ setPage }) {
           How biopharma commercial teams put Proxa Labs to work — the challenge, what we did, and the results.
         </p>
 
-        {loading ? (
-          <p className="blog-sub">Loading…</p>
-        ) : error ? (
-          <p className="blog-sub">Couldn’t load case studies. Please refresh.</p>
-        ) : caseStudies.length === 0 ? (
+        {caseStudies.length === 0 ? (
           <p className="blog-sub">No case studies published yet — check back soon.</p>
         ) : (
           <div className="blog-grid">
             {caseStudies.map((c) => (
-              <button key={c.id} className="blog-card" onClick={() => setPage('caseStudy', { slug: c.slug })}>
+              <Link key={c.id} className="blog-card as-block" href={hrefFor('caseStudy', { slug: c.slug })}>
                 <div className="blog-card-img" style={c.heroImage ? { backgroundImage: `url(${c.heroImage})` } : undefined} />
                 <p className="card-pillar">{c.industry || c.client || 'Case study'}</p>
                 <p className="card-title">{c.title}</p>
                 {c.client && <p className="card-meta">{c.client}</p>}
-              </button>
+              </Link>
             ))}
           </div>
         )}

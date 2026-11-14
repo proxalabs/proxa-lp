@@ -23,7 +23,7 @@ export default function ForgeShowcase() {
       <div style={{ padding: '14px 18px', borderBottom: '1px solid #E3E5EA', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 11, color: '#f5825f', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>Forge · Content Workspace</div>
-          <div style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Oncology Launch Training Draft</div>
+          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Oncology Launch Training Draft</div>
         </div>
         <div style={{ fontSize: 10, color: '#f5825f', fontWeight: 700, padding: '5px 10px', borderRadius: 12, background: 'rgba(245,130,95,.08)' }}>MLR READY</div>
       </div>
@@ -43,11 +43,11 @@ export default function ForgeShowcase() {
             ))}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
               <div style={{ padding: '9px 10px', background: '#fff', border: '1px solid #E3E5EA', borderRadius: 8 }}>
-                <div style={{ fontSize: 18, fontFamily: 'Manrope, sans-serif', fontWeight: 900, color: '#f5825f', lineHeight: 1 }}>87</div>
+                <div style={{ fontSize: 18, fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 900, color: '#f5825f', lineHeight: 1 }}>87</div>
                 <div style={{ fontSize: 9.5, color: '#5C6370', marginTop: 3 }}>claims found</div>
               </div>
               <div style={{ padding: '9px 10px', background: '#fff', border: '1px solid #E3E5EA', borderRadius: 8 }}>
-                <div style={{ fontSize: 18, fontFamily: 'Manrope, sans-serif', fontWeight: 900, color: '#9ca979', lineHeight: 1 }}>100%</div>
+                <div style={{ fontSize: 18, fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 900, color: '#9ca979', lineHeight: 1 }}>100%</div>
                 <div style={{ fontSize: 9.5, color: '#5C6370', marginTop: 3 }}>cited</div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import EditorialHero from '../components/sections/EditorialHero';
 import CTABand from '../components/sections/CTABand';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 const THERAPY_AREAS = ["Oncology","Hematology","Immunology","Cardiology","Endocrinology","Neurology","Rare Disease","Vaccines","Anti-Infectives","Respiratory"];
 
@@ -8,8 +9,8 @@ const THERAPY_AREAS = ["Oncology","Hematology","Immunology","Cardiology","Endocr
 const HERO_HEADLINE_DEFAULT = 'MLR-compliant content. Built for field readiness.';
 const CTA_HEADING_DEFAULT = 'Launch on time. MLR clean.';
 
-export default function ContentPage({ setPage }) {
-  const c = usePageContent('content');
+export default function ContentPage({ content }) {
+  const c = makeGetter(content);
   const hh = c('hero.headline');
   const heroHeadline = hh === HERO_HEADLINE_DEFAULT
     ? <>MLR-compliant content. <em>Built for field readiness.</em></>
@@ -24,7 +25,7 @@ export default function ContentPage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
       <section className="section section-light">
@@ -122,7 +123,7 @@ export default function ContentPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

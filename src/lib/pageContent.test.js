@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
 import { MANIFEST } from '../content/manifest.js'
-import { fieldName, makeGetter } from './pageContent.js'
+import { fieldName, makeGetter, resolveContent } from './pageContent.js'
 
 test('fieldName turns a dotted manifest key into a field name', () => {
   assert.equal(fieldName('hero.ctaLabel'), 'hero_ctaLabel')
@@ -45,4 +45,14 @@ test('every manifest key maps to a unique column-safe field name', () => {
     }
   }
   assert.ok(total > 300, `expected the full manifest, saw ${total} fields`)
+})
+
+test('resolveContent merges overrides onto defaults, skipping blank ones', () => {
+  const merged = resolveContent({ a: 'A', b: 'B', c: 'C' }, { a: 'X', b: '  ', extra: 'ignored' })
+  assert.deepEqual(merged, { a: 'X', b: 'B', c: 'C' })
+})
+
+test('a getter over resolved content needs no overrides', () => {
+  const c = makeGetter(resolveContent({ a: 'A' }, { a: 'X' }))
+  assert.equal(c('a'), 'X')
 })

@@ -21,8 +21,8 @@
   --line-soft: #efede8;
   --blue-tint: #eef4f6;
   --hero-grey: #2a2f2e;
-  --display: 'Manrope', system-ui, sans-serif;
-  --text: 'DM Sans', system-ui, sans-serif;
+  --display: var(--font-manrope), system-ui, sans-serif;
+  --text: var(--font-dm-sans), system-ui, sans-serif;
   --measure: 700px;
   /* Match the site container: content maxes at 1200px with 56px gutters
      (max-width 1312 - 2*56 = 1200), same as .section + .mw elsewhere. */

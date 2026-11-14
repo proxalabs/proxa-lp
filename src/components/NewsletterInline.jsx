@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 const NewsletterInline = ({ buttonLabel = "Subscribe", placeholder = "your@company.com", onSuccess }) => {
@@ -11,7 +13,7 @@ const NewsletterInline = ({ buttonLabel = "Subscribe", placeholder = "your@compa
     setSending(true);
     setError('');
     try {
-      const res = await fetch(import.meta.env.VITE_NEWSLETTER_FUNCTION_URL || '/api/newsletter', {
+      const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

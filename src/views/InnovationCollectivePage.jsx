@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
 
 /*
  * Innovation Collective — private, invite-only event landing (/innovation-collective).
@@ -24,8 +26,8 @@ const BLANK = {
   plusOne: '', colleagueName: '', colleagueEmail: '', onsite: false, _hp: '',
 };
 
-export default function InnovationCollectivePage() {
-  const c = usePageContent('innovation');
+export default function InnovationCollectivePage({ content }) {
+  const c = makeGetter(content);
   const [form, setForm] = useState(BLANK);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | sending | done | error
@@ -65,7 +67,7 @@ export default function InnovationCollectivePage() {
     if (!validate()) return;
     setStatus('sending');
     try {
-      const url = import.meta.env.VITE_EVENT_REGISTER_URL || '/api/event-register';
+      const url = '/api/event-register';
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

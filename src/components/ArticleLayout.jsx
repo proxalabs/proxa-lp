@@ -1,5 +1,6 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
-import DOMPurify from 'dompurify';
 import Breadcrumbs from './Breadcrumbs';
 import { isNewsCategory } from '../lib/blog';
 import './ArticleLayout.css';
@@ -7,20 +8,20 @@ import './ArticleLayout.css';
 const SYMBOL = '/assets/blog/proxa-symbol.png';
 const QUOTE_BARS = '/assets/blog/quote-bars.png';
 
-// Sanitize admin-authored HTML before it hits dangerouslySetInnerHTML (defense in
-// depth — strips <script>, event handlers, javascript: URLs, etc.).
-const clean = (html) => ({ __html: DOMPurify.sanitize(html || '') });
+// Body HTML is produced on the server from the CMS rich text by lexicalToHtml,
+// which escapes all text and emits only a fixed set of tags.
+const html = (markup) => ({ __html: markup || '' });
 
 /*
  * Reusable Proxa Labs blog article page. Renders from an `article` data object
- * (see src/data/articles.js). The site's Nav/Footer wrap this automatically via
- * App.jsx, so only the article body lives here.
+ * (built from a CMS post by src/lib/data/posts.ts). The site's Nav/Footer wrap
+ * this in the root layout, so only the article body lives here.
  *
  * Ported behaviors from the mock: reading-progress bar, scrollspy TOC
  * (IntersectionObserver), LinkedIn + copy-link share. Mobile TOC is a native
  * <details> accordion (no JS).
  */
-export default function ArticleLayout({ article, setPage }) {
+export default function ArticleLayout({ article }) {
   const rootRef = useRef(null);
   const [copied, setCopied] = useState(false);
 
@@ -87,7 +88,7 @@ export default function ArticleLayout({ article, setPage }) {
         <div className={'pa-hero' + (article.showHero && article.thumb ? ' has-bg' : '')}
           style={article.showHero && article.thumb ? { backgroundImage: `url("${article.thumb}")` } : undefined}>
           <div className="hero-content">
-            <Breadcrumbs go={setPage} items={[
+            <Breadcrumbs items={[
               { name: 'Home', page: 'home' },
               // News posts live under the News hub; everything else under Blog.
               isNewsCategory(article.pillar)
@@ -113,7 +114,7 @@ export default function ArticleLayout({ article, setPage }) {
           {!!(article.summary || '').trim() && article.hideSummary !== true && (
             <div className="summary">
               <p className="summary-kicker">Article summary</p>
-              <p dangerouslySetInnerHTML={clean(article.summary)} />
+              <p dangerouslySetInnerHTML={html(article.summary)} />
             </div>
           )}
 
@@ -173,7 +174,9 @@ export default function ArticleLayout({ article, setPage }) {
                   </section>
                 );
               }
-              return <p key={i} dangerouslySetInnerHTML={clean(b.html)} />;
+              // Lists and other block-level markup cannot live inside a <p>.
+              if (b.type === 'html') return <div key={i} dangerouslySetInnerHTML={html(b.html)} />;
+              return <p key={i} dangerouslySetInnerHTML={html(b.html)} />;
             })}
           </div>
 
@@ -220,7 +223,7 @@ export default function ArticleLayout({ article, setPage }) {
             <a key={c.title} className={'card card-' + c.variant} href={c.href}>
               <div className="card-img" />
               <p className="card-pillar">{c.pillar}</p>
-              <p className="card-title" dangerouslySetInnerHTML={clean(c.title)} />
+              <p className="card-title">{c.title}</p>
               <p className="card-meta">{c.meta}</p>
             </a>
           ))}

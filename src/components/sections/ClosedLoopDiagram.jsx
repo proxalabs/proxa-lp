@@ -39,19 +39,19 @@ export default function ClosedLoopDiagram({ eyebrow = "The Closed Loop", heading
               {ARROWS.map((a, i) => (
                 <g key={i}>
                   <path d={a.d} fill="none" stroke={a.c} strokeWidth="1.5" strokeOpacity=".5" markerEnd={`url(#${a.m})`} />
-                  <text x={a.lx} y={a.ly} textAnchor="middle" style={{ fontSize: 10, fill: a.c, opacity: .75, fontFamily: "DM Sans,sans-serif" }}>{a.t}</text>
+                  <text x={a.lx} y={a.ly} textAnchor="middle" style={{ fontSize: 10, fill: a.c, opacity: .75, fontFamily: "var(--font-dm-sans),sans-serif" }}>{a.t}</text>
                 </g>
               ))}
               {NODES.map(nd => (
                 <g key={nd.name}>
                   <rect x={nd.x} y={nd.y} width={148} height={68} rx="11" fill={nd.bg} stroke={nd.c} strokeWidth="1" strokeOpacity=".45" />
-                  <text x={nd.x + 74} y={nd.y + 24} textAnchor="middle" style={{ fontSize: 13, fontWeight: 800, fill: nd.c, fontFamily: "Manrope,sans-serif" }}>{nd.name}</text>
-                  <text x={nd.x + 74} y={nd.y + 41} textAnchor="middle" style={{ fontSize: 11, fill: "rgba(255,255,255,.6)", fontFamily: "DM Sans,sans-serif" }}>{nd.sub}</text>
-                  <text x={nd.x + 74} y={nd.y + 56} textAnchor="middle" style={{ fontSize: 9.5, fill: "rgba(255,255,255,.32)", fontFamily: "DM Sans,sans-serif" }}>{nd.ss}</text>
+                  <text x={nd.x + 74} y={nd.y + 24} textAnchor="middle" style={{ fontSize: 13, fontWeight: 800, fill: nd.c, fontFamily: "var(--font-manrope),sans-serif" }}>{nd.name}</text>
+                  <text x={nd.x + 74} y={nd.y + 41} textAnchor="middle" style={{ fontSize: 11, fill: "rgba(255,255,255,.6)", fontFamily: "var(--font-dm-sans),sans-serif" }}>{nd.sub}</text>
+                  <text x={nd.x + 74} y={nd.y + 56} textAnchor="middle" style={{ fontSize: 9.5, fill: "rgba(255,255,255,.32)", fontFamily: "var(--font-dm-sans),sans-serif" }}>{nd.ss}</text>
                 </g>
               ))}
               {["INTELLIGENT", "COMMERCIAL", "READINESS"].map((w, i) => (
-                <text key={w} x="350" y={138 + i * 15} textAnchor="middle" style={{ fontSize: 9, fill: "rgba(255,255,255,.18)", letterSpacing: ".1em", fontFamily: "Manrope,sans-serif" }}>{w}</text>
+                <text key={w} x="350" y={138 + i * 15} textAnchor="middle" style={{ fontSize: 9, fill: "rgba(255,255,255,.18)", letterSpacing: ".1em", fontFamily: "var(--font-manrope),sans-serif" }}>{w}</text>
               ))}
             </svg>
           </div>

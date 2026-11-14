@@ -1,14 +1,16 @@
+'use client';
+
 import { useState } from 'react';
 import EditorialHero from '../components/sections/EditorialHero';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
 
 // Plain-text version of the hero headline so the page can render its rich
 // (orange) default but a plain string when overridden in the CMS.
 const CONTACT_HERO_HEADLINE_DEFAULT = 'Speak to a Proxa Labs Expert';
 
-export default function ContactPage() {
-  const c = usePageContent('contact');
+export default function ContactPage({ content }) {
+  const c = makeGetter(content);
   const hd = c('hero.headline');
   const heroHeadline = hd === CONTACT_HERO_HEADLINE_DEFAULT
     ? <>Speak to a <em>Proxa Labs Expert</em></>
@@ -23,7 +25,7 @@ export default function ContactPage() {
     if (!form.name || !form.email) return;
     setSending(true); setError('');
     try {
-      const res = await fetch(import.meta.env.VITE_CONTACT_FUNCTION_URL || '/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -44,7 +46,7 @@ export default function ContactPage() {
         <div style={{ background: "rgba(156,169,121,.07)", border: "1px solid rgba(156,169,121,.2)", borderRadius: 14, padding: "20px 24px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
             <Icon name="compliance" size={20} color="#9ca979" />
-            <span style={{ fontSize: 16, fontWeight: 700, color: "#12141A", fontFamily: "Manrope,sans-serif" }}>Message received.</span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#12141A", fontFamily: "var(--font-manrope),sans-serif" }}>Message received.</span>
           </div>
           <div style={{ fontSize: 13, color: "#5C6370", lineHeight: 1.6 }}>We'll be in touch within one business day.</div>
         </div>

@@ -1,8 +1,12 @@
+'use client';
+
 import { useState } from 'react';
+import Link from 'next/link';
 import EditorialHero from '../components/sections/EditorialHero';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 const ROLES = ["VP / Head of Commercial L&D","CLO","Director of Learning Technology","Head of Sales Force Effectiveness","Commercial IT / Digital","Other"];
 const INTERESTS = ["AI Platform Updates","Advisory Insights","The Lab Research","AI Literacy Program","Announcements & Partnerships","New Frameworks & Guides"];
@@ -12,8 +16,8 @@ const INTERESTS = ["AI Platform Updates","Advisory Insights","The Lab Research",
 const NEWSLETTER_HERO_HEADING_DEFAULT = "Stay ahead of AI in biopharma commercial learning.";
 const NEWSLETTER_CTA_HEADING_DEFAULT = "One newsletter. Worth your time.";
 
-export default function NewsletterPage({ setPage }) {
-  const c = usePageContent('newsletter');
+export default function NewsletterPage({ content }) {
+  const c = makeGetter(content);
   const [form, setForm] = useState({ email: "", name: "", role: "", interests: [] });
   const [done, setDone] = useState(false);
   const [sending, setSending] = useState(false);
@@ -26,7 +30,7 @@ export default function NewsletterPage({ setPage }) {
     setSending(true);
     setError('');
     try {
-      const res = await fetch(import.meta.env.VITE_NEWSLETTER_FUNCTION_URL || '/api/newsletter', {
+      const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -65,7 +69,7 @@ export default function NewsletterPage({ setPage }) {
           <div className="newsletter-success-check">✓</div>
           <div className="newsletter-success-title">{c('success.title')}</div>
           <div className="newsletter-success-body">{c('success.body')}</div>
-          <button className="bp" onClick={() => setPage("resources")}>{c('success.ctaLabel')}</button>
+          <Link className="bp as-btn" href={hrefFor("resources")}>{c('success.ctaLabel')}</Link>
         </div>
       ) : (
         <>
@@ -133,7 +137,7 @@ export default function NewsletterPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("resources") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("resources") }}
       />
     </>
   );

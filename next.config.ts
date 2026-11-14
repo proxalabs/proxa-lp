@@ -14,6 +14,13 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: dirname,
   },
+  // Short links: /proxa-labs is the lab's old address, /letsmeet is handed out at events.
+  async redirects() {
+    return [
+      { source: '/proxa-labs', destination: '/the-lab', permanent: true },
+      { source: '/letsmeet', destination: '/contact', permanent: true },
+    ]
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

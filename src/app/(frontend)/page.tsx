@@ -1,3 +1,9 @@
+import FixedPage from '@/components/FixedPage'
+import { fixedPageMetadata } from '@/lib/data/sitePages'
+import View from '@/views/HomePage'
+
+export const generateMetadata = () => fixedPageMetadata('home')
+
 export default function Page() {
-  return <h1>Proxa Labs</h1>
+  return <FixedPage pageId="home" View={View} />
 }

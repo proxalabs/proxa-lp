@@ -7,15 +7,16 @@ import AtlasShowcase from '../components/showcase/AtlasShowcase';
 import EchoShowcase from '../components/showcase/EchoShowcase';
 import CertifyShowcase from '../components/showcase/CertifyShowcase';
 import LoopVisual from '../components/LoopVisual';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Plain-text defaults for headings that carry inline markup. When the override
 // equals the default, render the rich (italic) JSX; otherwise render the plain string.
 const HERO_HEADLINE_DEFAULT = 'One platform. Four products. A closed loop that never breaks.';
 const CTA_HEADING_DEFAULT = 'See the closed loop in action.';
 
-export default function PlatformPage({ setPage }) {
-  const c = usePageContent('platform');
+export default function PlatformPage({ content }) {
+  const c = makeGetter(content);
   const hh = c('hero.headline');
   const heroHeadline = hh === HERO_HEADLINE_DEFAULT
     ? <>One platform. Four products. <em>A closed loop that never breaks.</em></>
@@ -30,7 +31,7 @@ export default function PlatformPage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
       <section className="section section-light">
@@ -123,7 +124,7 @@ export default function PlatformPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

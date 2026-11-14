@@ -2,7 +2,8 @@ import EditorialHero from '../components/sections/EditorialHero';
 import LongForm from '../components/sections/LongForm';
 import PullQuote from '../components/sections/PullQuote';
 import CTABand from '../components/sections/CTABand';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Plain-string defaults for headings that carry inline markup: render the rich
 // (italic) JSX as the default, but a plain string when an editor overrides it.
@@ -18,8 +19,8 @@ const ENGAGEMENTS = [
   { n: "06", title: "AI-Optimized Org Design", body: "Organizational structure recommendations for AI-enabled commercial learning at scale. Role redesign, hiring plans for new capabilities, and reporting structure changes." },
 ];
 
-export default function AdvisoryPage({ setPage }) {
-  const c = usePageContent('advisory');
+export default function AdvisoryPage({ content }) {
+  const c = makeGetter(content);
   // Headings keep their rich (italic) default, but render a plain string if overridden.
   const hh = c('hero.headline');
   const heroHeadline = hh === HERO_HEADLINE_DEFAULT
@@ -77,7 +78,7 @@ export default function AdvisoryPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.label'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.label'), href: hrefFor("contact") }}
       />
     </>
   );

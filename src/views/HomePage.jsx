@@ -7,7 +7,8 @@ import StepRail from '../components/sections/StepRail';
 import CTABand from '../components/sections/CTABand';
 import AnnouncementBand from '../components/AnnouncementBand';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 import { HOME_HERO_HEADLINE_DEFAULT } from '../content/manifest';
 
 const CLIENT_LOGOS = ["AbbVie","Allergan","Amgen","AstraZeneca","Bayer","Biogen","BMS","Genentech","GSK","Janssen","Merck","Novartis","Novo Nordisk","Pfizer","Roche","Sanofi","Takeda","Teva","Gilead","Mass General","Penn Medicine","MD Anderson"];
@@ -43,8 +44,8 @@ const STEPS = [
   { n: "05", title: "Deploy with confidence", body: "Forge, Cue, and Stage built to survive your governance environment." },
 ];
 
-export default function HomePage({ setPage }) {
-  const c = usePageContent('home');
+export default function HomePage({ content }) {
+  const c = makeGetter(content);
   // Headline keeps its rich (italic) default, but renders a plain string if overridden.
   const hh = c('hero.headline');
   const heroHeadline = hh === HOME_HERO_HEADLINE_DEFAULT
@@ -56,7 +57,7 @@ export default function HomePage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("platform") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("platform") }}
         visual={<LoopVisual />}
       />
 
@@ -74,7 +75,7 @@ export default function HomePage({ setPage }) {
         tag="New"
         title="AI Literacy Program — the prerequisite every AI deployment needs."
         description="Build AI fluency across every role before tools go live. Teams that understand AI adopt it. Teams that don't, resist it."
-        primaryCta={{ label: "See the Program", onClick: () => setPage("literacy") }}
+        primaryCta={{ label: "See the Program", href: hrefFor("literacy") }}
       />
 
       <CardGrid
@@ -141,7 +142,7 @@ export default function HomePage({ setPage }) {
       <CTABand
         heading={<>The mandate is clear.<br /><em>The path forward isn't always.</em></>}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

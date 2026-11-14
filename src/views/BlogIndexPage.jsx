@@ -1,16 +1,19 @@
+'use client';
+
 import { useState, useMemo } from 'react';
-import { usePublishedArticles, dateTs, cardImg } from '../lib/blog';
+import Link from 'next/link';
+import { dateTs, cardImg } from '../lib/blog';
+import { hrefFor } from '../lib/routes';
 import '../components/ArticleLayout.css';
 
 const SYMBOL = '/assets/blog/proxa-symbol.png';
 
 /*
- * Blog index — lists published articles with live filter + sort. Cached
- * (stale-while-revalidate) so repeat visits render instantly. Filter options are
- * derived from the loaded set, so they appear only when there's something to pick.
+ * Blog index — lists published articles with live filter + sort. The list is
+ * rendered on the server; filtering and sorting happen in the browser. Filter
+ * options are derived from the list, so they appear only when there's something to pick.
  */
-export default function BlogIndexPage({ setPage }) {
-  const { articles, loading, error } = usePublishedArticles();
+export default function BlogIndexPage({ articles }) {
   const [topic, setTopic] = useState('');
   const [author, setAuthor] = useState('');
   const [featuredOnly, setFeaturedOnly] = useState(false);
@@ -32,7 +35,7 @@ export default function BlogIndexPage({ setPage }) {
 
   const filtersActive = topic || author || featuredOnly || sort !== 'default';
   const clearFilters = () => { setTopic(''); setAuthor(''); setFeaturedOnly(false); setSort('default'); };
-  const showFilterBar = !loading && !error && articles.length > 0 && (topics.length > 1 || authors.length > 1 || anyFeatured);
+  const showFilterBar = articles.length > 0 && (topics.length > 1 || authors.length > 1 || anyFeatured);
 
   return (
     <div className="proxa-article">
@@ -83,29 +86,19 @@ export default function BlogIndexPage({ setPage }) {
           </div>
         )}
 
-        {loading ? (
-          <p className="blog-sub">Loading…</p>
-        ) : error ? (
-          <p className="blog-sub">
-            Couldn’t load articles.{' '}
-            <button type="button" onClick={() => window.location.reload()}
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', font: 'inherit', color: 'var(--coral-deep)', fontWeight: 600, textDecoration: 'underline' }}>
-              Reload
-            </button>
-          </p>
-        ) : articles.length === 0 ? (
+        {articles.length === 0 ? (
           <p className="blog-sub">No articles published yet — check back soon.</p>
         ) : shown.length === 0 ? (
           <p className="blog-sub">No articles match these filters. <button type="button" className="blog-filter-clear" onClick={clearFilters}>Clear filters</button></p>
         ) : (
           <div className="blog-grid">
             {shown.map((a) => (
-              <button key={a.id} className="blog-card" onClick={() => setPage('article', { slug: a.slug })}>
+              <Link key={a.id} className="blog-card as-block" href={hrefFor('article', { slug: a.slug })}>
                 <div className="blog-card-img" style={cardImg(a) ? { backgroundImage: `url(${cardImg(a)})` } : undefined} />
                 <p className="card-pillar">{a.pillar}{a.featured ? ' · Featured' : ''}</p>
                 <p className="card-title">{a.title}</p>
                 <p className="card-meta">{a.date}{a.readTime ? ` • ${a.readTime}` : ''}</p>
-              </button>
+              </Link>
             ))}
           </div>
         )}

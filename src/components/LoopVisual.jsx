@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
 const NODES = [
@@ -160,7 +162,7 @@ export default function LoopVisual() {
       </svg>
 
       <div className="lc-callout" style={{ background: activeNode.fill, border: `1px solid ${activeNode.color}25` }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: activeNode.color, marginBottom: 4, fontFamily: 'Manrope,sans-serif' }}>{activeNode.label} is active</div>
+        <div style={{ fontSize: 13, fontWeight: 700, color: activeNode.color, marginBottom: 4, fontFamily: 'var(--font-manrope),sans-serif' }}>{activeNode.label} is active</div>
         <div style={{ fontSize: 12, color: 'var(--bd)', lineHeight: 1.55 }}>{CALLOUTS[active]}</div>
       </div>
       <div className="lc-dots">

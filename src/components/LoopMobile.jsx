@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import Icon from './Icon';
 
@@ -42,7 +44,7 @@ const LoopMobile = () => {
                 </div>
                 <div style={{flex:1}}>
                   <div style={{display:"flex",alignItems:"center",gap:8}}>
-                    <span style={{fontSize:15,fontWeight:800,color:isAct?n.c:"var(--dk)",fontFamily:"Manrope,sans-serif",transition:"color .3s"}}>{n.label}</span>
+                    <span style={{fontSize:15,fontWeight:800,color:isAct?n.c:"var(--dk)",fontFamily:"var(--font-manrope),sans-serif",transition:"color .3s"}}>{n.label}</span>
                     <span style={{fontSize:10,color:"var(--st)"}}>{n.sub}</span>
                   </div>
                   {isAct && <div style={{fontSize:12,color:"var(--bd)",lineHeight:1.55,marginTop:6}}>{n.desc}</div>}

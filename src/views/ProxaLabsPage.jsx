@@ -3,7 +3,8 @@ import LongForm from '../components/sections/LongForm';
 import CardGrid from '../components/sections/CardGrid';
 import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
-import { usePageContent } from '../lib/content';
+import { makeGetter } from '../lib/pageContent';
+import { hrefFor } from '../lib/routes';
 
 // Plain-text equivalents of the two rich (italic) headings. When the content
 // getter returns one of these, render the rich JSX default; otherwise render the
@@ -30,8 +31,8 @@ const RESEARCH = [
   { icon: <Icon name="readiness" size={22} />, tag: "In development",     title: "AI Readiness Predictive Model", body: "Predictive model for pilot success probability based on pre-deployment organizational readiness scores. Training data drawn from 30+ biopharma advisory engagements." },
 ];
 
-export default function ProxaLabsPage({ setPage }) {
-  const c = usePageContent('proxalab');
+export default function ProxaLabsPage({ content }) {
+  const c = makeGetter(content);
   // Rich headings keep their italic default but render a plain string if overridden.
   const hh = c('hero.heading');
   const heroHeadline = hh === HERO_HEADLINE_DEFAULT
@@ -47,7 +48,7 @@ export default function ProxaLabsPage({ setPage }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        primaryCta={{ label: c('hero.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
       />
 
       <LongForm
@@ -105,7 +106,7 @@ export default function ProxaLabsPage({ setPage }) {
       <CTABand
         heading={ctaHeading}
         body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), onClick: () => setPage("contact") }}
+        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

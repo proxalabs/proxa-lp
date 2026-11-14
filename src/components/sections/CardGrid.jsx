@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function CardGrid({
   eyebrow,
   heading,
@@ -24,20 +26,25 @@ export default function CardGrid({
           </div>
         )}
         <div className={`card-grid card-grid-${columns}`}>
-          {cards.map((c, i) => (
-            <div
-              key={c.title || i}
-              className="card-grid-card"
-              style={{ padding, cursor: c.onClick ? 'pointer' : 'default' }}
-              onClick={c.onClick}
-            >
-              {c.icon && <div className="card-grid-card-icon">{c.icon}</div>}
-              {c.tag && <div className="card-grid-card-tag" style={c.tagColor ? { color: c.tagColor, background: c.tagColor + '12' } : undefined}>{c.tag}</div>}
-              <div className="card-grid-card-title">{c.title}</div>
-              <div className="card-grid-card-body">{c.body}</div>
-              {c.linkLabel && <div className="card-grid-card-link">{c.linkLabel} →</div>}
-            </div>
-          ))}
+          {cards.map((c, i) => {
+            // A card with an href is one big link; without one it is plain content.
+            const Card = c.href ? Link : 'div';
+            const linkProps = c.href ? { href: c.href } : {};
+            return (
+              <Card
+                key={c.title || i}
+                {...linkProps}
+                className={c.href ? 'card-grid-card as-block' : 'card-grid-card'}
+                style={{ padding, cursor: c.href ? 'pointer' : 'default' }}
+              >
+                {c.icon && <div className="card-grid-card-icon">{c.icon}</div>}
+                {c.tag && <div className="card-grid-card-tag" style={c.tagColor ? { color: c.tagColor, background: c.tagColor + '12' } : undefined}>{c.tag}</div>}
+                <div className="card-grid-card-title">{c.title}</div>
+                <div className="card-grid-card-body">{c.body}</div>
+                {c.linkLabel && <div className="card-grid-card-link">{c.linkLabel} →</div>}
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

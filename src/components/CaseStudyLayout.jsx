@@ -1,17 +1,19 @@
+import Link from 'next/link';
 import Breadcrumbs from './Breadcrumbs';
+import { hrefFor } from '../lib/routes';
 import './ArticleLayout.css';
-import '../pages/CaseStudyPage.css';
+import '../views/CaseStudyPage.css';
 
 // Split a textarea field into paragraphs on blank lines / newlines.
 const paras = (text) => String(text || '').split(/\n+/).map((s) => s.trim()).filter(Boolean);
 
-// Presentational case-study body — shared by the public page and the editor preview.
-export default function CaseStudyLayout({ cs, setPage }) {
+// Presentational case-study body.
+export default function CaseStudyLayout({ cs }) {
   const stats = Array.isArray(cs.stats) ? cs.stats.filter((s) => (s.value || s.label)) : [];
   return (
     <div className="proxa-article">
       <section className="shell cs-detail">
-        <Breadcrumbs go={setPage} items={[
+        <Breadcrumbs items={[
           { name: 'Home', page: 'home' },
           { name: 'Case studies', page: 'caseStudies' },
           { name: cs.title || 'Case study' },
@@ -36,7 +38,7 @@ export default function CaseStudyLayout({ cs, setPage }) {
         {cs.solution && <div className="cs-block"><h2>What we did</h2>{paras(cs.solution).map((p, i) => <p key={i}>{p}</p>)}</div>}
         {cs.results && <div className="cs-block"><h2>The results</h2>{paras(cs.results).map((p, i) => <p key={i}>{p}</p>)}</div>}
 
-        <button className="cs-back" onClick={() => setPage?.('caseStudies')}>← All case studies</button>
+        <Link className="cs-back as-btn" href={hrefFor('caseStudies')}>← All case studies</Link>
       </section>
     </div>
   );

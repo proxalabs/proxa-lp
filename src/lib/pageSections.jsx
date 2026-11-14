@@ -8,11 +8,12 @@ import FaqSection from '../components/sections/FaqSection';
 import LogoStrip from '../components/sections/LogoStrip';
 import FormSectionBlock from '../components/FormSectionBlock';
 import RichTextSection from '../components/sections/RichTextSection';
+import { hrefFor } from './routes';
 
 /*
  * The "kit of ready-made sections" (Mercy's S3). Each section type wraps a real
  * on-brand site component: it declares the fields a marketer fills and how to
- * turn that data into the component's props. `go(pageKey)` navigates (setPage).
+ * turn that data into the component's props. Buttons link with hrefFor(pageKey).
  */
 export const SECTION_KIT = {
   hero: {
@@ -25,9 +26,9 @@ export const SECTION_KIT = {
       { key: 'ctaPage', label: 'Button links to', type: 'page' },
       { key: 'dark', label: 'Dark background', type: 'boolean' },
     ],
-    render: (d, go) => (
+    render: (d) => (
       <EditorialHero eyebrow={d.eyebrow} headline={d.headline} subhead={d.subhead} dark={!!d.dark}
-        primaryCta={d.ctaLabel ? { label: d.ctaLabel, onClick: () => go(d.ctaPage) } : undefined} />
+        primaryCta={d.ctaLabel ? { label: d.ctaLabel, href: hrefFor(d.ctaPage || 'contact') } : undefined} />
     ),
   },
   split: {
@@ -41,7 +42,7 @@ export const SECTION_KIT = {
     ],
     render: (d) => (
       <SplitFeature eyebrow={d.eyebrow} heading={d.heading} body={d.body} reverse={!!d.reverse}
-        visual={d.image ? <img src={d.image} alt="" style={{ width: '100%', borderRadius: 16, display: 'block' }} /> : null} />
+        visual={d.image ? <img src={d.image} alt={d.imageAlt || ''} loading="lazy" style={{ width: '100%', borderRadius: 16, display: 'block' }} /> : null} />
     ),
   },
   richText: {
@@ -86,9 +87,9 @@ export const SECTION_KIT = {
       { key: 'ctaLabel', label: 'Button text', type: 'text' },
       { key: 'ctaPage', label: 'Button links to', type: 'page' },
     ],
-    render: (d, go) => (
+    render: (d) => (
       <CTABand heading={d.heading} body={d.body}
-        primaryCta={d.ctaLabel ? { label: d.ctaLabel, onClick: () => go(d.ctaPage) } : undefined} />
+        primaryCta={d.ctaLabel ? { label: d.ctaLabel, href: hrefFor(d.ctaPage || 'contact') } : undefined} />
     ),
   },
   faq: {
@@ -113,7 +114,7 @@ export const SECTION_KIT = {
       { key: 'heading', label: 'Heading', type: 'text' },
       { key: 'formSlug', label: 'Which form', type: 'formpicker' },
     ],
-    render: (d) => <FormSectionBlock heading={d.heading} slug={d.formSlug} />,
+    render: (d) => <FormSectionBlock heading={d.heading} form={d.form} />,
   },
 };
 

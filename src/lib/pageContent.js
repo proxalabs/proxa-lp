@@ -24,3 +24,15 @@ export function makeGetter(defaults, overrides) {
     return value != null && String(value).trim() !== '' ? value : defaults[key]
   }
 }
+
+/**
+ * The full copy for a page: every default, with real overrides applied. Resolved
+ * on the server so a client view receives only its own page's strings.
+ * @param {Record<string, string>} defaults
+ * @param {Record<string, string | null | undefined>} [overrides]
+ * @returns {Record<string, string>}
+ */
+export function resolveContent(defaults, overrides) {
+  const c = makeGetter(defaults, overrides)
+  return Object.fromEntries(Object.keys(defaults).map((key) => [key, c(key)]))
+}

@@ -1,25 +1,9 @@
-import { SITE_URL, OG_IMAGE, SITE_NAME } from './site';
+import { SITE_URL, OG_IMAGE, SITE_NAME } from './site.js';
 
-// Upsert (or remove, when obj is null) a JSON-LD <script> in the head, keyed by
-// id. Set here at runtime so the prerender snapshot bakes it into the HTML.
-export function setJsonLd(id, obj) {
-  let el = document.getElementById(id);
-  if (!obj) { if (el) el.remove(); return; }
-  if (!el) {
-    el = document.createElement('script');
-    el.type = 'application/ld+json';
-    el.id = id;
-    document.head.appendChild(el);
-  }
-  // escape < so content containing </script> can never break out of the tag
-  // (matters most for prerendered HTML, where this is serialized verbatim)
-  el.textContent = JSON.stringify(obj).replace(/</g, '\\u003c');
-}
-
-function upsertMeta(attr, key, content) {
-  let el = document.head.querySelector(`meta[${attr}="${key}"]`);
-  if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
-  el.setAttribute('content', content);
+// Serialise structured data for a <script type="application/ld+json"> tag. "<" is
+// escaped so content containing </script> can never break out of the tag.
+export function jsonLdString(obj) {
+  return JSON.stringify(obj).replace(/</g, '\\u003c');
 }
 
 // og:image and schema.org image require absolute URLs — prefix SITE_URL for a
@@ -27,22 +11,6 @@ function upsertMeta(attr, key, content) {
 export function absUrl(u) {
   if (!u) return u;
   return /^https?:\/\//.test(u) ? u : SITE_URL + (u.startsWith('/') ? '' : '/') + u;
-}
-
-// Per-item social cards (og/twitter) + canonical. App.jsx sets generic ones on
-// page change; content pages call this with their specifics so shared links and
-// search show the right title/description/image/url. The prerender bakes the
-// final values into the static HTML.
-export function setSocialCards({ title, description, image, url }) {
-  if (title) { upsertMeta('property', 'og:title', title); upsertMeta('name', 'twitter:title', title); }
-  if (description) { upsertMeta('property', 'og:description', description); upsertMeta('name', 'twitter:description', description); }
-  if (image) { const i = absUrl(image); upsertMeta('property', 'og:image', i); upsertMeta('name', 'twitter:image', i); }
-  if (url) {
-    upsertMeta('property', 'og:url', url);
-    let link = document.head.querySelector('link[rel="canonical"]');
-    if (!link) { link = document.createElement('link'); link.setAttribute('rel', 'canonical'); document.head.appendChild(link); }
-    link.setAttribute('href', url);
-  }
 }
 
 // "June 22, 2026" -> "2026-06-22" (schema.org wants ISO). Null if unparseable.
