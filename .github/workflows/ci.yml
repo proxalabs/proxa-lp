@@ -43,3 +43,17 @@ jobs:
       - name: Build
         run: npm run build
 
+  # the one check to require: fails unless every job above passed or was skipped
+  ci-ok:
+    name: ci ok
+    if: always()
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check job results
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: |
+          echo "$RESULTS"
+          echo "$RESULTS" | jq -e 'length > 0 and all(. == "success" or . == "skipped")'
