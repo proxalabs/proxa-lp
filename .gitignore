@@ -34,3 +34,12 @@ functions/.env
 /*.png
 /*.jpg
 /*.jpeg
+
+# Next.js
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# Payload uploads (content, not code)
+/media/
+/files/
