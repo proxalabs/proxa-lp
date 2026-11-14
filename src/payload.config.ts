@@ -18,6 +18,11 @@ import { Posts } from './collections/Posts'
 import { RateLimits } from './collections/RateLimits'
 import { Users } from './collections/Users'
 import { Videos } from './collections/Videos'
+import { contactEndpoint } from './endpoints/contact'
+import { eventRegisterEndpoint } from './endpoints/eventRegister'
+import { gatedFileEndpoint } from './endpoints/gatedFile'
+import { newsletterEndpoint } from './endpoints/newsletter'
+import { submitFormEndpoint } from './endpoints/submitForm'
 import { Navigation } from './globals/Navigation'
 import { sitePageGlobals } from './globals/sitePages'
 import { plugins } from './plugins'
@@ -46,6 +51,8 @@ export default buildConfig({
   collections: [Posts, CaseStudies, Videos, Pages, Authors, Categories, Media, Files, Leads, Users, ActivityLog, RateLimits],
   globals: [Navigation, ...sitePageGlobals],
   plugins,
+  // Public form endpoints, under /api. They replace the Firebase Cloud Functions.
+  endpoints: [contactEndpoint, newsletterEndpoint, eventRegisterEndpoint, submitFormEndpoint, gatedFileEndpoint],
   editor: lexicalEditor(),
   email,
   secret: process.env.PAYLOAD_SECRET || '',
