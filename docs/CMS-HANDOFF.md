@@ -1,5 +1,9 @@
 # Proxa Labs CMS — Handoff & Acceptance Report
 
+> **Superseded (2026-11-14).** This describes the previous custom CMS on Firebase, which is
+> still what the live site runs. On the `redesign` branch it is replaced by Payload CMS inside
+> a Next.js app; see the README and `docs/superpowers/specs/2026-11-14-nextjs-payload-migration-design.md`.
+
 _Last updated: 2026-07-01. Branch: `cms/full-build` (local only — not yet deployed)._
 
 This is the operator guide + honest status of the CMS built against Mercy's
