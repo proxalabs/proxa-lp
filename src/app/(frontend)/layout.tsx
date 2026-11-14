@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { Manrope } from 'next/font/google'
 import type { ReactNode } from 'react'
 
 import Analytics from '@/components/Analytics'
@@ -15,14 +14,6 @@ import { SITE_NAME, SITE_URL } from '@/lib/site'
 import '../../fonts.css'
 import '../../styles.css'
 
-// Both families are self-hosted: no request to Google and no render-blocking
-// @import. Manrope comes through next/font; DM Sans is declared in fonts.css.
-const manrope = Manrope({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-manrope',
-  display: 'swap',
-})
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
@@ -52,8 +43,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const draft = await isDraft()
 
   return (
-    <html lang="en" className={manrope.variable}>
+    <html lang="en">
       <head>
+        {/* The two fonts every page needs for its first paint; see src/fonts.css. */}
+        <link rel="preload" href="/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/dm-sans-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>

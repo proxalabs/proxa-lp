@@ -4,3 +4,7 @@
 .crumb-link:hover { color: #e06a3f; text-decoration: underline; }
 .crumb-sep { color: #c4ccd4; }
 .crumb-current { color: #46525f; font-weight: 600; }
+/* Breadcrumb links are real anchors now; inside an article the article's link
+   colour would otherwise win over the quiet grey. */
+.proxa-article a.crumb-link { color: #8a94a0; }
+.proxa-article a.crumb-link:hover { color: #e06a3f; }

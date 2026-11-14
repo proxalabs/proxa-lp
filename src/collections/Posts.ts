@@ -41,6 +41,17 @@ export const Posts: CollectionConfig = {
             },
             { name: 'hideSummary', type: 'checkbox', label: 'Hide the summary box', defaultValue: false },
             { name: 'content', type: 'richText', editor: articleEditor, label: 'Body' },
+            {
+              name: 'tocLabels',
+              type: 'array',
+              label: 'Contents labels (optional)',
+              labels: { singular: 'Label', plural: 'Labels' },
+              admin: {
+                initCollapsed: true,
+                description: 'Short names for the “in this article” list, one per main heading, in order. Leave empty to use the headings themselves.',
+              },
+              fields: [{ name: 'label', type: 'text' }],
+            },
           ],
         },
         {

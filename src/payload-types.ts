@@ -226,6 +226,15 @@ export interface Post {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Short names for the “in this article” list, one per main heading, in order. Leave empty to use the headings themselves.
+   */
+  tocLabels?:
+    | {
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   heroImage?: (number | null) | Media;
   showHero?: boolean | null;
   /**
@@ -1229,6 +1238,12 @@ export interface PostsSelect<T extends boolean = true> {
   summary?: T;
   hideSummary?: T;
   content?: T;
+  tocLabels?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
   heroImage?: T;
   showHero?: T;
   cardImage?: T;

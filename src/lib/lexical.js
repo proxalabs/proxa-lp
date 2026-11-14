@@ -82,12 +82,16 @@ const rootChildren = (state) => (state && state.root && Array.isArray(state.root
 /**
  * An article body in the shape ArticleLayout renders, plus its table of contents
  * (the h2s). Heading ids are made from the heading text and kept unique.
+ * `opts.tocLabels` are optional short labels for the contents list, one per h2 in
+ * order; a missing or blank one falls back to the heading text.
  * @param {unknown} state Lexical editor state from a `richText` field (populated).
+ * @param {{ tocLabels?: (string | null | undefined)[] }} [opts]
  * @returns {{ body: object[], toc: { id: string, label: string }[] }}
  */
-export function lexicalToBody(state) {
+export function lexicalToBody(state, opts = {}) {
   const body = []
   const toc = []
+  const labels = opts.tocLabels || []
   const used = new Map()
   const uniqueId = (text) => {
     const base = slugify(text) || 'section'
@@ -105,7 +109,7 @@ export function lexicalToBody(state) {
       const level = node.tag === 'h3' ? 3 : node.tag === 'h4' ? 4 : 2
       const id = uniqueId(text)
       body.push({ type: 'h2', level, id, text })
-      if (level === 2) toc.push({ id, label: text })
+      if (level === 2) toc.push({ id, label: String(labels[toc.length] || '').trim() || text })
     } else if (node.type === 'quote') {
       const text = plain(node.children).trim()
       if (text) body.push({ type: 'quote', text })
@@ -246,6 +250,38 @@ function parseInline(html) {
   return out
 }
 
+const paragraph = (html) => element('paragraph', parseInline(html), { textFormat: 0, textStyle: '' })
+const hasText = (html) => html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim() !== ''
+
+/**
+ * The old editor saved a run of paragraphs (and lists) inside one block as
+ * contenteditable markup: `text<div><br></div><div>more</div><div><ul>…</ul></div>`.
+ * This splits that back into real paragraph and list nodes.
+ */
+function htmlToBlocks(html) {
+  const BREAK = '\u0000'
+  const nodes = []
+  // Lists first (they are never nested in this content), then everything between.
+  for (const part of String(html || '').split(/(<ul[\s\S]*?<\/ul>|<ol[\s\S]*?<\/ol>)/i)) {
+    const list = /^<(ul|ol)/i.exec(part)
+    if (list) {
+      const tag = list[1].toLowerCase()
+      const items = [...part.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)].map((m) => m[1]).filter(hasText)
+      if (items.length) {
+        nodes.push(element('list', items.map((item, i) => element('listitem', parseInline(item), { value: i + 1 })), { listType: tag === 'ol' ? 'number' : 'bullet', tag, start: 1 }))
+      }
+      continue
+    }
+    const pieces = part
+      .replace(/<\/?(div|p)\b[^>]*>/gi, BREAK) // block boundaries
+      .replace(/(<br\s*\/?>\s*){2,}/gi, BREAK) // a blank line
+      .split(BREAK)
+      .map((piece) => piece.replace(/^(\s|<br\s*\/?>)+|(\s|<br\s*\/?>)+$/gi, ''))
+    for (const piece of pieces) if (hasText(piece)) nodes.push(paragraph(piece))
+  }
+  return nodes
+}
+
 /**
  * The old article body (array of blocks) → Lexical editor state.
  * `opts.image(block)` returns the upload value for an image block (a media id, or
@@ -268,18 +304,19 @@ export function bodyToLexical(body, opts = {}) {
       children.push({ type: 'block', format: '', version: 2, fields: withId({ blockType: 'takeaways', blockName: '', items: (b.items || []).map((text) => withId({ text })) }) })
     } else if (b.type === 'faq') {
       children.push({ type: 'block', format: '', version: 2, fields: withId({ blockType: 'faq', blockName: '', items: (b.items || []).map((f) => withId({ question: f.q, answer: f.a })) }) })
+    } else if (/<(div|p|ul|ol|li)\b|(<br\s*\/?>\s*){2,}/i.test(b.html || '')) {
+      children.push(...htmlToBlocks(b.html))
     } else {
-      children.push(element('paragraph', parseInline(b.html), { textFormat: 0, textStyle: '' }))
+      children.push(paragraph(b.html))
     }
   }
   return { root: element('root', children) }
 }
 
 /**
- * A plain string or simple html → Lexical state with one paragraph per line.
+ * A plain string or simple html → Lexical state (summaries and other short copy).
  * @param {string} html
  */
 export function htmlToLexical(html) {
-  const paragraphs = String(html || '').split(/<\/p>\s*<p[^>]*>|<br\s*\/?>\s*<br\s*\/?>|\n{2,}/i).map((p) => p.replace(/^<p[^>]*>|<\/p>$/gi, '').trim()).filter(Boolean)
-  return { root: element('root', paragraphs.map((p) => element('paragraph', parseInline(p), { textFormat: 0, textStyle: '' }))) }
+  return { root: element('root', htmlToBlocks(String(html || '').replace(/\n{2,}/g, '<br><br>'))) }
 }

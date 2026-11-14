@@ -111,3 +111,44 @@ test('bodyToLexical understands the old html tags and entities', () => {
   const lexical = bodyToLexical([{ type: 'p', html: '<b>B</b> <i>I</i> A &amp; B&nbsp;&mdash; &#8220;q&#8221;<br>next' }])
   assert.equal(lexicalToBody(lexical).body[0].html, '<strong>B</strong> <em>I</em> A &amp; B — “q”<br>next')
 })
+
+// The old editor stored a whole run of paragraphs, and even lists, inside one
+// "p" block as contenteditable markup. The import has to split it back out.
+test('bodyToLexical splits div-separated text into real paragraphs', () => {
+  const html = 'First part.<div><br></div><div>Second <strong>part</strong>.</div><div><br></div><div>Third part.</div>'
+  const { body } = lexicalToBody(bodyToLexical([{ type: 'p', html }]))
+  assert.deepEqual(body, [
+    { type: 'p', html: 'First part.' },
+    { type: 'p', html: 'Second <strong>part</strong>.' },
+    { type: 'p', html: 'Third part.' },
+  ])
+})
+
+test('bodyToLexical turns an embedded list into a real list', () => {
+  const html = 'Intro line.<div><ul><li><strong>One</strong> first</li><li>Two</li></ul></div><div>After.</div>'
+  const { body } = lexicalToBody(bodyToLexical([{ type: 'p', html }]))
+  assert.deepEqual(body, [
+    { type: 'p', html: 'Intro line.' },
+    { type: 'html', html: '<ul><li><strong>One</strong> first</li><li>Two</li></ul>' },
+    { type: 'p', html: 'After.' },
+  ])
+})
+
+test('bodyToLexical unwraps a paragraph tag and splits on double line breaks', () => {
+  const wrapped = lexicalToBody(bodyToLexical([{ type: 'p', html: '<p>KING OF PRUSSIA — news with <a href="https://x.example">a link</a>.</p>' }])).body
+  assert.deepEqual(wrapped, [{ type: 'p', html: 'KING OF PRUSSIA — news with <a href="https://x.example">a link</a>.' }])
+  const broken = lexicalToBody(bodyToLexical([{ type: 'p', html: 'Line one.<br><br>Line two.<br>still two.' }])).body
+  assert.deepEqual(broken, [{ type: 'p', html: 'Line one.' }, { type: 'p', html: 'Line two.<br>still two.' }])
+})
+
+test('short contents labels replace long headings in the table of contents, in order', () => {
+  const s = state(heading('h2', 'Commercial and learning define what capable means'), heading('h3', 'A detail'), heading('h2', 'Where to start'), heading('h2', 'Third heading'))
+  const { toc, body } = lexicalToBody(s, { tocLabels: ['Defining capable', '  ', undefined] })
+  assert.deepEqual(toc, [
+    { id: 'commercial-and-learning-define-what-capable-means', label: 'Defining capable' },
+    { id: 'where-to-start', label: 'Where to start' }, // blank label falls back to the heading
+    { id: 'third-heading', label: 'Third heading' },
+  ])
+  // The headings themselves are untouched.
+  assert.equal(body[0].text, 'Commercial and learning define what capable means')
+})

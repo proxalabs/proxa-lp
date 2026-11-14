@@ -75,7 +75,7 @@ function toCard(post: Post): ArticleCard {
 }
 
 function toArticle(post: Post): Article {
-  const { body, toc } = lexicalToBody(post.content)
+  const { body, toc } = lexicalToBody(post.content, { tocLabels: (post.tocLabels || []).map((row) => row.label) })
   const related = (post.related || [])
     .filter((r): r is Post => Boolean(r) && typeof r === 'object' && Boolean((r as Post).slug))
     .slice(0, 3)
