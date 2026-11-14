@@ -6,9 +6,11 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, Plugin } fro
 
 import { revalidatePath } from 'next/cache'
 
-import { anyone, isAdmin, isStaff, isStaffField } from './access'
+import { anyone, isAdmin, isStaff, isStaffField, publishedOrStaff } from './access'
+import { draftVersions } from './collections/shared'
 import { slugField } from './fields/slug'
 import { logCollectionChange, logCollectionDelete } from './hooks/activityLog'
+import { lexicalToText } from './lib/lexical.js'
 import { SITE_NAME, SITE_URL } from './lib/site.js'
 
 const PREFIX: Record<string, string> = { posts: '/blog', 'case-studies': '/case-studies', pages: '' }
@@ -35,7 +37,8 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle: ({ doc, collectionSlug }) =>
       collectionSlug === 'case-studies' ? `${doc?.title} · Case study · ${SITE_NAME}` : `${doc?.title} · ${SITE_NAME}`,
-    generateDescription: ({ doc }) => (typeof doc?.summary === 'string' ? doc.summary : ''),
+    generateDescription: ({ doc }) =>
+      (typeof doc?.summary === 'string' ? doc.summary : lexicalToText(doc?.summary)).slice(0, 160),
     generateURL: ({ doc, collectionSlug }) => `${SITE_URL}${PREFIX[collectionSlug || ''] ?? ''}/${doc?.slug || ''}`,
   }),
 
@@ -55,7 +58,8 @@ export const plugins: Plugin[] = [
     fields: { payment: false, state: false, country: false },
     formOverrides: {
       admin: { group: 'Forms', useAsTitle: 'title' },
-      access: { read: anyone, create: isStaff, update: isStaff, delete: isStaff },
+      access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
+      versions: draftVersions,
       hooks: { afterChange: [refreshForms, logCollectionChange], afterDelete: [logCollectionDelete] },
       fields: ({ defaultFields }) => [
         ...defaultFields,

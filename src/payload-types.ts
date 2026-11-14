@@ -806,6 +806,7 @@ export interface Form {
   notifyEmail?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1760,6 +1761,7 @@ export interface FormsSelect<T extends boolean = true> {
   notifyEmail?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3268,6 +3270,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'pages';
           value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'forms';
+          value: number | Form;
         } | null);
     global?: string | null;
     user?: {

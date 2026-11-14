@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import Analytics from '@/components/Analytics'
 import Footer from '@/components/Footer'
 import Nav from '@/components/Nav'
-import { mergeMenus } from '@/content/navConfig'
+import { getNavMenus } from '@/lib/data/sitePages'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
 
 import '../../fonts.css'
@@ -43,7 +43,7 @@ export const viewport: Viewport = {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const menus = mergeMenus(null)
+  const menus = await getNavMenus()
 
   return (
     <html lang="en" className={manrope.variable}>
