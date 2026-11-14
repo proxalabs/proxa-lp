@@ -46,6 +46,10 @@ That script only reads the live site's public endpoints. It is safe to run again
 | `npm run generate:types` | Regenerate `src/payload-types.ts` after changing a collection. |
 | `npm run payload -- migrate:create <name>` | Create a migration after changing a collection or global. |
 
+`npm run ci` is for a database that only ever gets migrations. The development database has
+its schema pushed automatically instead, so to try a production build locally, point
+`DATABASE_URL` at a second, empty database first.
+
 ## How content works
 
 **Fixed pages** (home, platform, advisory, …) keep their copy in code under `src/content/`.
