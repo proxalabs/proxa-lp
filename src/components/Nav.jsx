@@ -3,23 +3,25 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Icon from './Icon';
 import { hrefFor, pageKeyForPath } from '../lib/routes';
-
-const WHERE_ITEMS = [
-  {icon:<Icon name="strategy" size={20} />,title:"I need an AI strategy",desc:"Assess your readiness and build a roadmap before any technology decision.",tag:"Advisory",p:"advisory"},
-  {icon:<Icon name="pilot" size={20} />,title:"I want to run an AI pilot",desc:"Structure the experiment, define success criteria, build the business case.",tag:"The Lab",p:"proxalab"},
-  {icon:<Icon name="literacy" size={20} />,title:"I need AI literacy training",desc:"Build AI fluency across your commercial organization before deploying tools.",tag:"AI Literacy",p:"literacy"},
-  {icon:<Icon name="platform" size={20} />,title:"I'm ready for a platform",desc:"See Forge, Cue, Stage, and Trace — the only closed-loop AI platform.",tag:"AI Platform",p:"platform"},
-  {icon:<Icon name="content" size={20} />,title:"I need content for a launch",desc:"AI-generated or human-led, MLR-compliant content on your timeline.",tag:"Content",p:"content"},
-  {icon:<Icon name="lms" size={20} />,title:"I need an LMS first",desc:"Enterprise learning infrastructure built for biopharma compliance.",tag:"InsiteX LMS",p:"insitex"},
-  {icon:<Icon name="chat" size={20} />,title:"I'm not sure yet",desc:"30 minutes. No pitch. Tell us where you're stuck.",tag:"Book a Consult",p:"contact"},
-];
 
 const Chevron = ({ open }) => (
   <svg width="11" height="7" viewBox="0 0 12 8" fill="none" style={{ marginLeft: 4, transform: open ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>
     <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
+);
+
+// The two shapes of the bar inside the menu button; styles.css animates between them.
+const TOGGLE_BAR_CLOSED = { x: 8.5, y: 5, width: 1.75, height: 14, rx: 0 };
+const TOGGLE_BAR_OPEN = { x: 5.75, y: 8, width: 3.75, height: 8, rx: 1.4 };
+
+// The phone menu's open/close mark; styles.css turns it over and tints it when its section is open.
+const AccordionChevron = () => (
+  <span className="mobile-accordion-chevron" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M3.5 6L8 10.5L12.5 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  </span>
 );
 
 const Nav = ({ menus }) => {
@@ -78,7 +80,7 @@ const Nav = ({ menus }) => {
     <>
       <button className="mobile-accordion-head" onClick={() => toggleMobile(key)} aria-expanded={mobileAccordion === key}>
         <span>{label}</span>
-        <span style={{ transform: mobileAccordion === key ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>▾</span>
+        <AccordionChevron />
       </button>
       <div className="mobile-accordion-body" hidden={mobileAccordion !== key}>
         {menus[key].map((it, i) => (
@@ -95,29 +97,6 @@ const Nav = ({ menus }) => {
           <img className="nav-logo-img" src="/assets/proxa_horiz.png" alt="Proxa Labs" width="600" height="137" />
         </Link>
         <div className="nav-links">
-          {/* Where to Start (mega) */}
-          <div style={{ position: "relative" }}>
-            <button
-              className="nl nl-drop"
-              onClick={() => toggle("where")}
-              aria-expanded={openDropdown === "where"}
-              style={{ color: openDropdown === "where" ? "var(--o)" : undefined }}
-            >
-              Where to Start
-              <Chevron open={openDropdown === "where"} />
-            </button>
-            <div className="nav-mega-menu" hidden={openDropdown !== "where"}>
-              {WHERE_ITEMS.map(d => (
-                <Link key={d.title} href={hrefFor(d.p, d.track)} onClick={close} className="ndm-item as-block">
-                  <div style={{ color: 'var(--o)', marginBottom: 5 }}>{d.icon}</div>
-                  <div className="ndm-title">{d.title}</div>
-                  <div className="ndm-desc">{d.desc}</div>
-                  <span className="ndm-tag">{d.tag}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
           {miniMenu("platform", "Platform")}
           {miniMenu("solutions", "Solutions")}
 
@@ -131,26 +110,16 @@ const Nav = ({ menus }) => {
         <div className="nav-right">
           <Link className="no as-btn" href={hrefFor("contact")} onClick={close}>Book a Consult</Link>
           <button className="nav-hamburger" onClick={() => setMobileOpen(o => !o)} aria-label="Menu" aria-expanded={mobileOpen}>
-            <span style={mobileOpen ? { transform: "rotate(45deg) translate(5px,5px)" } : {}} />
-            <span style={mobileOpen ? { opacity: 0 } : {}} />
-            <span style={mobileOpen ? { transform: "rotate(-45deg) translate(5px,-5px)" } : {}} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2.75" y="5" width="18.5" height="14" rx="3.5" stroke="currentColor" strokeWidth="1.75" />
+              {/* The panel's edge: a thin line while the menu is closed, a filled bar while it is open. */}
+              <rect className="nav-toggle-bar" fill="currentColor" {...(mobileOpen ? TOGGLE_BAR_OPEN : TOGGLE_BAR_CLOSED)} />
+            </svg>
           </button>
         </div>
       </nav>
 
       <div className={"nav-mobile-menu" + (mobileOpen ? " open" : "")}>
-        <button className="mobile-accordion-head" onClick={() => toggleMobile("where")} aria-expanded={mobileAccordion === "where"}>
-          <span>Where to Start</span>
-          <span style={{ transform: mobileAccordion === "where" ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>▾</span>
-        </button>
-        <div className="mobile-accordion-body" hidden={mobileAccordion !== "where"}>
-          {WHERE_ITEMS.map(d => (
-            <Link key={d.title} href={hrefFor(d.p, d.track)} onClick={close}>
-              <span style={{ marginRight: 10 }}>{d.icon}</span>{d.title}
-            </Link>
-          ))}
-        </div>
-
         {mobileMenu("platform", "Platform")}
         {mobileMenu("solutions", "Solutions")}
 
@@ -159,7 +128,6 @@ const Nav = ({ menus }) => {
         {mobileMenu("resources", "Resources")}
 
         <Link className={page === "about" ? "on" : ""} href={hrefFor("about")} onClick={close}>About</Link>
-        <Link className="mobile-cta" href={hrefFor("contact")} onClick={close}>Book a Consult</Link>
       </div>
     </>
   );

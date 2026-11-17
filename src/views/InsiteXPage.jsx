@@ -113,8 +113,8 @@ export default function InsiteXPage({ content }) {
         subhead={c('hero.subhead')}
         visual={(
           <HeroPhoto
-            name="learner-laptop"
-            position="62% 50%"
+            name="employee-at-laptop"
+            position="50% 50%"
             chip={{ mark: <Icon name="lms" size={18} />, title: 'InsiteX LMS', text: 'Built for biopharma compliance' }}
           />
         )}

@@ -3,25 +3,27 @@
 import { useEffect, useRef, useState } from 'react';
 
 import AppLogo from '../AppLogo';
-import { APP_LOGOS } from '../appLogos';
 import Cta from '../Cta';
 import ProductGlimpse from '../media/ProductGlimpse';
 import { stepIndex, swipeStep } from '../../content/productTour';
 
 /**
- * A dark panel that tours the products: a list of them beside one floating browser window
- * and phone, whose real screens change with the product chosen. `slides` come from
- * content/productTour.js.
+ * A bright card, on a slowly drifting aurora of the brand colours, that tours the products:
+ * a list of them beside one floating browser window and phone, whose real screens change
+ * with the product chosen. `slides` come from content/productTour.js.
  *
  * It moves on by itself, like the loop in the hero: the chosen product's progress line is
  * a CSS animation and the next slide is shown when it ends, so pausing the animation pauses
- * the tour. It pauses under the mouse, while the keyboard is inside it, off screen and for
- * the pause button, and it stops once the visitor picks a product themselves. Under
- * reduced motion it never starts (in CSS).
+ * the tour. It pauses only while the mouse is over the browser window or the phone (so a
+ * screen can be read), while the keyboard is inside it, and off screen. Picking a product
+ * shows it and the tour carries on from there. Under reduced motion it never starts (in
+ * CSS).
  */
 export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
   const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  // Counts the visitor's picks, so that picking a product starts its progress line again
+  // even when it is the one already showing.
+  const [picks, setPicks] = useState(0);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [inView, setInView] = useState(true);
@@ -34,12 +36,12 @@ export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
     return () => visibility.disconnect();
   }, []);
 
-  const paused = !playing || hovered || focused || !inView;
+  const paused = hovered || focused || !inView;
 
-  // The visitor chose: show it and leave it there.
+  // The visitor chose: show it, and carry on from it.
   const pick = (index) => {
     setActive(index);
-    setPlaying(false);
+    setPicks((n) => n + 1);
   };
 
   const endSwipe = (event) => {
@@ -59,11 +61,12 @@ export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
         aria-roledescription="carousel"
         aria-label="Screens of the four Proxa products"
         data-paused={paused}
-        onPointerEnter={(event) => event.pointerType === 'mouse' && setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
+        data-offscreen={!inView}
         onFocus={(event) => event.target.matches(':focus-visible') && setFocused(true)}
         onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && setFocused(false)}
       >
+        <div className="tour-aurora" aria-hidden="true"><i /><i /><i /><i /></div>
+
         <div className="product-stage-text">
           <div className="tour-head">
             {eyebrow && <div className="t-eyebrow">{eyebrow}</div>}
@@ -76,7 +79,6 @@ export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
                 key={slide.id}
                 type="button"
                 className={i === active ? 'tour-item is-active' : 'tour-item'}
-                style={{ '--c': APP_LOGOS[slide.id].color }}
                 aria-pressed={i === active}
                 onClick={() => pick(i)}
               >
@@ -87,7 +89,7 @@ export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
                 </span>
                 <span className="tour-item-bar">
                   {i === active && (
-                    <span className="tour-item-fill" onAnimationEnd={() => setActive(stepIndex(i, 1, slides.length))} />
+                    <span key={picks} className="tour-item-fill" onAnimationEnd={() => setActive(stepIndex(i, 1, slides.length))} />
                   )}
                 </span>
               </button>
@@ -103,21 +105,6 @@ export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
               <button type="button" className="tour-btn" aria-label="Next product" onClick={() => pick(stepIndex(active, 1, slides.length))}>
                 <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5.5 2.5 10 7l-4.5 4.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
-              <button
-                type="button"
-                className="tour-btn tour-toggle"
-                aria-label={playing ? 'Pause the product tour' : 'Play the product tour'}
-                onClick={() => {
-                  setPlaying((value) => !value);
-                  setFocused(false);
-                }}
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                  {playing
-                    ? <path d="M1.5 1h2.4v8H1.5zM6.1 1h2.4v8H6.1z" fill="currentColor" />
-                    : <path d="M2 .8v8.4L9 5z" fill="currentColor" />}
-                </svg>
-              </button>
             </div>
           </div>
           {note && <div className="product-stage-note">{note}</div>}
@@ -125,6 +112,9 @@ export default function ProductTour({ eyebrow, heading, cta, note, slides }) {
 
         <div
           className="tour-visual"
+          // The floating card's body is the browser window with the phone in front of it.
+          onPointerOver={(event) => event.pointerType === 'mouse' && setHovered(Boolean(event.target.closest('.tilted-card__body')))}
+          onPointerLeave={() => setHovered(false)}
           onTouchStart={(event) => {
             const touch = event.touches[0];
             touchStart.current = { x: touch.clientX, y: touch.clientY };

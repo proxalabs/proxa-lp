@@ -1,6 +1,6 @@
-import AppLogo from '../components/AppLogo';
-import PhotoBand from '../components/media/PhotoBand';
+import NameLoop from '../components/media/NameLoop';
 import ProductTour from '../components/sections/ProductTour';
+import ScrollStory from '../components/sections/ScrollStory';
 import { PRODUCT_TOUR } from '../content/productTour';
 import LoopVisual from '../components/LoopVisual';
 import EditorialHero from '../components/sections/EditorialHero';
@@ -24,20 +24,21 @@ const STATS = [
   { n: "25 yrs", l: "practitioner experience behind the Proxa Labs methodology", source: "Proxa Labs" },
 ];
 
+// Each principle is its name and the one sentence that states it.
 const DIFFERENTIATORS = [
-  { icon: <Icon name="methodology" size={26} />, tag: "01 — Methodology", title: "We diagnose before we prescribe.", body: "Every engagement starts with the question your organization actually needs answered: what will determine whether any AI implementation succeeds or fails here? Most vendors skip this. We never do." },
-  { icon: <Icon name="compliance" size={26} />,  tag: "02 — Compliance",  title: "Their compliance story is a retrofit. Ours is not.", body: "MLR review, GxP validation, and compressed launch windows are the operating conditions Proxa Labs was designed around from day one." },
-  { icon: <Icon name="award" size={26} />,        tag: "03 — Insider",     title: "We don't need you to explain pharma to us.", body: "Proxa Labs' practitioners have operated inside the environments they now advise. The failure modes are already known. That's 25 years of practitioner experience, not a talking point." },
-  { icon: <Icon name="pilot" size={26} />,       tag: "04 — Experiment",  title: "You don't commit until you have evidence.", body: "Proxa Labs' model inverts the typical vendor sequence. We run structured experiments to test fit in your environment before you stake your credibility on it." },
+  { icon: <Icon name="methodology" size={24} />, title: "Methodology", body: "We diagnose before we prescribe." },
+  { icon: <Icon name="compliance" size={24} />,  title: "Compliance",  body: "Their compliance story is a retrofit. Ours is not." },
+  { icon: <Icon name="award" size={24} />,       title: "Insider",     body: "We don't need you to explain pharma to us." },
+  { icon: <Icon name="pilot" size={24} />,       title: "Experiment",  body: "You don't commit until you have evidence." },
 ];
 
-const SITUATION_CARDS = [
-  { icon: <Icon name="strategy" size={22} />, title: "You have an AI mandate with no clear path forward",   body: "Your CCO wants results. Your IT and compliance teams want governance. Your budget requires ROI. You're navigating all three without a methodology." },
-  { icon: <Icon name="gap" size={22} />,      title: "You've run a pilot that didn't scale",                body: "It worked in the demo. It looked good in the pilot report. And then it died at the governance gate or got quietly deprioritized." },
-  { icon: <Icon name="launch" size={22} />,   title: "You have a launch in 6–9 months and content isn't ready", body: "The commercial team needs field-ready reps. The content pipeline is behind. MLR review adds 60 days on a good day." },
-  { icon: <Icon name="research" size={22} />, title: "You're evaluating AI vendors and can't tell who to trust", body: "Every vendor says they're built for biopharma. Every demo looks polished. You've been burned before." },
-  { icon: <Icon name="readiness" size={22} />, title: "Your L&D team is measuring completion, not performance", body: "You know the CCO scorecard tracks rep readiness, call quality, and launch execution speed — not module completion." },
-  { icon: <Icon name="infrastructure" size={22} />, title: "You're building AI capability from scratch",   body: "No existing platform. No governance framework. No internal AI literacy. You need a structured starting point." },
+// The four topics of the scrolling section; each `id` is the animation that goes with it
+// (media/LineMotion.jsx).
+const STORY_STEPS = [
+  { id: "ai",        title: "AI",        heading: "AI does the heavy lifting.", text: "AI agents draft, check and adapt the work. People make the calls that matter." },
+  { id: "cloud",     title: "Cloud",     heading: "Everything in one place.", text: "Content, learners and results come together in the cloud, so every team works from the same picture." },
+  { id: "analysis",  title: "Analysis",  heading: "Analysis you can read at a glance.", text: "Live charts show readiness by team, region and stage, with no spreadsheet to decode." },
+  { id: "automation", title: "Automation", heading: "The loop runs itself.", text: "When a gap shows up, the content is rebuilt and reassigned automatically. No handoffs, no stalled follow-ups." },
 ];
 
 const STEPS = [
@@ -68,9 +69,7 @@ export default function HomePage({ content }) {
 
       <div className="logo-band">
         <h2 className="t-h2 lb-label">{c('logoBand.label')}</h2>
-        <div className="lb-row">
-          {CLIENT_LOGOS.map(n => <span key={n} className="lb-co">{n}</span>)}
-        </div>
+        <NameLoop names={CLIENT_LOGOS} label={c('logoBand.label')} />
       </div>
 
       <StatBand stats={STATS} />
@@ -86,48 +85,24 @@ export default function HomePage({ content }) {
       <CardGrid
         eyebrow="Four Principles for Evaluating Any AI Partner"
         heading="How do you know if AI is actually working in your organization?"
-        lead={<>Most biopharma L&D leaders can't answer that question with confidence.<br /><br />These four principles are how Proxa Labs diagnoses whether AI is actually delivering, and how our practitioners have built 25 years of award-winning work around them.</>}
-        columns={2}
+        lead="These four principles are how Proxa Labs diagnoses whether AI is actually delivering, and how our practitioners have built 25 years of award-winning work around them."
+        columns={4}
         cards={DIFFERENTIATORS}
-        cardStyle="feature"
+        cardStyle="plain"
         background="tinted"
         centerHeader
         leadMaxWidth={920}
-        media={
-          <PhotoBand
-            name="reviewing-dashboard"
-            position="50% 22%"
-            caption={{
-              title: "Measure performance, not completion.",
-              text: "The CCO scorecard tracks rep readiness, call quality and launch execution speed.",
-            }}
-          />
-        }
-      />
-
-      <CardGrid
-        eyebrow="The AI Platform"
-        heading="Four products. One closed loop."
-        lead="Content published in Forge → delivered by Cue → assessed by Stage → verified in Trace. Every gap automatically restarts the loop."
-        columns={2}
-        cards={[
-          { icon: <AppLogo app="forge" size={40} />, tag: "Forge",   tagColor: "#f5825f", title: "Agentic content creation.",      body: "AI agents build MLR-compliant training from your PI, CSRs, and brand assets. Hours, not months." },
-          { icon: <AppLogo app="cue" size={40} />,   tag: "Cue",   tagColor: "#9ca979", title: "AI-powered adaptive learning.",  body: "Personalized pathways that close knowledge gaps in real time, ensuring reps are field-ready." },
-          { icon: <AppLogo app="stage" size={40} />, tag: "Stage",    tagColor: "#75abc0", title: "AI roleplay + compliance guard.", body: "Live HCP conversations with AI physician avatars. ComplianceGuard monitors every message in real time." },
-          { icon: <AppLogo app="trace" size={40} />, tag: "Trace", tagColor: "#7e9da1", title: "Demonstrated field readiness.",   body: "Certification earned through behavioral competency — not attendance. 10-year audit trail." },
-        ]}
-        cardStyle="feature"
-        background="tinted"
-        centerHeader
       />
 
       <ProductTour
-        eyebrow="Inside the platform"
-        heading={<>Real screens, not <span style={{ whiteSpace: "nowrap" }}>mock-ups.</span></>}
+        eyebrow="Product tour"
+        heading="The platform, up close."
         cta={{ label: "Explore the platform", href: hrefFor("platform") }}
         note="Screens from the four Proxa apps running demo content."
         slides={PRODUCT_TOUR}
       />
+
+      <ScrollStory label="The intelligence behind it" steps={STORY_STEPS} />
 
       <PullQuote
         quote="We had been trying to make AI work for 18 months. Two pilots, two postmortems, and a CCO who was starting to ask whether L&D could actually lead this. What Proxa Labs did differently was refuse to let us skip the hard part — defining what success actually looked like before we built anything. We walked into our budget review with evidence, not a pitch deck."
@@ -142,17 +117,6 @@ export default function HomePage({ content }) {
         ]}
       />
 
-      <CardGrid
-        eyebrow="When to Call Us"
-        heading="Built for the commercial L&D leader who's done with pilots that go nowhere."
-        lead="If any of these sound like your situation, you're in the right place."
-        columns={3}
-        cards={SITUATION_CARDS}
-        cardStyle="standard"
-        centerHeader
-        className="when-to-call-grid"
-      />
-
       <StepRail
         eyebrow="For Every Stage of the Journey"
         heading="From where you are to AI-ready."
@@ -165,7 +129,7 @@ export default function HomePage({ content }) {
       />
 
       <CTABand
-        heading={<>The mandate is clear.<br /><em>The path forward isn't always.</em></>}
+        heading={<>Asked to deliver on AI?<br /><em>Let's work out how.</em></>}
         body={c('cta.body')}
         primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />

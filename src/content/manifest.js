@@ -27,7 +27,7 @@ export const MANIFEST = {
       { key: 'hero.headline', label: 'Hero headline', type: 'textarea',
         default: 'The AI commercial learning partner built for biopharma. Not adapted for it.' },
       { key: 'hero.subhead', label: 'Hero subhead', type: 'textarea',
-        default: 'Most platforms were built for enterprise sales and retrofitted for pharma. Proxa Labs was built for biopharma from day one: advisory methodology, AI literacy programming, and a closed-loop platform designed around the constraints you actually operate in: MLR review, launch timelines, federated commercial structures.' },
+        default: 'Most platforms were retrofitted for pharma. Proxa Labs was built from day one around MLR review and launch timelines: advisory, AI literacy and a closed-loop platform.' },
       { key: 'hero.ctaLabel', label: 'Hero button label', type: 'text', default: 'See the Platform' },
       { key: 'logoBand.label', label: 'Logo band label', type: 'text',
         default: 'Trusted across biopharma and health systems' },

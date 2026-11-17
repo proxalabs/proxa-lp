@@ -37,7 +37,7 @@ export default function AboutPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
-        visual={<HeroPhoto name="team-round-table" position="55% 50%" />}
+        visual={<HeroPhoto name="team-chart-review" position="6% 50%" />}
         className="about-hero-section"
       />
 
@@ -53,7 +53,7 @@ export default function AboutPage({ content }) {
 
       <section className="section section-light about-photos-section">
         <div className="mw">
-          <PhotoMosaic photos={['team-at-laptop', 'learner-window-desk', 'training-session']} positions={['40% 50%', '70% 50%', '50% 35%']} />
+          <PhotoMosaic photos={['team-loft-table', 'colleagues-at-laptop', 'meeting-by-window']} positions={['45% 50%', '45% 40%', '65% 60%']} />
         </div>
       </section>
 

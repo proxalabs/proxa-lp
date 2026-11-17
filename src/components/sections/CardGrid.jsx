@@ -14,7 +14,9 @@ export default function CardGrid({
   className = '',
 }) {
   const bg = background === 'tinted' ? 'section-tinted' : background === 'dark' ? 'section-dark' : 'section-light';
-  const padding = cardStyle === 'compact' ? 'var(--space-4)' : cardStyle === 'feature' ? 'var(--space-6)' : 'var(--space-5)';
+  // 'plain' drops the card: each item is just its icon, title and one line, centred.
+  const plain = cardStyle === 'plain';
+  const padding = plain ? 0 : cardStyle === 'compact' ? 'var(--space-4)' : cardStyle === 'feature' ? 'var(--space-6)' : 'var(--space-5)';
 
   return (
     <section className={`section ${bg} ${className}`.trim()}>
@@ -27,7 +29,7 @@ export default function CardGrid({
           </div>
         )}
         {media && <div className="card-grid-media">{media}</div>}
-        <div className={`card-grid card-grid-${columns}`}>
+        <div className={`card-grid card-grid-${columns}${plain ? ' card-grid-plain' : ''}`}>
           {cards.map((c, i) => {
             // A card with an href is one big link; without one it is plain content.
             const Card = c.href ? Link : 'div';
@@ -36,7 +38,7 @@ export default function CardGrid({
               <Card
                 key={c.title || i}
                 {...linkProps}
-                className={c.href ? 'card-grid-card as-block' : 'card-grid-card'}
+                className={`card-grid-card${plain ? ' card-grid-card-plain' : ''}${c.href ? ' as-block' : ''}`}
                 style={{ padding, cursor: c.href ? 'pointer' : 'default' }}
               >
                 {c.icon && <div className="card-grid-card-icon">{c.icon}</div>}

@@ -112,14 +112,72 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .media-chip-text { display:flex; flex-direction:column; gap:2px; font-size:12px; line-height:1.35; color:var(--bd); }
 .media-chip-text strong { font-family:var(--font-manrope),sans-serif; font-size:13.5px; font-weight:800; letter-spacing:-.01em; color:var(--dk); }
 .photo-band { width:100%; border-radius:24px; overflow:hidden; background:var(--lt2); }
-/* Words over a photo: a dark fade on the left keeps them readable whatever the photo. */
-.photo-band-captioned { position:relative; }
-.photo-band-captioned::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,rgba(18,20,26,.88) 0%,rgba(18,20,26,.66) 30%,rgba(18,20,26,0) 64%); pointer-events:none; }
-.photo-band-caption { position:absolute; z-index:1; left:var(--space-6); bottom:var(--space-6); width:min(430px,46%); color:var(--wh); }
-.photo-band-title { font-family:var(--font-manrope),sans-serif; font-size:clamp(22px,2.6vw,34px); font-weight:800; line-height:1.14; letter-spacing:-.02em; }
-.photo-band-title::before { content:''; display:block; width:40px; height:3px; margin-bottom:var(--space-3); border-radius:2px; background:var(--o); }
-.photo-band-text { margin-top:12px; font-size:15px; line-height:1.6; color:rgba(255,255,255,.84); text-wrap:pretty; }
 .card-grid-media { margin-bottom:var(--space-6); }
+/* One of the home page's line-art animations (media/LineMotion.jsx): a 450 × 300 hairline
+   drawing with no background of its own. --lm-bg is the colour behind it, which the drawing
+   needs where one part hides another. One unit of the drawing is one pixel at full size;
+   on a phone it is smaller, so its hairlines are set a little heavier there. */
+.line-motion { --lm-bg:var(--story-bg,#0F1116); --lm-warm:var(--o); --lm-cool:var(--bl); --lm-sw:1.1px; width:100%; max-width:450px; aspect-ratio:3 / 2; }
+.line-motion svg { display:block; width:100%; height:100%; overflow:visible; }
+.lm-s { fill:none; stroke-width:var(--lm-sw); stroke-linecap:round; stroke-linejoin:round; }
+.lm-w { stroke:rgba(255,255,255,.82); }
+.lm-w2 { stroke:rgba(255,255,255,.34); }
+.lm-w3 { stroke:rgba(255,255,255,.13); }
+.lm-o { stroke:var(--lm-warm); }
+.lm-b { stroke:var(--lm-cool); }
+.lm-fw { fill:#fff; }
+.lm-fo { fill:var(--lm-warm); }
+.lm-fb { fill:var(--lm-cool); }
+.lm-fbg { fill:var(--lm-bg); }
+.lm-bar { fill:rgba(255,255,255,.05); }
+.lm-band { fill:var(--lm-cool); fill-opacity:.08; }
+.lm-draw { stroke-dasharray:1; }
+.lm-dotted { stroke-dasharray:.1 5; }
+.lm-dashed { stroke-dasharray:3 4; }
+.lm-signal { stroke-dasharray:.35 1; stroke-linecap:butt; stroke-width:calc(var(--lm-sw) * 1.5); }
+.lm-token { stroke-dasharray:.07 .93; stroke-width:calc(var(--lm-sw) * 2.2); }
+.lm-pop { transform-box:fill-box; transform-origin:center; }
+.lm-grow { transform-box:fill-box; transform-origin:center bottom; }
+.lm-type { transform-box:fill-box; transform-origin:left center; }
+/* The section those animations sit in (sections/ScrollStory.jsx): a dark band the full
+   width of the screen. The titles stay put on the left while the topics scroll by on the
+   right. */
+.scroll-story { --story-bg:#0F1116; padding:var(--space-8) max(56px,calc((100% - 1200px) / 2)); color:var(--wh); background:var(--story-bg); }
+.scroll-story-inner { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,min(560px,54%)); gap:var(--space-7); align-items:start; }
+.scroll-story-rail { position:sticky; top:calc(68px + var(--space-7)); }
+.scroll-story-label { display:flex; align-items:center; gap:10px; margin-bottom:var(--space-5); font-family:var(--font-dm-sans),sans-serif; font-size:15px; font-weight:500; letter-spacing:0; color:var(--o); }
+.scroll-story-label::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.scroll-story-titles { list-style:none; }
+.scroll-story-title { display:flex; align-items:center; font-family:var(--font-manrope),sans-serif; font-size:clamp(40px,4.4vw,60px); font-weight:600; line-height:1.22; letter-spacing:-.04em; color:rgba(255,255,255,.2); text-decoration:none; transition:color .35s; }
+.scroll-story-title:hover { color:rgba(255,255,255,.45); }
+.scroll-story-title.on { color:var(--o); }
+.scroll-story-arrow { display:flex; flex:none; width:0; overflow:hidden; opacity:0; transition:width .4s cubic-bezier(.22,1,.36,1),opacity .3s; }
+.scroll-story-title.on .scroll-story-arrow { width:48px; opacity:1; }
+/* On a wide screen the steps start well below the titles and are about a screen apart, so
+   each animation rises from the bottom of the screen to the top on its own while the
+   titles wait. */
+.scroll-story-steps { padding-top:58vh; }
+.scroll-story-step { padding-bottom:45vh; scroll-margin-top:calc(68px + var(--space-6)); }
+.scroll-story-step:last-child { padding-bottom:0; }
+.scroll-story-step-name { display:none; }
+.scroll-story-heading { margin-top:var(--space-4); font-size:24px; font-weight:600; line-height:1.25; letter-spacing:-.025em; color:var(--wh); }
+.scroll-story-text { margin-top:var(--space-2); max-width:480px; font-size:17px; line-height:1.55; color:rgba(255,255,255,.62); }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-story-title, .scroll-story-arrow { transition:none; }
+}
+@media (max-width:900px) {
+  .scroll-story { padding:var(--space-7) 20px; }
+  .scroll-story-inner { display:block; }
+  .scroll-story-rail { position:static; }
+  .scroll-story-titles { display:none; }
+  .scroll-story-steps { padding-top:0; }
+  .scroll-story-step { padding-bottom:var(--space-7); }
+  .scroll-story-step-name { display:flex; align-items:baseline; gap:12px; margin-bottom:var(--space-3); font-family:var(--font-manrope),sans-serif; font-size:30px; font-weight:600; letter-spacing:-.035em; color:var(--o); }
+  .scroll-story-step-name span { font-family:var(--font-dm-sans),sans-serif; font-size:13px; font-weight:500; letter-spacing:.04em; color:rgba(255,255,255,.4); }
+  .line-motion { --lm-sw:1.35px; }
+  .scroll-story-heading { font-size:21px; }
+  .scroll-story-text { font-size:16px; }
+}
 .photo-mosaic { display:grid; grid-template-columns:1.55fr 1fr; grid-template-rows:1fr 1fr; gap:16px; aspect-ratio:2.15 / 1; }
 .photo-mosaic-cell { min-height:0; border-radius:20px; overflow:hidden; background:var(--lt2); }
 .photo-mosaic-cell:first-child { grid-row:1 / 3; }
@@ -138,34 +196,60 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .glimpse { position:relative; width:100%; }
 .glimpse-with-phone { padding:0 9.5% 10.5% 0; }
 .glimpse-phone { position:absolute; right:-10.5%; bottom:-16%; width:23%; }
-/* A dark panel that presents real product screens beside a few words. */
-.product-stage-section { padding-top:0; }
-.product-stage { max-width:1200px; margin:0 auto; overflow:hidden; display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:var(--space-7); align-items:center; padding:var(--space-7); border-radius:28px; color:var(--wh); background:radial-gradient(ellipse at 92% -10%,rgba(156,169,121,.22) 0%,transparent 52%),radial-gradient(ellipse at 0% 110%,rgba(117,171,192,.14) 0%,transparent 55%),linear-gradient(160deg,#12141A 0%,#1A1E28 100%); }
-.product-stage-text .t-h2 { color:var(--wh); margin:var(--space-2) 0 var(--space-3); }
-.product-stage-text p { font-size:16px; line-height:1.7; color:rgba(255,255,255,.68); margin-bottom:var(--space-5); max-width:420px; }
-.product-stage-note { margin-top:var(--space-4); font-size:12px; color:rgba(255,255,255,.42); }
+/* The card the product tour sits on: it runs the width of the screen up to a margin, with
+   a section's worth of space under it, and its text is dark because the card is bright.
+   It is kept compact (about 540px tall on a wide screen) so that the whole card shows at
+   once under the nav on an ordinary laptop. Its side padding keeps the content in the
+   page's 1200px column on a wide screen. */
+.section.product-stage-section { padding:0 24px var(--space-8); }
+.product-stage { position:relative; isolation:isolate; overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:var(--space-7); align-items:center; padding:40px max(48px,calc((100% - 1200px) / 2)); border-radius:28px; color:var(--dk); background:var(--o); }
+.product-stage .t-eyebrow { color:rgba(18,20,26,.64); }
+.product-stage-text .t-h2 { color:var(--dk); margin:var(--space-2) 0 var(--space-3); }
+.product-stage-note { margin-top:10px; font-size:12px; color:rgba(18,20,26,.6); }
+/* The aurora behind it: the brand orange, lit from the top left, with a deeper coral and a
+   glow of the Cue green, under a fine grain that keeps the blends from banding. The glows
+   wander on two different paths at different paces, so the light keeps shifting. Each is
+   a soft radial gradient rather than a blurred shape, which is cheap to move, and is sized
+   and set in from an edge as a share of the card's width (a margin's percentage is of the
+   width), so the picture keeps its proportions whatever the card's height. */
+.tour-aurora { position:absolute; inset:0; z-index:-1; overflow:hidden; background:linear-gradient(125deg,#f9a878 0%,var(--o) 46%,#ec6646 100%); }
+.tour-aurora i { --glow:255,220,180; position:absolute; aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side,rgba(var(--glow),1) 0%,rgba(var(--glow),.72) 38%,rgba(var(--glow),.28) 68%,rgba(var(--glow),0) 100%); will-change:transform; animation:auroraA 15s ease-in-out infinite; }
+.tour-aurora i:nth-child(1) { width:66%; left:-16%; top:0; margin-top:-30%; opacity:.95; }
+.tour-aurora i:nth-child(2) { --glow:229,81,47; width:56%; left:5%; bottom:0; margin-bottom:-38%; opacity:.7; animation:auroraB 13s ease-in-out -5s infinite; }
+.tour-aurora i:nth-child(3) { --glow:169,183,132; width:42%; right:-11%; bottom:0; margin-bottom:-25.5%; opacity:.95; animation:auroraA 11s ease-in-out -4s infinite reverse; }
+.tour-aurora i:nth-child(4) { --glow:255,196,150; width:40%; left:38%; top:0; margin-top:-2%; opacity:.6; animation:auroraB 12s ease-in-out -2s infinite; }
+.tour-aurora::after { content:''; position:absolute; inset:0; opacity:.07; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+/* It only moves while the card is on screen. */
+.product-tour[data-offscreen="true"] .tour-aurora i { animation-play-state:paused; }
+@keyframes auroraA { 0%,100% { transform:translate3d(0,0,0) scale(1); } 33% { transform:translate3d(20%,12%,0) scale(1.2); } 66% { transform:translate3d(-12%,-8%,0) scale(.9); } }
+@keyframes auroraB { 0%,100% { transform:translate3d(0,0,0) scale(1); } 30% { transform:translate3d(-22%,-14%,0) scale(1.22); } 70% { transform:translate3d(24%,6%,0) scale(.88); } }
 /* Product tour (sections/ProductTour.jsx): the products listed beside one browser window
    and phone whose screens change with the product chosen. */
 .product-tour { --tour-step:6s; }
 .tour-head .t-h2 { margin-bottom:0; }
-.tour-list { display:grid; gap:4px; margin:var(--space-4) 0 var(--space-5) -14px; }
-.tour-item { position:relative; overflow:hidden; display:grid; grid-template-columns:34px 1fr; column-gap:14px; align-items:start; padding:12px 14px 14px; text-align:left; font-family:var(--font-dm-sans),sans-serif; color:inherit; background:none; border:1px solid transparent; border-radius:14px; cursor:pointer; transition:background .25s,border-color .25s; }
-.tour-item:hover { background:rgba(255,255,255,.04); }
-.tour-item.is-active { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.1); }
-.tour-item-logo { opacity:.5; transition:opacity .25s; }
+.tour-list { display:grid; gap:2px; margin:14px 0 16px -15px; }
+.tour-item { position:relative; overflow:hidden; display:grid; grid-template-columns:34px 1fr; column-gap:14px; align-items:start; padding:8px 15px 10px; text-align:left; font-family:var(--font-dm-sans),sans-serif; color:inherit; background:none; border:0; border-radius:14px; cursor:pointer; transition:background .25s,box-shadow .25s; }
+.tour-item:hover { background:rgba(255,255,255,.16); }
+/* The outline of the chosen product is drawn inside the tile, so that its progress line,
+   on the tile's bottom edge, lies over it. */
+.tour-item.is-active { background:rgba(255,255,255,.32); box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 12px 32px rgba(140,48,16,.14); }
+.tour-item-logo { border-radius:9px; box-shadow:0 0 0 1.5px rgba(255,255,255,.75); opacity:.7; transition:opacity .25s; }
 .tour-item:hover .tour-item-logo, .tour-item.is-active .tour-item-logo { opacity:1; }
-.tour-item-name { display:block; font-family:var(--font-manrope),sans-serif; font-size:15px; font-weight:800; letter-spacing:-.01em; line-height:1.3; color:rgba(255,255,255,.6); transition:color .25s; }
-.tour-item-body { display:block; margin-top:3px; font-size:13.5px; line-height:1.5; color:rgba(255,255,255,.4); transition:color .25s; }
-.tour-item:hover .tour-item-name, .tour-item.is-active .tour-item-name { color:var(--wh); }
-.tour-item.is-active .tour-item-body { color:rgba(255,255,255,.72); }
+.tour-item-name { display:block; font-family:var(--font-manrope),sans-serif; font-size:15px; font-weight:800; letter-spacing:-.01em; line-height:1.3; color:rgba(18,20,26,.68); transition:color .25s; }
+.tour-item-body { display:block; margin-top:2px; font-size:13px; line-height:1.45; color:rgba(18,20,26,.54); transition:color .25s; }
+.tour-item:hover .tour-item-name, .tour-item.is-active .tour-item-name { color:var(--dk); }
+.tour-item.is-active .tour-item-body { color:rgba(18,20,26,.82); }
 .tour-item-bar { position:absolute; left:0; right:0; bottom:0; height:2px; }
-.tour-item-fill { display:block; height:100%; background:var(--c); transform-origin:left; animation:loopFill var(--tour-step) linear both; }
+.tour-item-fill { display:block; height:100%; background:var(--dk); transform-origin:left; animation:loopFill var(--tour-step) linear both; }
 .product-tour[data-paused="true"] .tour-item-fill { animation-play-state:paused; }
 .tour-actions { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-3); }
 .tour-controls { display:flex; gap:8px; }
-.tour-btn { width:36px; height:36px; display:grid; place-items:center; border-radius:50%; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.04); color:rgba(255,255,255,.82); cursor:pointer; transition:border-color .15s,color .15s,background .15s; }
-.tour-btn:hover { border-color:var(--o); color:var(--o); background:rgba(245,130,95,.08); }
-.tour-item:focus-visible, .tour-btn:focus-visible { outline:2px solid var(--o); outline-offset:2px; }
+.tour-btn { width:36px; height:36px; display:grid; place-items:center; border-radius:50%; border:1px solid rgba(18,20,26,.24); background:rgba(255,255,255,.28); color:var(--dk); cursor:pointer; transition:border-color .15s,color .15s,background .15s; }
+.tour-btn:hover { border-color:var(--dk); color:var(--wh); background:var(--dk); }
+.tour-item:focus-visible, .tour-btn:focus-visible, .product-tour .bp:focus-visible { outline:2px solid var(--dk); outline-offset:2px; }
+/* On the orange card the site's orange button would vanish, so here it is dark. */
+.product-tour .bp { background:var(--dk); }
+.product-tour .bp:hover { background:#000; box-shadow:0 14px 32px rgba(18,20,26,.3); }
 .tour-visual { min-width:0; touch-action:pan-y; }
 /* Screens stacked in one frame: only the chosen one shows, and they cross-fade. */
 .screen-stack { position:relative; width:100%; height:100%; }
@@ -191,12 +275,21 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 @media (min-width:961px) {
   .hero-photo { margin-top:-40px; max-width:min(540px,calc((100vh - 136px) * .893)); max-width:min(540px,calc((100svh - 136px) * .893)); }
   .editorial-hero-visual:has(> .hero-photo) { align-self:start; }
+  /* The headline beside it follows the screen's height too, so that the button under the
+     text is also in the first view on a short laptop window. */
+  .editorial-hero:has(.hero-photo) .editorial-hero-headline { font-size:max(40px,min(var(--text-display),7.6vh)); font-size:max(40px,min(var(--text-display),7.6svh)); }
 }
 @media (max-width:960px) {
   .hero-photo { max-width:none; margin:0; }
   .media-chip { left:12px; bottom:14px; }
   .pull-quote-photo .pull-quote-mark { display:none; }
-  .product-stage { grid-template-columns:1fr; gap:var(--space-6); padding:var(--space-5); border-radius:22px; }
+  .section.product-stage-section { padding:0 12px var(--space-7); }
+  .product-stage { grid-template-columns:1fr; gap:var(--space-6); padding:var(--space-6) 16px; border-radius:22px; }
+  /* The card is narrow and tall here, so the glows are larger to keep them meeting. */
+  .tour-aurora i:nth-child(1) { width:125%; left:-45%; margin-top:-60%; }
+  .tour-aurora i:nth-child(2) { width:120%; left:-37%; margin-bottom:-73%; }
+  .tour-aurora i:nth-child(3) { width:95%; right:-38%; margin-bottom:-48%; }
+  .tour-aurora i:nth-child(4) { width:90%; left:20%; margin-top:95%; }
   /* The tour stacks as heading, screens, products, buttons: the screens stay next to the
      list that changes them. */
   .product-tour { gap:var(--space-4); }
@@ -211,11 +304,6 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 }
 @media (max-width:700px) {
   .photo-band { aspect-ratio:3 / 2 !important; border-radius:18px; }
-  .photo-band-captioned { aspect-ratio:4 / 3 !important; }
-  .photo-band-captioned::after { background:linear-gradient(0deg,rgba(18,20,26,.92) 0%,rgba(18,20,26,.7) 46%,rgba(18,20,26,.08) 100%); }
-  .photo-band-caption { left:20px; right:20px; bottom:20px; width:auto; }
-  .photo-band-title { font-size:21px; }
-  .photo-band-text { margin-top:8px; font-size:13.5px; line-height:1.5; }
   .photo-mosaic { aspect-ratio:auto; grid-template-columns:1fr 1fr; grid-template-rows:auto; gap:10px; }
   .photo-mosaic-cell { aspect-ratio:1 / 1; border-radius:14px; }
   .photo-mosaic-cell:first-child { grid-column:1 / 3; grid-row:auto; aspect-ratio:3 / 2; }
@@ -240,10 +328,12 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 @keyframes loopIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
 /* Beside other content (home hero, platform page): on short screens the diagram shrinks so
    the whole card fits the screen. 268px = the home card's top (108px) + the steps and
-   description under the diagram. On the home hero the card is also lifted towards the
-   menu bar, so it sits in the first view. */
+   description under the diagram. The home hero starts closer to the menu bar than other
+   heroes, so the card sits in the first view, and its text starts level with the card. */
 @media (min-width:961px) {
-  .hero-with-loop .editorial-hero-visual { align-self:start; margin-top:-40px; }
+  .editorial-hero.hero-with-loop { padding-top:108px; }
+  .hero-with-loop .editorial-hero-inner { align-items:start; }
+  .hero-with-loop .editorial-hero-eyebrow { position:relative; top:2px; }
   .hero-with-loop .loop-canvas, .platform-loop-visual .loop-canvas { max-height:max(320px,min(560px,calc(100vh - 268px))); max-height:max(320px,min(560px,calc(100svh - 268px))); }
 }
 /* Nothing pans or zooms, so let touches scroll the page as usual. */
@@ -306,8 +396,7 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .loop-detail strong { font-family:var(--font-manrope),sans-serif; font-weight:700; color:var(--ink); }
 /* Reduced motion: the loop stays still until a step is chosen. */
 @media (prefers-reduced-motion: reduce) {
-  .tour-item-fill { animation:none; }
-  .tour-toggle { display:none; }
+  .tour-item-fill, .tour-aurora i:nth-child(n) { animation:none; }
   .screen-stack-item { transition:none; }
   .loop-canvas .loop-flow, .loop-step-fill { animation:none; }
   .loop-edge-packet { animation:none; stroke-dasharray:none; stroke-width:2; }
@@ -317,9 +406,9 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 /* ── LOGO BAND ───────────────────────────────────── */
 .logo-band { background:var(--wh); border-top:1px solid var(--br); border-bottom:1px solid var(--br); padding:28px 56px; }
 .lb-label { color:var(--dk); text-align:center; margin:0 auto 24px; max-width:760px; }
-.lb-row { display:flex; gap:36px; align-items:center; justify-content:center; flex-wrap:wrap; }
-.lb-co { font-size:12px; font-weight:800; color:var(--bdl); text-transform:uppercase; letter-spacing:.04em; opacity:.5; transition:opacity .2s; cursor:default; }
-.lb-co:hover { opacity:.85; }
+.lb-loop { max-width:1200px; margin:0 auto; }
+.lb-co { font-size:14px; font-weight:800; color:var(--bdl); text-transform:uppercase; letter-spacing:.04em; white-space:nowrap; opacity:.5; transition:opacity .2s, color .2s; }
+.lb-co:hover { color:var(--o); opacity:1; }
 
 /* ── STATS BAND ──────────────────────────────────── */
 .stats { background:var(--dk); padding:60px 56px; }
@@ -430,9 +519,18 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .fi:focus { border-color:var(--o); }
 .fsub { width:100%; padding:14px; border-radius:11px; border:none; background:var(--o); color:#fff; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font-dm-sans),sans-serif; transition:all .2s; letter-spacing:.01em; }
 .fsub:hover { background:#d06e51; box-shadow:0 10px 28px var(--og); }
+/* The contact page's heading sits straight above its form: on the same background, in the
+   same column, and without the room a hero leaves for buttons and for the section after it. */
+.editorial-hero.contact-hero {
+  padding-bottom: 0;
+  background: var(--lt);
+}
+.contact-hero .editorial-hero-inner-solo { max-width: 1100px; }
+.contact-hero .editorial-hero-subhead { margin-bottom: 0; }
 .contact-form-section {
   background: var(--lt);
 }
+.section.contact-form-section { padding-top: var(--space-6); }
 .contact-form-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, .95fr);
@@ -478,14 +576,6 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .ps-d { font-size:13.5px; color:var(--bd); line-height:1.55; }
 
 /* ── NAV DROPDOWN ────────────────────────────────── */
-.nav-mega-menu {
-  position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-  background: var(--wh); border: 1px solid var(--br); border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.14), 0 4px 16px rgba(0,0,0,.06);
-  padding: 8px; width: 600px; z-index: 400;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
-  animation: navDropIn .18s ease-out;
-}
 .nav-mini-menu {
   position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
   background: var(--wh); border: 1px solid var(--br); border-radius: 14px;
@@ -508,12 +598,6 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .nav-mini-item.on { color: var(--o); background: var(--o10); }
 @keyframes navDropIn { from { opacity: 0; transform: translateX(-50%) translateY(-4px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
-.ndm-item { padding:14px 16px; border-radius:10px; cursor:pointer; transition:background .15s; }
-.ndm-item:hover { background:var(--lt); }
-.ndm-icon { font-size:18px; margin-bottom:6px; }
-.ndm-title { font-size:13px; font-weight:700; color:var(--dk); margin-bottom:3px; font-family:var(--font-manrope),sans-serif; }
-.ndm-desc { font-size:11.5px; color:var(--bd); line-height:1.45; margin-bottom: 6px; }
-.ndm-tag { font-size:10px; font-weight:700; color:var(--o); background:var(--o10); border-radius:20px; padding:2px 8px; display:inline-block; letter-spacing:.04em; }
 .nl-drop { display:flex; align-items:center; gap:4px; }
 
 /* ── SCROLL REVEAL ───────────────────────────────── */
@@ -899,20 +983,22 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 
 /* ── MOBILE NAV ────────────────────────────────────── */
 .nav-hamburger {
-  display:none; width:40px; height:40px; border:none; background:none;
-  cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+  display:none; width:40px; height:40px; border:none; background:none; color:var(--dk);
+  cursor:pointer; align-items:center; justify-content:center;
 }
-.nav-hamburger span {
-  display:block; width:22px; height:2px; background:var(--dk); border-radius:2px;
-  transition:all .2s;
-}
+.nav-toggle-bar { transition:x .28s ease, y .28s ease, width .28s ease, height .28s ease, rx .28s ease; }
+/* Closed, the menu stays laid out but invisible, so it can fade and slide both ways. */
 .nav-mobile-menu {
-  display:none; position:fixed; top:68px; left:0; right:0; bottom:0;
+  display:flex; position:fixed; top:68px; left:0; right:0; bottom:0;
   background:var(--wh); z-index:299; padding:24px;
   flex-direction:column; gap:8px;
-  animation:navSlide .2s ease;
+  visibility:hidden; opacity:0; transform:translateY(-10px);
+  transition:opacity .24s ease, transform .24s ease, visibility 0s linear .24s;
 }
-.nav-mobile-menu.open { display:flex; }
+.nav-mobile-menu.open { visibility:visible; opacity:1; transform:none; transition-delay:0s; }
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle-bar, .nav-mobile-menu { transition:none; }
+}
 .nav-mobile-menu button,
 .nav-mobile-menu a {
   width:100%; text-align:left; padding:16px 20px; border-radius:12px;
@@ -923,18 +1009,21 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .nav-mobile-menu button:hover,
 .nav-mobile-menu a:hover { background:var(--lt); }
 .nav-mobile-menu button.on { color:var(--o); background:var(--o10); }
-.nav-mobile-menu .mobile-cta {
-  margin-top:auto; padding:14px; border-radius:11px; border:none;
-  background:var(--o); color:#fff; font-family:var(--font-dm-sans),sans-serif;
-  font-size:15px; font-weight:700; cursor:pointer; text-align:center;
-  letter-spacing:.01em;
-}
-@keyframes navSlide { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
 
 @media (max-width:1299px) {
   .nav-links { display:none; }
   .nav-right > .ng { display:none; }
   .nav-hamburger { display:flex; }
+}
+/* Phones: a smaller logo and button, so the bar's three items sit apart. */
+@media (max-width:640px) {
+  .nav-logo-img { width:118px; }
+  .nav-right { gap:6px; }
+  .nav .no { font-size:13px; padding:8px 16px; }
+}
+@media (max-width:359px) {
+  .nav-logo-img { width:100px; }
+  .nav .no { font-size:12px; padding:7px 10px; }
 }
 
 @media (max-width: 1180px) and (min-width: 961px) {
@@ -1202,15 +1291,15 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 .card-grid-card-title { font-family: var(--font-manrope), sans-serif; font-size: 16px; font-weight: 700; color: var(--dk); line-height: 1.3; margin-bottom: var(--space-2); letter-spacing: -0.02em; }
 .card-grid-card-body { font-family: var(--font-dm-sans), sans-serif; font-size: 14px; line-height: 1.6; color: var(--bd); }
 .card-grid-card-link { margin-top: var(--space-3); font-size: 13px; font-weight: 600; color: var(--o); }
-
-@media (min-width: 769px) {
-  .when-to-call-grid .card-grid {
-    grid-auto-rows: 1fr;
-  }
-
-  .when-to-call-grid .card-grid-card {
-    height: 100%;
-  }
+/* Plain items: no card, just an icon, a name and one line, centred. */
+.card-grid-plain { gap: var(--space-6) var(--space-5); }
+.card-grid-card-plain, .card-grid-card-plain:hover { background: none; border: 0; border-radius: 0; box-shadow: none; transform: none; text-align: center; }
+.card-grid-card-plain .card-grid-card-icon { margin-bottom: 10px; line-height: 0; }
+.card-grid-card-plain .card-grid-card-title { font-size: 17px; margin-bottom: 4px; }
+.card-grid-card-plain .card-grid-card-body { font-size: 15.5px; line-height: 1.5; max-width: 215px; margin: 0 auto; text-wrap: balance; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card-grid-card-plain { transition: transform .32s cubic-bezier(.2,.8,.2,1); }
+  .card-grid-card-plain:hover { transform: scale(1.12); }
 }
 
 .long-form { max-width: 720px; margin: 0 auto; }
@@ -1266,7 +1355,7 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 }
 
 .pull-quote {
-  max-width: 1100px; margin: 0 auto;
+  max-width: 1200px; margin: 0 auto;
   background: linear-gradient(135deg, #FFFAF6, #FFF4E8);
   border: 1.5px solid rgba(245,130,95,.2);
   border-radius: 24px;
@@ -2263,8 +2352,7 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
   .psub { font-size:16px; }
   .sec { padding:60px 20px; }
   .logo-band { padding:20px; }
-  .lb-row { gap:16px; }
-  .lb-co { font-size:10px; }
+  .lb-co { font-size:12px; }
   .hero { min-height:auto; padding:100px 20px 40px; flex-direction:column; }
   .hero-h1 { font-size:clamp(32px,9vw,48px); }
   .hero-p { font-size:16px; }
@@ -2293,9 +2381,11 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
   .editorial-hero { padding: 120px 20px var(--space-6); }
   .editorial-hero-inner { grid-template-columns: 1fr !important; gap: var(--space-6); }
   .editorial-hero-headline { font-size: clamp(32px, 9vw, 44px); }
+  .hero-with-loop .editorial-hero-actions { justify-content: center; }
   .split-feature { grid-template-columns: 1fr !important; gap: var(--space-5); }
   .split-feature-text, .split-feature-visual { order: unset !important; }
   .card-grid-2, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr !important; }
+  .card-grid-plain { grid-template-columns: repeat(2, 1fr) !important; gap: var(--space-5) var(--space-3); }
   .newsletter-grid { grid-template-columns: 1fr !important; gap: var(--space-5); }
   .newsletter-interests-grid { grid-template-columns: 1fr; }
   .pull-quote { padding: var(--space-5); }
@@ -2349,6 +2439,14 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
   border: none; background: var(--lt); font-family: var(--font-dm-sans),sans-serif;
   font-size: 16px; font-weight: 600; color: var(--dk); cursor: pointer;
   display: flex; align-items: center; justify-content: space-between;
+}
+.mobile-accordion-chevron {
+  flex: none; width: 28px; height: 28px; margin: -4px 0; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--br); background: var(--wh); color: var(--bd);
+  transition: transform .25s ease, background .2s, border-color .2s, color .2s;
+}
+.mobile-accordion-head[aria-expanded="true"] .mobile-accordion-chevron {
+  transform: rotate(180deg); background: var(--o10); border-color: var(--o20); color: var(--o);
 }
 .mobile-accordion-body { display: flex; flex-direction: column; gap: 4px; padding: 8px 0 8px 16px; }
 .mobile-accordion-body button {
@@ -2523,6 +2621,7 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 :where(a.as-block) { display: block; text-decoration: none; color: inherit; }
 .nav-mobile-menu a.on { color: var(--o); background: var(--o10); }
 .mobile-accordion-body a {
+  display: flex; align-items: center;
   width: 100%; text-align: left; padding: 12px 16px; border-radius: 10px;
   font-size: 14px; color: var(--bd);
 }

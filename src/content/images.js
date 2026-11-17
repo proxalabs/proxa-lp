@@ -27,6 +27,14 @@ export const PHOTOS = {
     alt: 'A woman working at a laptop beside a large window',
     source: 'https://www.pexels.com/photo/woman-in-white-crew-neck-shirt-wearing-brown-framed-eyeglasses-using-macbook-3768161/',
   },
+  'colleagues-at-laptop': {
+    base: '/assets/photos/colleagues-at-laptop',
+    widths: [800, 1600],
+    width: 1600,
+    height: 1067,
+    alt: 'Two colleagues talking through their notes at a laptop',
+    source: 'https://www.pexels.com/photo/men-sitting-by-the-table-with-laptop-5256991/',
+  },
   'doctor-and-rep': {
     base: '/assets/photos/doctor-and-rep',
     widths: [800, 1600],
@@ -34,6 +42,14 @@ export const PHOTOS = {
     height: 1067,
     alt: 'A physician going through a folder with a visitor in a clinic',
     source: 'https://www.pexels.com/photo/male-doctor-talking-to-a-patient-6129441/',
+  },
+  'employee-at-laptop': {
+    base: '/assets/photos/employee-at-laptop',
+    widths: [800, 1600],
+    width: 1600,
+    height: 2400,
+    alt: 'A man in glasses working at a laptop in a bright office',
+    source: 'https://www.pexels.com/photo/brunette-man-in-eyeglasses-working-on-a-laptop-12903252/',
   },
   'lab-flasks': {
     base: '/assets/photos/lab-flasks',
@@ -43,30 +59,26 @@ export const PHOTOS = {
     alt: 'Laboratory flasks of blue, green and orange liquid on a bench',
     source: 'https://www.pexels.com/photo/glassware-with-colorful-liquid-substances-on-a-lab-desk-8540819/',
   },
-  'learner-laptop': {
-    base: '/assets/photos/learner-laptop',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'A woman studying at a laptop in front of a large window',
-    source: 'https://www.pexels.com/photo/woman-in-white-crew-neck-t-shirt-using-white-laptop-3866279/',
+  // Edited from the original: widened from 3:2 to 16:9 by continuing the plain wall past the
+  // right edge, so the man sits in the middle of a wide band, and the wall evened out and
+  // brightened to white. Also made at 2400px because it is shown full width, where a 1600px
+  // file looks soft on a high-density screen.
+  'laptop-white-wall': {
+    base: '/assets/photos/laptop-white-wall',
+    widths: [800, 1600, 2400],
+    width: 2400,
+    height: 1350,
+    alt: 'A man in glasses working on a laptop in front of a plain white wall',
+    source: 'https://www.pexels.com/photo/a-man-using-a-laptop-7583973/',
+    photographer: 'Mikhail Nilov',
   },
-  'learner-window-desk': {
-    base: '/assets/photos/learner-window-desk',
+  'meeting-by-window': {
+    base: '/assets/photos/meeting-by-window',
     widths: [800, 1600],
     width: 1600,
     height: 1067,
-    alt: 'A woman working at a laptop at a white desk by a window',
-    source: 'https://www.pexels.com/photo/woman-in-black-long-blazer-using-a-laptop-7679583/',
-  },
-  'reviewing-dashboard': {
-    base: '/assets/photos/reviewing-dashboard',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'Two men at a desk looking at a bar chart on a laptop',
-    source: 'https://www.pexels.com/photo/men-in-an-office-discussing-graphs-on-a-laptop-6285079/',
-    photographer: 'Gustavo Fring',
+    alt: 'Two colleagues working at laptops at a long table beside a wide window',
+    source: 'https://www.pexels.com/photo/smiling-colleagues-in-a-meeting-7993951/',
   },
   'sticky-notes-glass': {
     base: '/assets/photos/sticky-notes-glass',
@@ -85,13 +97,29 @@ export const PHOTOS = {
     source: 'https://www.pexels.com/photo/engineers-planning-structure-3862370/',
     photographer: 'ThisIsEngineering',
   },
-  'team-at-laptop': {
-    base: '/assets/photos/team-at-laptop',
+  'team-chart-review': {
+    base: '/assets/photos/team-chart-review',
     widths: [800, 1600],
     width: 1600,
     height: 1067,
-    alt: 'Three colleagues reviewing work together on a laptop',
-    source: 'https://www.pexels.com/photo/a-group-of-people-having-a-meeting-in-the-office-6248988/',
+    alt: 'Three colleagues talking beside a board of charts while a fourth works at a laptop',
+    source: 'https://www.pexels.com/photo/colleagues-working-in-an-office-7876739/',
+  },
+  'team-data-briefing': {
+    base: '/assets/photos/team-data-briefing',
+    widths: [800, 1600],
+    width: 1600,
+    height: 1067,
+    alt: 'A presenter standing at a large screen of charts, speaking to seated colleagues',
+    source: 'https://www.pexels.com/photo/a-man-making-a-business-presentation-to-colleagues-9301257/',
+  },
+  'team-loft-table': {
+    base: '/assets/photos/team-loft-table',
+    widths: [800, 1600],
+    width: 1600,
+    height: 1058,
+    alt: 'A senior colleague talking a small team through their work at a table in a bright loft office',
+    source: 'https://www.pexels.com/photo/people-having-a-meeting-3860801/',
   },
   'team-round-table': {
     base: '/assets/photos/team-round-table',
@@ -101,21 +129,15 @@ export const PHOTOS = {
     alt: 'A team meeting around a round table in a sunlit office',
     source: 'https://www.pexels.com/photo/a-group-of-people-having-a-meeting-in-the-office-6248989/',
   },
-  'training-question': {
-    base: '/assets/photos/training-question',
+  // Edited from the original: the heading printed on the lower chart sheet ("Finance review")
+  // was painted out, because the page it is on is about AI training.
+  'trainer-with-charts': {
+    base: '/assets/photos/trainer-with-charts',
     widths: [800, 1600],
     width: 1600,
-    height: 1067,
-    alt: 'A participant raising a hand during a training session',
-    source: 'https://www.pexels.com/photo/a-woman-doing-a-presentation-using-graphs-on-a-whiteboard-9034268/',
-  },
-  'training-session': {
-    base: '/assets/photos/training-session',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'A facilitator presenting a chart to a seated group',
-    source: 'https://www.pexels.com/photo/business-woman-discussing-in-a-meeting-9034755/',
+    height: 2400,
+    alt: 'A trainer pointing to charts on a flip chart',
+    source: 'https://www.pexels.com/photo/a-man-in-corporate-attire-pointing-at-charts-on-a-whiteboard-7877029/',
   },
 }
 
@@ -175,6 +197,16 @@ export const SCREENS = {
     width: 780,
     height: 1688,
     alt: 'Proxa Forge list of agents on a phone',
+  },
+  // A frame from a live roleplay run locally: the character is one of HeyGen's public
+  // avatars, and the learner's camera tile shows a Pexels photo standing in for a webcam
+  // (https://www.pexels.com/photo/man-in-blue-long-sleeve-shirt-holding-8867257/).
+  'stage-session-desktop': {
+    base: '/assets/product/stage-session-desktop',
+    widths: [900, 1800],
+    width: 1800,
+    height: 1125,
+    alt: 'A live roleplay in Proxa Stage: an AI cardiologist speaking on video, with the learner’s camera, the conversation and coaching suggestions beside it',
   },
   'stage-roleplays-desktop': {
     base: '/assets/product/stage-roleplays-desktop',

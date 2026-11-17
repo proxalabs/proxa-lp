@@ -86,6 +86,7 @@ export default function ContactPage({ content }) {
         eyebrow={c('hero.eyebrow')}
         headline={heroHeadline}
         subhead={c('hero.subhead')}
+        className="contact-hero"
       />
 
       <section className="section section-tinted contact-form-section">

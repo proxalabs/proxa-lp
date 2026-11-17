@@ -6,7 +6,7 @@ export default function PullQuote({ quote, author, stats, photo, photoPosition, 
   return (
     <section className={`section ${bg}`}>
       <div className={photo ? 'pull-quote pull-quote-photo' : 'pull-quote'}>
-        {photo && <Photo name={photo} position={photoPosition} sizes="(max-width: 1212px) 100vw, 1100px" className="pull-quote-bg" />}
+        {photo && <Photo name={photo} position={photoPosition} sizes="(max-width: 1312px) 100vw, 1200px" className="pull-quote-bg" />}
         <div className="pull-quote-mark">"</div>
         <div className="pull-quote-content" style={{ gridTemplateColumns: stats?.length ? '1fr 220px' : '1fr' }}>
           <div>

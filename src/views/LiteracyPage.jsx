@@ -95,8 +95,8 @@ export default function LiteracyPage({ content }) {
         subhead={c('hero.subhead')}
         visual={(
           <HeroPhoto
-            name="training-question"
-            position="56% 40%"
+            name="trainer-with-charts"
+            position="50% 62%"
             chip={{ mark: <Icon name="literacy" size={18} />, title: 'AI fluency by role', text: 'Reps, managers, medical affairs' }}
           />
         )}
@@ -117,7 +117,7 @@ export default function LiteracyPage({ content }) {
       <CardGrid
         eyebrow={c('tracks.eyebrow')}
         heading={c('tracks.heading')}
-        media={<PhotoBand name="training-session" position="50% 45%" />}
+        media={<PhotoBand name="team-data-briefing" position="50% 5%" />}
         lead={c('tracks.lead')}
         columns={3}
         cards={TRACKS}

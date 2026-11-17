@@ -2,13 +2,23 @@ import EditorialHero from '../components/sections/EditorialHero';
 import ProductShowcase from '../components/sections/ProductShowcase';
 import UpgradeComparison from '../components/sections/UpgradeComparison';
 import CTABand from '../components/sections/CTABand';
-import ForgeShowcase from '../components/showcase/ForgeShowcase';
 import ProductGlimpse from '../components/media/ProductGlimpse';
-import EchoShowcase from '../components/showcase/EchoShowcase';
-import CertifyShowcase from '../components/showcase/CertifyShowcase';
 import LoopVisual from '../components/LoopVisual';
+import { PRODUCT_TOUR } from '../content/productTour';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
+
+// A product's real screens, in a browser window with a phone in front: the same ones the
+// home page's product tour shows for it.
+function RealScreens({ app }) {
+  const { name, desktop, mobile, url } = PRODUCT_TOUR.find((slide) => slide.id === app);
+  return (
+    <div className="product-showcase-real">
+      <ProductGlimpse desktop={desktop} mobile={mobile} url={url} />
+      <div className="product-showcase-real-note">{name}, running demo content</div>
+    </div>
+  );
+}
 
 // Plain-text defaults for headings that carry inline markup. When the override
 // equals the default, render the rich (italic) JSX; otherwise render the plain string.
@@ -66,7 +76,7 @@ export default function PlatformPage({ content }) {
           "Veeva PromoMats workflow integration",
           "Content Gap Analyzer feeds directly from Stage failures",
         ]}
-        mockup={<ForgeShowcase />}
+        mockup={<RealScreens app="forge" />}
       />
 
       <ProductShowcase
@@ -80,12 +90,7 @@ export default function PlatformPage({ content }) {
           "Manager dashboards with predictive readiness scoring",
           "Integrates with InsiteX LMS and Veeva",
         ]}
-        mockup={(
-          <div className="product-showcase-real">
-            <ProductGlimpse desktop="cue-competencies-desktop" mobile="cue-dashboard-mobile" url="cue.proxalabs.com" />
-            <div className="product-showcase-real-note">Proxa Cue, running demo content</div>
-          </div>
-        )}
+        mockup={<RealScreens app="cue" />}
         reverse
         background="tinted"
       />
@@ -101,7 +106,7 @@ export default function PlatformPage({ content }) {
           "Behavioral scorecard + industry benchmarks",
           "Gap payload triggers Forge auto-rebuild pipeline",
         ]}
-        mockup={<EchoShowcase />}
+        mockup={<RealScreens app="stage" />}
       />
 
       <ProductShowcase
@@ -115,7 +120,7 @@ export default function PlatformPage({ content }) {
           "SOC 2 Type II compliant, SHA-256 audit logs",
           "10-year retention for regulatory inspection",
         ]}
-        mockup={<CertifyShowcase />}
+        mockup={<RealScreens app="trace" />}
         reverse
         background="tinted"
       />
