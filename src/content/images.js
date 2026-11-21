@@ -19,6 +19,44 @@ export const PHOTOS = {
     alt: 'Two colleagues talking over a printed report in a bright office',
     source: 'https://www.pexels.com/photo/man-and-woman-having-a-discussion-5918205/',
   },
+  // Cut out of its studio background (rembg, isnet-general-use) and trimmed, so it stands on
+  // the page with no frame; the WebP files keep the transparency. Cropped at the knees in
+  // the original, so pages fade its lower edge out.
+  'portrait-cutout': {
+    base: '/assets/photos/portrait-cutout',
+    widths: [700, 1400],
+    width: 1400,
+    height: 1493,
+    alt: 'A senior woman in glasses, seated with her arms folded, looking straight ahead',
+    source: 'https://www.pexels.com/photo/man-in-black-suit-jacket-wearing-eyeglasses-4098260/',
+  },
+  // Three more cut-outs made the same way (rembg, isnet-general-use; trimmed; WebP with
+  // transparency), for sections of About, The Lab and InsiteX LMS. Each is cropped at the
+  // bottom in its original, so pages stand it on the bottom edge of its block.
+  'woman-laptop-cutout': {
+    base: '/assets/photos/woman-laptop-cutout',
+    widths: [700, 1400],
+    width: 1400,
+    height: 2572,
+    alt: 'A woman in a black blazer holding a closed laptop, looking straight ahead',
+    source: 'https://www.pexels.com/photo/woman-in-black-blazer-holding-a-laptop-5240192/',
+  },
+  'scientist-cutout': {
+    base: '/assets/photos/scientist-cutout',
+    widths: [700, 1400],
+    width: 1400,
+    height: 2104,
+    alt: 'A scientist in a lab coat, safety glasses and gloves holding a tablet',
+    source: 'https://www.pexels.com/photo/scientist-in-lab-coat-8442607/',
+  },
+  'man-laptop-cutout': {
+    base: '/assets/photos/man-laptop-cutout',
+    widths: [700, 1400],
+    width: 1400,
+    height: 1667,
+    alt: 'A smiling man in a blazer working on an open laptop held in one arm',
+    source: 'https://www.pexels.com/photo/confident-businessman-with-laptop-in-studio-setting-40298352/',
+  },
   'author-at-laptop': {
     base: '/assets/photos/author-at-laptop',
     widths: [800, 1600],
@@ -51,14 +89,6 @@ export const PHOTOS = {
     alt: 'A man in glasses working at a laptop in a bright office',
     source: 'https://www.pexels.com/photo/brunette-man-in-eyeglasses-working-on-a-laptop-12903252/',
   },
-  'lab-flasks': {
-    base: '/assets/photos/lab-flasks',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'Laboratory flasks of blue, green and orange liquid on a bench',
-    source: 'https://www.pexels.com/photo/glassware-with-colorful-liquid-substances-on-a-lab-desk-8540819/',
-  },
   // Edited from the original: widened from 3:2 to 16:9 by continuing the plain wall past the
   // right edge, so the man sits in the middle of a wide band, and the wall evened out and
   // brightened to white. Also made at 2400px because it is shown full width, where a 1600px
@@ -72,6 +102,14 @@ export const PHOTOS = {
     source: 'https://www.pexels.com/photo/a-man-using-a-laptop-7583973/',
     photographer: 'Mikhail Nilov',
   },
+  'lab-team-results': {
+    base: '/assets/photos/lab-team-results',
+    widths: [800, 1600],
+    width: 1600,
+    height: 1067,
+    alt: 'Three scientists in a bright lab leaning in to read results on a screen',
+    source: 'https://www.pexels.com/photo/team-of-scientists-working-together-8851457/',
+  },
   'meeting-by-window': {
     base: '/assets/photos/meeting-by-window',
     widths: [800, 1600],
@@ -80,22 +118,19 @@ export const PHOTOS = {
     alt: 'Two colleagues working at laptops at a long table beside a wide window',
     source: 'https://www.pexels.com/photo/smiling-colleagues-in-a-meeting-7993951/',
   },
-  'sticky-notes-glass': {
-    base: '/assets/photos/sticky-notes-glass',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'A team arranging sticky notes on a glass wall',
-    source: 'https://www.pexels.com/photo/colleagues-looking-at-sticky-notes-9301872/',
-  },
-  'strategy-whiteboard': {
-    base: '/assets/photos/strategy-whiteboard',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'Four people planning together at a whiteboard wall',
-    source: 'https://www.pexels.com/photo/engineers-planning-structure-3862370/',
-    photographer: 'ThisIsEngineering',
+  // The home page quote card. Edited from the original (3840x2160): widened to the card's
+  // 2.74:1 shape by continuing the plain dark background past the left edge (each row's
+  // colour, smoothed, with grain, blended over 700px), and the near-black shadows lifted
+  // towards a deep warm brown so the left side reads as a soft interior. The face is
+  // unchanged. Not the person quoted beside it.
+  'quote-portrait': {
+    base: '/assets/photos/quote-portrait',
+    widths: [1200, 2400],
+    width: 2400,
+    height: 876,
+    alt: 'A woman in glasses looking closely at a screen, lit warmly from the side',
+    source: 'https://www.pexels.com/photo/focused-woman-wearing-glasses-working-late-36713416/',
+    photographer: 'Vitaly Gariev',
   },
   'team-chart-review': {
     base: '/assets/photos/team-chart-review',
@@ -104,14 +139,6 @@ export const PHOTOS = {
     height: 1067,
     alt: 'Three colleagues talking beside a board of charts while a fourth works at a laptop',
     source: 'https://www.pexels.com/photo/colleagues-working-in-an-office-7876739/',
-  },
-  'team-data-briefing': {
-    base: '/assets/photos/team-data-briefing',
-    widths: [800, 1600],
-    width: 1600,
-    height: 1067,
-    alt: 'A presenter standing at a large screen of charts, speaking to seated colleagues',
-    source: 'https://www.pexels.com/photo/a-man-making-a-business-presentation-to-colleagues-9301257/',
   },
   'team-loft-table': {
     base: '/assets/photos/team-loft-table',
@@ -129,6 +156,14 @@ export const PHOTOS = {
     alt: 'A team meeting around a round table in a sunlit office',
     source: 'https://www.pexels.com/photo/a-group-of-people-having-a-meeting-in-the-office-6248989/',
   },
+  'trainer-question': {
+    base: '/assets/photos/trainer-question',
+    widths: [800, 1600, 2400],
+    width: 2400,
+    height: 1600,
+    alt: 'A trainer at a flip chart smiling as a woman in the group raises her hand to ask a question',
+    source: 'https://www.pexels.com/photo/a-woman-doing-a-presentation-using-graphs-on-a-whiteboard-9034268/',
+  },
   // Edited from the original: the heading printed on the lower chart sheet ("Finance review")
   // was painted out, because the page it is on is about AI training.
   'trainer-with-charts': {
@@ -138,6 +173,19 @@ export const PHOTOS = {
     height: 2400,
     alt: 'A trainer pointing to charts on a flip chart',
     source: 'https://www.pexels.com/photo/a-man-in-corporate-attire-pointing-at-charts-on-a-whiteboard-7877029/',
+  },
+  // The home page hero. Edited from the original: the photograph sits in the lower right of
+  // a wider, taller frame (the hero's 2400 by 1815 shape), its top and left edges dissolving
+  // into plain wall colour, and the grey-white room is brightened and warmed a little, so the
+  // picture can fade into the hero's background behind the headline.
+  'team-around-laptop': {
+    base: '/assets/photos/team-around-laptop',
+    widths: [900, 1600, 2400],
+    width: 2400,
+    height: 1815,
+    alt: 'Four colleagues gathered around a laptop at a table in a bright white office',
+    source: 'https://www.pexels.com/photo/group-of-people-having-a-brainstorming-7550400/',
+    photographer: 'MART PRODUCTION',
   },
 }
 

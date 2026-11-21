@@ -1,0 +1,69 @@
+/* ── ABOUT (views/AboutPage) ───────────────────────────────────
+   A hero set in very large type; the story beside a plain photo; and the first steps of
+   every engagement around a woman cut out of her photo, standing on the white page with
+   no frame, background or line under her. Prefix: ab-. */
+
+.ab-h2 { margin:14px 0 0; font-size:clamp(30px,3.4vw,46px); font-weight:900; line-height:1.06; letter-spacing:-.045em; color:var(--dk); text-wrap:balance; }
+
+/* Hero: the headline is the picture. */
+.ab-hero { max-width:1312px; margin:68px auto 0; padding:clamp(48px,10vh,112px) 56px clamp(48px,8vh,88px); }
+.ab-hero-h1 { max-width:1180px; margin:22px 0 0; font-size:clamp(52px,min(8.4vw,15vh),136px); font-weight:900; line-height:.93; letter-spacing:-.062em; color:var(--dk); text-wrap:balance; }
+.ab-hero-h1 em { font-style:normal; color:var(--o); }
+.ab-hero-foot { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:48px; align-items:start; margin-top:clamp(36px,6vh,64px); padding-top:28px; border-top:2px solid var(--dk); }
+.ab-hero-sub { max-width:440px; font-size:18px; line-height:1.55; color:var(--bd); }
+.ab-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; list-style:none; margin:0; padding:0; }
+.ab-stats li { display:flex; flex-direction:column; gap:8px; }
+.ab-stats strong { font-family:var(--font-manrope),sans-serif; font-size:clamp(36px,3.6vw,52px); font-weight:900; line-height:1; letter-spacing:-.05em; color:var(--o); }
+.ab-stats li > span { font-size:14px; line-height:1.45; color:var(--bd); }
+
+/* The story: three chapters beside a sticky heading and photo. */
+.ab-story { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:80px; max-width:1312px; margin:0 auto; padding:96px 56px 112px; border-top:1px solid var(--br); }
+.ab-story-side { position:sticky; top:112px; align-self:start; }
+.ab-story-photo { margin-top:32px; aspect-ratio:4 / 3; max-height:calc(100vh - 320px); border-radius:var(--sol-radius,20px); overflow:hidden; }
+.ab-story-photo img { display:block; width:100%; height:100%; object-fit:cover; }
+.ab-chapters { list-style:none; margin:0; padding:0; }
+.ab-chapter { display:grid; grid-template-columns:52px minmax(0,1fr); gap:16px; padding:40px 0; border-top:1px solid var(--br); }
+.ab-chapter:first-child { padding-top:0; border-top:0; }
+.ab-chapter:last-child { padding-bottom:0; }
+.ab-chapter-n { padding-top:7px; font-family:var(--font-manrope),sans-serif; font-size:14px; font-weight:800; letter-spacing:.06em; color:var(--o); }
+.ab-chapter-title { margin-bottom:14px; font-family:var(--font-manrope),sans-serif; font-size:24px; font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--dk); }
+.ab-chapter p { font-size:16.5px; line-height:1.75; color:var(--bd); }
+
+/* How every engagement starts: the steps either side of the woman, who stands on the
+   bottom of the section. */
+.ab-how { max-width:1312px; margin:0 auto; padding:96px 56px 0; border-top:1px solid var(--br); }
+.ab-how-head { text-align:center; }
+.ab-how-stage { display:grid; grid-template-columns:minmax(0,1fr) minmax(260px,380px) minmax(0,1fr); gap:40px; align-items:end; margin-top:40px; }
+.ab-steps { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:40px; }
+.ab-how-stage > .ab-steps { align-self:center; padding-bottom:48px; text-align:right; }
+.ab-how-stage > .ab-steps .ab-step-n { margin-left:auto; }
+.ab-step h3 { margin:14px 0 8px; font-family:var(--font-manrope),sans-serif; font-size:22px; font-weight:800; letter-spacing:-.03em; color:var(--dk); }
+.ab-step p { font-size:16px; line-height:1.55; color:var(--bd); }
+.ab-step-n { display:grid; place-items:center; width:40px; height:40px; border-radius:50%; border:2px solid var(--o); font-family:var(--font-manrope),sans-serif; font-size:16px; font-weight:900; color:var(--o); }
+.ab-how-person { display:flex; justify-content:center; }
+.ab-how-person img { display:block; width:auto; max-width:100%; height:min(620px,calc(100vh - 120px)); object-fit:contain; object-position:50% 100%; }
+.ab-how-right { align-self:center; padding-bottom:48px; display:flex; flex-direction:column; gap:40px; }
+.ab-cta { padding:24px; border-radius:16px; background:#FFF6F2; }
+.ab-cta h3 { font-family:var(--font-manrope),sans-serif; font-size:22px; font-weight:900; line-height:1.15; letter-spacing:-.035em; color:var(--dk); }
+.ab-cta p { margin:8px 0 18px; font-size:15px; line-height:1.5; color:var(--bd); }
+
+@media (max-width:1100px) {
+  .ab-how-stage { grid-template-columns:minmax(0,1fr) minmax(220px,300px) minmax(0,1fr); gap:28px; }
+}
+@media (max-width:960px) {
+  .ab-hero { padding:48px 20px 56px; }
+  .ab-hero-foot { grid-template-columns:1fr; gap:28px; }
+  .ab-stats { grid-template-columns:1fr; gap:18px; }
+  .ab-stats li { flex-direction:row; align-items:baseline; gap:14px; }
+  .ab-stats strong { flex:0 0 96px; }
+  .ab-story { grid-template-columns:1fr; gap:36px; padding:64px 20px 72px; }
+  .ab-story-side { position:static; }
+  .ab-story-photo { max-height:none; }
+  .ab-how { padding:64px 20px 0; }
+  .ab-how-stage { grid-template-columns:1fr; gap:32px; }
+  .ab-how-stage > .ab-steps { text-align:left; padding-bottom:0; }
+  .ab-how-stage > .ab-steps .ab-step-n { margin-left:0; }
+  .ab-how-right { padding-bottom:0; }
+  .ab-how-person { order:3; }
+  .ab-how-person img { height:min(460px,110vw); }
+}

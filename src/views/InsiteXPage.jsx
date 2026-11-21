@@ -2,11 +2,13 @@ import EditorialHero from '../components/sections/EditorialHero';
 import LongForm from '../components/sections/LongForm';
 import CardGrid from '../components/sections/CardGrid';
 import UpgradeComparison from '../components/sections/UpgradeComparison';
-import CTABand from '../components/sections/CTABand';
+import CountUp from '../components/CountUp';
 import Icon from '../components/Icon';
 import HeroPhoto from '../components/media/HeroPhoto';
+import Photo from '../components/media/Photo';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
+import './InsiteXPage.css';
 
 // Plain-text defaults for the headings that carry inline markup. While the
 // content value equals one of these, the page renders the rich JSX version;
@@ -14,7 +16,6 @@ import { hrefFor } from '../lib/routes';
 // in sync with the matching `default`s in src/content/pages/insitex.js.
 const HERO_HEADLINE_DEFAULT = 'The LMS that becomes the AI foundation.';
 const UPGRADE_HEADING_DEFAULT = "Pick the right starting point. Upgrade when you're ready.";
-const CTA_HEADING_DEFAULT = 'Get the LMS that becomes the AI foundation.';
 
 const PROOF_NUMBERS = [
   { n: "4+",  l: "Years serving biopharma" },
@@ -22,10 +23,10 @@ const PROOF_NUMBERS = [
 ];
 
 const CREDENTIALS = [
-  { name: "SCORM, AICC, and PMRC",       status: "Compliant",       tone: "live" },
-  { name: "SOC 2 Type II",               status: "In progress",     tone: "live" },
-  { name: "Veeva PromoMats integration", status: "Native",          tone: "live" },
-  { name: "Enterprise SSO + RBAC",       status: "SAML 2.0 / OIDC", tone: "live" },
+  { name: "SCORM, AICC, and PMRC",       status: "Compliant" },
+  { name: "SOC 2 Type II",               status: "In progress" },
+  { name: "Veeva PromoMats integration", status: "Native" },
+  { name: "Enterprise SSO + RBAC",       status: "SAML 2.0 / OIDC" },
 ];
 
 const CAPABILITIES = [
@@ -37,40 +38,34 @@ const CAPABILITIES = [
   { icon: <Icon name="readiness" size={22} />,     title: "Manager dashboards + reporting",   body: "Live readiness reporting by team, region, and competency. Pre-built reports for the CCO scorecard, training compliance, and certification expiration tracking." },
 ];
 
+/** The figures and credentials either side of a man cut out of his photo, on white. */
 function InsiteXProofPanel() {
   return (
-    <section className="insitex-proof">
-      <div className="insitex-proof-glow" aria-hidden="true" />
-      <div className="insitex-proof-inner">
-        <div className="insitex-proof-numbers">
-          <div className="insitex-proof-label">By the Numbers</div>
-          <div className="insitex-proof-number-row">
-            {PROOF_NUMBERS.map(s => (
-              <div key={s.n} className="insitex-proof-stat">
-                <div className="insitex-proof-n">{s.n}</div>
-                <div className="insitex-proof-l">{s.l}</div>
-              </div>
+    <section className="ix-proof">
+      <div className="ix-proof-stage">
+        <div className="ix-proof-side">
+          <div className="ix-proof-label">By the numbers</div>
+          <ul className="ix-proof-numbers">
+            {PROOF_NUMBERS.map((s) => (
+              <li key={s.n}>
+                <strong><CountUp>{s.n}</CountUp></strong>
+                <span>{s.l}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
-        <div className="insitex-proof-divider" aria-hidden="true" />
-        <div className="insitex-proof-creds">
-          <div className="insitex-proof-label">Credentials & Compliance</div>
-          <ul className="insitex-cred-list">
-            {CREDENTIALS.map(c => (
-              <li key={c.name} className="insitex-cred-row">
-                <span className={`insitex-cred-check insitex-cred-check-${c.tone}`} aria-hidden="true">
-                  {c.tone === 'progress' ? (
-                    <svg width="11" height="11" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="20 12" strokeLinecap="round" /></svg>
-                  ) : (
-                    <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2.5 6.2 L5 8.6 L9.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  )}
+        <div className="ix-proof-person">
+          <Photo name="man-laptop-cutout" sizes="(max-width: 960px) 80vw, 460px" />
+        </div>
+        <div className="ix-proof-side">
+          <div className="ix-proof-label">Credentials &amp; compliance</div>
+          <ul className="ix-creds">
+            {CREDENTIALS.map((cred) => (
+              <li key={cred.name}>
+                <span className="ix-cred-check" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2.5 6.2 L5 8.6 L9.5 3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
-                <div className="insitex-cred-text">
-                  <strong>{c.name}</strong>
-                  <span className="insitex-cred-sep">·</span>
-                  <span className={`insitex-cred-status insitex-cred-status-${c.tone}`}>{c.status}</span>
-                </div>
+                <span><strong>{cred.name}</strong> <span className="ix-cred-status">{cred.status}</span></span>
               </li>
             ))}
           </ul>
@@ -93,10 +88,6 @@ export default function InsiteXPage({ content }) {
   const upgradeHeading = upgradeH === UPGRADE_HEADING_DEFAULT
     ? <>Pick the right starting point.<br />Upgrade when you're ready.</>
     : upgradeH;
-  const ctaH = c('cta.heading');
-  const ctaHeading = ctaH === CTA_HEADING_DEFAULT
-    ? <>Get the LMS that becomes <em>the AI foundation.</em></>
-    : ctaH;
 
   // Capability cards keep their in-code icons; title/body are CMS-overridable.
   const capabilityCards = CAPABILITIES.map((card, i) => ({
@@ -143,12 +134,6 @@ export default function InsiteXPage({ content }) {
         eyebrow={c('upgrade.eyebrow')}
         heading={upgradeHeading}
         lead={c('upgrade.lead')}
-      />
-
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

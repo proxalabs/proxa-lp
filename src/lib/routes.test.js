@@ -6,8 +6,8 @@ import { hrefFor, pageKeyForPath, PAGE_PATHS, RESERVED_SLUGS } from './routes.js
 test('hrefFor maps keys, hashes and slugs', () => {
   assert.equal(hrefFor('home'), '/')
   assert.equal(hrefFor('literacy'), '/ai-literacy')
-  assert.equal(hrefFor('resources', 'frameworks'), '/resources#frameworks')
-  assert.equal(hrefFor('resources', { hash: '#research' }), '/resources#research')
+  assert.equal(hrefFor('platform', 'forge'), '/platform#forge')
+  assert.equal(hrefFor('platform', { hash: '#forge' }), '/platform#forge')
   assert.equal(hrefFor('article', { slug: 'the-readiness-gap' }), '/blog/the-readiness-gap')
   assert.equal(hrefFor('caseStudy', { slug: 'x' }), '/case-studies/x')
   assert.equal(hrefFor('form', { slug: 'x' }), '/forms/x')

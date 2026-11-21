@@ -128,11 +128,12 @@ Public browser keys such as a Sentry DSN may be present in frontend env configur
 - App stack: Next.js (App Router) + React, with Payload CMS inside the same app. See the README.
 - Database: Postgres (`npm run db:up` starts it locally in Docker on port 5433).
 - CMS admin: `/admin`.
-- Hosting: the live site is still the old build on Firebase Hosting. The new app is not
-  deployed yet; AWS is planned. `main` still deploys to Firebase, so do not merge this work
-  to `main` until the deploy workflow has been replaced.
-- Forms: server endpoints in `src/endpoints/` (the Firebase Cloud Functions in `functions/`
-  only serve the old live site).
+- Hosting: the live site is still the old build on Firebase Hosting, deployed from `main`.
+  The new app has a temporary copy on AWS (`infra/temp-host/`, no domain); production
+  hosting is not set up yet. `main` still deploys to Firebase, so do not merge this work
+  to `main` until production hosting and its deploy workflow are in place.
+- Forms: server endpoints in `src/endpoints/` (the old live site uses Firebase Cloud
+  Functions; their code and the other Firebase files are on `main` only).
 - Monitoring: Sentry (browser and server), active when `NEXT_PUBLIC_SENTRY_DSN` is set.
 - Build command: `npm run build` (needs the database running and migrated; `npm run ci` does both).
 - Checks: `npm run lint`, `npm test`, `node scripts/verify-site.mjs`.

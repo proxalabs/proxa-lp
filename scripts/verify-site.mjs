@@ -13,7 +13,7 @@ const CANONICAL_ORIGIN = 'https://www.proxalabs.com'
 
 const FIXED = [
   '/', '/platform', '/advisory', '/ai-literacy', '/insitex-lms', '/content-development', '/the-lab', '/about',
-  '/announcements', '/resources', '/newsletter', '/contact', '/blog', '/news', '/case-studies', '/videos',
+  '/announcements', '/newsletter', '/contact', '/blog', '/news', '/case-studies', '/videos',
 ]
 const NOINDEX = ['/future-proof-your-organization', '/innovation-collective', '/search']
 

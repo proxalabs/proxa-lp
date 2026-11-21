@@ -1,139 +1,118 @@
-import EditorialHero from '../components/sections/EditorialHero';
-import CTABand from '../components/sections/CTABand';
-import HeroPhoto from '../components/media/HeroPhoto';
-import Icon from '../components/Icon';
+import Link from 'next/link';
+import Photo from '../components/media/Photo';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
+import './SolutionsPages.css';
 
-const THERAPY_AREAS = ["Oncology","Hematology","Immunology","Cardiology","Endocrinology","Neurology","Rare Disease","Vaccines","Anti-Infectives","Respiratory"];
+const THERAPY_AREAS = ['Oncology', 'Hematology', 'Immunology', 'Cardiology', 'Endocrinology', 'Neurology', 'Rare Disease', 'Vaccines', 'Anti-Infectives', 'Respiratory'];
 
-// Headings keep their rich (italic) defaults, but render a plain string when overridden.
+// The headline keeps its orange second sentence by default, but renders a plain string
+// when an editor overrides it. This must match the manifest default.
 const HERO_HEADLINE_DEFAULT = 'MLR-compliant content. Built for field readiness.';
-const CTA_HEADING_DEFAULT = 'Launch on time. MLR clean.';
 
+// The example launch as bars on a 9-month line: where each step starts and ends, in months.
+const LAUNCH = [
+  { key: 'phase1', from: 0, to: 3, months: 'Months 1–3', tone: 'human' },
+  { key: 'phase2', from: 1, to: 6, months: 'Months 2–6', tone: 'ai' },
+  { key: 'phase3', from: 3, to: 7, months: 'Months 4–7', tone: 'both' },
+];
+const LAUNCH_MONTHS = 9;
+
+/**
+ * Content Development: "AI speed, human depth, MLR clean". A plain hero photo; the two
+ * tracks side by side, each headed by its picture (a real Forge screen, a person); an
+ * example launch as solid bars on one line; the therapeutic areas set large. Styles: cdev-
+ * in SolutionsPages.css.
+ */
 export default function ContentPage({ content }) {
   const c = makeGetter(content);
   const hh = c('hero.headline');
-  const heroHeadline = hh === HERO_HEADLINE_DEFAULT
+  const headline = hh === HERO_HEADLINE_DEFAULT
     ? <>MLR-compliant content. <em>Built for field readiness.</em></>
     : hh;
-  const ch = c('cta.heading');
-  const ctaHeading = ch === CTA_HEADING_DEFAULT
-    ? <>Launch on time. <em>MLR clean.</em></>
-    : ch;
+  const contact = hrefFor('contact');
+  const tracks = [
+    {
+      key: 'ai', title: c('track1.title'), photo: 'forge-workflow-desktop', screen: true,
+      rows: [['Best for', c('track1.body')], ['Speed', 'Hours to a first draft'], ['Built by', 'Forge agents, with every claim cited']],
+    },
+    {
+      key: 'human', title: c('track2.title'), photo: 'author-at-laptop', screen: false,
+      rows: [['Best for', c('track2.body')], ['Speed', 'Paced for depth and nuance'], ['Built by', "Practitioners who've ridden along"]],
+    },
+  ];
+
   return (
     <>
-      <EditorialHero
-        eyebrow={c('hero.eyebrow')}
-        headline={heroHeadline}
-        subhead={c('hero.subhead')}
-        visual={(
-          <HeroPhoto
-            name="author-at-laptop"
-            position="48% 50%"
-            chip={{ mark: <Icon name="content" size={18} />, title: 'MLR-compliant content', text: 'AI-generated or human-led' }}
-          />
-        )}
-        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
-      />
-
-      <section className="section section-light">
-        <div className="mw content-tracks">
-          <div className="t-eyebrow">{c('tracks.eyebrow')}</div>
-          <h2 className="t-h2">{c('tracks.heading')}</h2>
-          <p className="t-lead">{c('tracks.lead')}</p>
-
-          <div className="content-track-system">
-            <div className="content-track-cards">
-              <div className="content-track-card">
-                <div className="content-track-label">Track 01</div>
-                <h3>{c('track1.title')}</h3>
-                <p>{c('track1.body')}</p>
-                <ul>
-                  <li>Hours to draft</li>
-                  <li>Auto-citation</li>
-                  <li>MLR pre-checked</li>
-                </ul>
-              </div>
-              <div className="content-track-card">
-                <div className="content-track-label">Track 02</div>
-                <h3>{c('track2.title')}</h3>
-                <p>{c('track2.body')}</p>
-                <ul>
-                  <li>Practitioner-authored</li>
-                  <li>Field-validated</li>
-                  <li>Behavior-change targeted</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="content-standards-strip">
-              <div className="content-standards-label">{c('standards.label')}</div>
-              <ul>
-                <li>
-                  <strong>{c('standards.item1.title')}</strong>
-                  <span>{c('standards.item1.desc')}</span>
-                </li>
-                <li>
-                  <strong>{c('standards.item2.title')}</strong>
-                  <span>{c('standards.item2.desc')}</span>
-                </li>
-                <li>
-                  <strong>{c('standards.item3.title')}</strong>
-                  <span>{c('standards.item3.desc')}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="content-scenario-band">
-            <div className="content-scenario-header">
-              <div className="t-eyebrow">{c('scenario.eyebrow')}</div>
-              <h3>{c('scenario.heading')}</h3>
-            </div>
-            <div className="content-scenario-timeline">
-              <div className="content-scenario-phase">
-                <div className="content-scenario-months">Months 1–3</div>
-                <h4>{c('scenario.phase1.title')}</h4>
-                <p>{c('scenario.phase1.body')}</p>
-                <span>Track 02</span>
-              </div>
-              <div className="content-scenario-phase">
-                <div className="content-scenario-months">Months 2–6</div>
-                <h4>{c('scenario.phase2.title')}</h4>
-                <p>{c('scenario.phase2.body')}</p>
-                <span>Track 01</span>
-              </div>
-              <div className="content-scenario-phase">
-                <div className="content-scenario-months">Months 4–7</div>
-                <h4>{c('scenario.phase3.title')}</h4>
-                <p>{c('scenario.phase3.body')}</p>
-                <span>Tracks 01 + 02</span>
-              </div>
-            </div>
-            <div className="content-scenario-outcome">{c('scenario.outcome')}</div>
-          </div>
+      <section className="cdev-hero">
+        <div className="cdev-hero-text">
+          <div className="t-eyebrow">{c('hero.eyebrow')}</div>
+          <h1 className="cdev-hero-h1">{headline}</h1>
+          <p className="cdev-hero-sub">{c('hero.subhead')}</p>
+          <Link href={contact} className="bp as-btn">{c('hero.ctaLabel')}</Link>
+        </div>
+        <div className="cdev-hero-photo">
+          <Photo name="colleagues-at-laptop" sizes="(max-width: 960px) 100vw, 680px" position="55% 40%" priority />
         </div>
       </section>
 
-      <section className="section section-tinted">
-        <div className="mw therapeutic-coverage">
-          <div className="t-eyebrow">{c('therapeutic.eyebrow')}</div>
-          <h2 className="t-h2">{c('therapeutic.heading')}</h2>
-          <p className="t-lead">{c('therapeutic.lead')}</p>
-          <div className="therapeutic-pill-row">
-            {THERAPY_AREAS.map(t => (
-              <span key={t} className="therapeutic-pill">{t}</span>
+      <section className="cdev-tracks cdev-wrap">
+        <div className="t-eyebrow">{c('tracks.eyebrow')}</div>
+        <h2 className="cdev-h2">{c('tracks.heading')}</h2>
+        <div className="cdev-track-grid">
+          {tracks.map((t) => (
+            <article key={t.key} className="cdev-track">
+              <div className={`cdev-track-img${t.screen ? ' cdev-track-screen' : ''}`}>
+                <Photo name={t.photo} sizes="(max-width: 960px) 100vw, 600px" position={t.screen ? undefined : '50% 35%'} />
+              </div>
+              <h3>{t.title}</h3>
+              <dl>
+                {t.rows.map(([label, value]) => (
+                  <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
+                ))}
+              </dl>
+            </article>
+          ))}
+        </div>
+        <p className="cdev-both">
+          <span className="cdev-both-label">{c('standards.label')}</span>
+          <span className="cdev-both-items">
+            {c('standards.item1.title')}<i aria-hidden="true">·</i>{c('standards.item2.title')}<i aria-hidden="true">·</i>{c('standards.item3.title')}
+          </span>
+        </p>
+      </section>
+
+      <section className="cdev-launch">
+        <div className="cdev-wrap">
+          <div className="t-eyebrow">{c('scenario.eyebrow')}</div>
+          <h2 className="cdev-h2">{c('scenario.heading')}</h2>
+          <div className="cdev-gantt">
+            {LAUNCH.map((p) => (
+              <div key={p.key} className="cdev-gantt-row">
+                <div
+                  className={`cdev-bar cdev-bar-${p.tone}`}
+                  style={{ '--from': p.from / LAUNCH_MONTHS, '--span': (p.to - p.from) / LAUNCH_MONTHS }}
+                >
+                  <span className="cdev-bar-months">{p.months}</span>
+                  <span className="cdev-bar-title">{c(`scenario.${p.key}.title`)}</span>
+                </div>
+              </div>
             ))}
+            <div className="cdev-gantt-axis" aria-hidden="true">
+              {Array.from({ length: LAUNCH_MONTHS + 1 }, (_, m) => <span key={m}>{m === LAUNCH_MONTHS ? 'Launch' : m || ''}</span>)}
+            </div>
           </div>
+          <p className="cdev-outcome">{c('scenario.outcome')}</p>
         </div>
       </section>
 
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
-      />
+      <section className="cdev-areas cdev-wrap">
+        <div className="t-eyebrow">{c('therapeutic.eyebrow')}</div>
+        <h2 className="cdev-h2">{c('therapeutic.heading')}</h2>
+        <ul className="cdev-area-list">
+          {THERAPY_AREAS.map((t) => <li key={t}>{t}</li>)}
+        </ul>
+      </section>
     </>
   );
 }

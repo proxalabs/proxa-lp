@@ -1,96 +1,102 @@
-import EditorialHero from '../components/sections/EditorialHero';
-import LongForm from '../components/sections/LongForm';
-import PullQuote from '../components/sections/PullQuote';
-import CTABand from '../components/sections/CTABand';
-import HeroPhoto from '../components/media/HeroPhoto';
-import Icon from '../components/Icon';
+import Link from 'next/link';
+import CountUp from '../components/CountUp';
+import Photo from '../components/media/Photo';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
+import './SolutionsPages.css';
 
-// Plain-string defaults for headings that carry inline markup: render the rich
-// (italic) JSX as the default, but a plain string when an editor overrides it.
+// The headline keeps its orange second sentence by default, but renders a plain string
+// when an editor overrides it. This must match the manifest default.
 const HERO_HEADLINE_DEFAULT = 'Most vendors lead with a demo. We lead with a diagnosis.';
-const CTA_HEADING_DEFAULT = "Not sure where to start? That's the right conversation to have.";
 
-const ENGAGEMENTS = [
-  { n: "01", title: "AI Strategy & Roadmap Workshop", body: "Executive alignment on AI priorities, use cases, and implementation roadmap. Half-day workshop with your leadership team — the lowest-risk starting point. Deliverable: prioritized 12-month AI roadmap." },
-  { n: "02", title: "AI Readiness & Maturity Assessment", body: "Custom AI maturity model, capability heatmap, technology gap analysis, and prioritized use case roadmap. 4-week engagement. Deliverable: maturity scorecard and readiness gap remediation plan." },
-  { n: "03", title: "Learning Technology & GenAI Assessment", body: "Comprehensive vendor evaluation, compliance risk assessment, and integration feasibility study. Built to defend your buying decision against IT, Legal, and Compliance scrutiny." },
-  { n: "04", title: "AI Governance & Compliance Framework", body: "End-to-end governance framework for AI-generated commercial content. Role-based guidelines, monitoring protocols, and incident response playbooks — aligned to MLR and FDA guidance." },
-  { n: "05", title: "Learning Infrastructure Assessment", body: "Data architecture review, AI infrastructure readiness analysis, and phased modernization roadmap. Identifies the technical prerequisites before AI tools arrive." },
-  { n: "06", title: "AI-Optimized Org Design", body: "Organizational structure recommendations for AI-enabled commercial learning at scale. Role redesign, hiring plans for new capabilities, and reporting structure changes." },
+// What each engagement hands over, in the order of the manifest's engagements.0–5.
+const DELIVERABLES = [
+  '12-month AI roadmap',
+  'Maturity scorecard',
+  'A decision you can defend',
+  'Governance framework',
+  'Modernization roadmap',
+  'Org design and hiring plan',
 ];
 
+/** "First sentence. The rest." → ["First sentence.", "The rest."] */
+function splitFirstSentence(text) {
+  const match = /^(.+?[.!?])\s+(.+)$/s.exec(text || '');
+  return match ? [match[1], match[2]] : [text, ''];
+}
+
+/**
+ * Advisory: "diagnosis before demo". A centred headline over a wide photo of a session
+ * where someone is asking the question. Then one large figure, the six engagements as
+ * numbered rows that open to a single line beside a photo, and the client quote set large
+ * on a grey band. Styles: adv- in SolutionsPages.css.
+ */
 export default function AdvisoryPage({ content }) {
   const c = makeGetter(content);
-  // Headings keep their rich (italic) default, but render a plain string if overridden.
   const hh = c('hero.headline');
-  const heroHeadline = hh === HERO_HEADLINE_DEFAULT
+  const headline = hh === HERO_HEADLINE_DEFAULT
     ? <>Most vendors lead with a demo. <em>We lead with a diagnosis.</em></>
     : hh;
-  const ch = c('cta.heading');
-  const ctaHeading = ch === CTA_HEADING_DEFAULT
-    ? <>Not sure where to start? <em>That's the right conversation to have.</em></>
-    : ch;
+  const [quoteLead, quoteRest] = splitFirstSentence(c('testimonial.quote'));
+  const contact = hrefFor('contact');
+
   return (
     <>
-      <EditorialHero
-        eyebrow={c('hero.eyebrow')}
-        headline={heroHeadline}
-        subhead={c('hero.subhead')}
-        visual={(
-          <HeroPhoto
-            name="strategy-whiteboard"
-            position="42% 60%"
-            chip={{ mark: <Icon name="strategy" size={18} />, title: 'AI readiness roadmap', text: 'Strategy before any technology decision' }}
-          />
-        )}
-      />
-
-      <LongForm
-        eyebrow={c('why.eyebrow')}
-        heading={c('why.heading')}
-        pullQuote={c('why.pullQuote')}
-        pullQuoteAttribution={c('why.pullQuoteAttribution')}
-      >
-        <p>{c('why.body1')}</p>
-        <p>{c('why.body2')}</p>
-        <p>{c('why.body3')}</p>
-      </LongForm>
-
-      <section className="section section-light">
-        <div className="mw">
-          <div className="advisory-engagements-header">
-            <div className="t-eyebrow">{c('engagements.eyebrow')}</div>
-            <h2 className="t-h2">{c('engagements.heading')}</h2>
-            <p className="t-lead">{c('engagements.lead')}</p>
-          </div>
-          <div className="advisory-engagements-grid">
-            {ENGAGEMENTS.map((e, i) => (
-              <div key={e.n} className="advisory-engagement-card">
-                <div className="advisory-engagement-num">{e.n}</div>
-                <div>
-                  <div className="advisory-engagement-title">{c(`engagements.${i}.title`)}</div>
-                  <div className="advisory-engagement-body">{c(`engagements.${i}.body`)}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section className="adv-hero">
+        <div className="adv-hero-text">
+          <div className="t-eyebrow">{c('hero.eyebrow')}</div>
+          <h1 className="adv-hero-h1">{headline}</h1>
+          <p className="adv-hero-sub">{c('hero.subhead')}</p>
+          <Link href={contact} className="bp as-btn">{c('cta.label')}</Link>
+        </div>
+        <div className="adv-hero-photo">
+          <Photo name="trainer-question" sizes="(max-width: 1312px) 100vw, 1200px" position="50% 28%" priority />
         </div>
       </section>
 
-      <PullQuote
-        photo="advisor-conversation"
-        photoPosition="62% 30%"
-        quote={c('testimonial.quote')}
-        author={{ name: c('testimonial.author.name'), title: c('testimonial.author.title'), company: c('testimonial.author.company') }}
-      />
+      <section className="adv-figure">
+        <div className="t-eyebrow">{c('why.eyebrow')}</div>
+        <div className="adv-figure-n"><CountUp>{c('why.heading')}</CountUp></div>
+        <p className="adv-figure-l">{c('why.body1')}</p>
+      </section>
 
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.label'), href: hrefFor("contact") }}
-      />
+      <section className="adv-engage">
+        <div className="adv-engage-side">
+          <div className="t-eyebrow">{c('engagements.eyebrow')}</div>
+          <h2 className="adv-h2">{c('engagements.heading')}</h2>
+          <div className="adv-engage-photo">
+            <Photo name="advisor-conversation" sizes="(max-width: 960px) 90vw, 420px" position="50% 40%" />
+          </div>
+        </div>
+        <div className="adv-engage-list">
+          {DELIVERABLES.map((deliverable, i) => (
+            <details key={deliverable} className="adv-row" open={i === 0}>
+              <summary>
+                <span className="adv-row-n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="adv-row-title">{c(`engagements.${i}.title`)}</span>
+                <span className="adv-row-out">{deliverable}</span>
+                <span className="adv-row-plus" aria-hidden="true" />
+              </summary>
+              <p>{c(`engagements.${i}.body`)}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="adv-quote">
+        <blockquote>
+          <p><span className="adv-quote-lead">“{quoteLead}</span>{quoteRest && <> {quoteRest}”</>}{!quoteRest && '”'}</p>
+          <footer>{c('testimonial.author.name')} · {c('testimonial.author.title')}</footer>
+        </blockquote>
+      </section>
+
+      <section className="adv-close">
+        <h2 className="adv-close-h">{c('cta.heading')}</h2>
+        <div className="adv-close-side">
+          <p>{c('cta.body')}</p>
+          <Link href={contact} className="bp as-btn">{c('cta.label')}</Link>
+        </div>
+      </section>
     </>
   );
 }

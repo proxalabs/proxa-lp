@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Breadcrumbs from './Breadcrumbs';
+import CountUp from './CountUp';
 import { hrefFor } from '../lib/routes';
 import './ArticleLayout.css';
 import '../views/CaseStudyPage.css';
@@ -27,7 +28,7 @@ export default function CaseStudyLayout({ cs }) {
           <div className="cs-stats">
             {stats.map((s, i) => (
               <div className="cs-stat" key={i}>
-                <div className="cs-stat-value">{s.value}</div>
+                <div className="cs-stat-value"><CountUp>{s.value}</CountUp></div>
                 <div className="cs-stat-label">{s.label}</div>
               </div>
             ))}

@@ -15,8 +15,8 @@ const FOOTER_COLUMNS = [
     ["Overview", "proxalab"],
   ]],
   ["Resources", [
-    ["Frameworks & Guides", "resources", "frameworks"],
-    ["Research", "resources", "research"],
+    ["Blog", "blog"],
+    ["News", "newsHub"],
   ]],
   ["About", [
     ["About Proxa Labs", "about"],
@@ -33,12 +33,10 @@ const Footer = () => (
         <div className="footer-grid">
           <div className="footer-brand">
             <Link className="footer-logo-wrap as-block" href="/" aria-label="Proxa Labs home">
-              <img className="footer-logo-img" src="/assets/proxa_horiz_overdark.png" alt="Proxa Labs" width="600" height="137" loading="lazy" />
+              <img className="footer-logo-img" src="/assets/proxa_horiz.png" alt="Proxa Labs" width="600" height="137" loading="lazy" />
             </Link>
             <p className="footer-tagline">The AI-native platform and implementation partner built for the organizational complexity of biopharma commercial learning — not adapted for it.</p>
-            <div className="footer-cta-row">
-              <Link className="footer-cta-primary as-btn" href={hrefFor("contact")}>Book a Consult</Link>
-            </div>
+            <Link className="footer-cta as-btn" href={hrefFor("contact")}>Book a Consult</Link>
           </div>
           {FOOTER_COLUMNS.map(([h, links]) => (
             <div key={h} className="footer-col">

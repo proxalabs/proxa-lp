@@ -1,7 +1,7 @@
 // The drawings and the timing of the home page's four line-art animations (LineMotion.jsx).
 // Everything here is plain data, so it can be checked without a browser.
 //
-// Each scene is hairline art in three colours (white, the brand orange and a cool blue),
+// Each scene is line art in three colours (dark ink, the brand orange and a cool blue),
 // drawn in a 450 × 300 box and played as its own loop:
 //   cloud      three sources send packets up into a cloud until it is full
 //   ai         signals cross a small neural network to a spark, three times
@@ -72,7 +72,7 @@ function tipTrack(id, points, shares, [from, to], stay) {
 
 // ── 1. Cloud ─────────────────────────────────────────────────────────────────────────────
 
-const FEEDS = [{ x: 165, tone: 'blue' }, { x: 225, tone: 'orange' }, { x: 285, tone: 'white' }]
+const FEEDS = [{ x: 165, tone: 'blue' }, { x: 225, tone: 'orange' }, { x: 285, tone: 'ink' }]
 const FEED = { top: 148, bottom: 208 }
 
 export const CLOUD = {
@@ -112,7 +112,7 @@ function cloud() {
     ] })
     tracks.push(beat(`fill-${slot.n}`, land, [full, wave + (slot.n % 5) * 0.05]))
   }
-  return { duration: wave + 1.3, tracks }
+  return { duration: wave + 1.3, ready: 1.1, tracks }
 }
 
 // ── 2. AI ────────────────────────────────────────────────────────────────────────────────
@@ -192,7 +192,7 @@ function ai() {
     ringOut('out-halo', [ANSWER], 1.8, 0.9),
     popIn('plus', ANSWER + 0.15),
   )
-  return { duration: ECHO + 1.75, tracks }
+  return { duration: ECHO + 1.75, ready: PASSES[0].start, tracks }
 }
 
 // ── 3. Analysis ──────────────────────────────────────────────────────────────────────────
@@ -248,7 +248,7 @@ function analysis() {
       [run[1] + 0.3 + n * 0.12, { transform: 'scaleX(0)' }, OUT], [run[1] + 0.65 + n * 0.12, { transform: 'scaleX(1)' }],
     ] })),
   )
-  return { duration: 5.9, tracks }
+  return { duration: 5.9, ready: grow(CHART.bars.length - 1) + 0.5, tracks }
 }
 
 // ── 4. Automation ────────────────────────────────────────────────────────────────────────
@@ -284,7 +284,7 @@ function automation() {
   const stopped = first.run[1]
   const cleared = pass(second, 0.75)
   const spin = (deg, scale) => `rotate(${deg}deg) scale(${scale})`
-  return { duration: exit + 0.8, tracks: [
+  return { duration: exit + 0.8, ready: first.run[0], tracks: [
     sceneTrack(exit),
     drawOn('track', 0.1, 0.9),
     // The cycle mark in the middle turns for as long as the loop is running.
@@ -323,7 +323,9 @@ function automation() {
 }
 
 /**
- * The four scenes. Calling one gives how long its loop lasts and every moving part: the
- * `data-lm` name of its element with its `[seconds, values, easing?]` rows.
+ * The four scenes. Calling one gives how long its loop lasts, every moving part (the
+ * `data-lm` name of its element with its `[seconds, values, easing?]` rows) and `ready`:
+ * the moment its fixed parts have all arrived and the action is about to start. A drawing
+ * that scrolls into view joins its loop there, so it is never an empty picture on arrival.
  */
 export const SCENES = { cloud, ai, analysis, automation }

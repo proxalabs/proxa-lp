@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import EditorialHero from '../components/sections/EditorialHero';
-import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
@@ -14,7 +13,6 @@ const INTERESTS = ["AI Platform Updates","Advisory Insights","The Lab Research",
 // Plain-text defaults for the two rich (italic) headings — when an editor
 // overrides them we render a plain string; otherwise the JSX default is kept.
 const NEWSLETTER_HERO_HEADING_DEFAULT = "Stay ahead of AI in biopharma commercial learning.";
-const NEWSLETTER_CTA_HEADING_DEFAULT = "One newsletter. Worth your time.";
 
 export default function NewsletterPage({ content }) {
   const c = makeGetter(content);
@@ -57,11 +55,6 @@ export default function NewsletterPage({ content }) {
     ? <>Stay ahead of AI in <em>biopharma commercial learning.</em></>
     : <>{heroHeadingRaw}</>;
 
-  const ctaHeadingRaw = c('cta.heading');
-  const ctaHeading = ctaHeadingRaw === NEWSLETTER_CTA_HEADING_DEFAULT
-    ? <>One newsletter. <em>Worth your time.</em></>
-    : <>{ctaHeadingRaw}</>;
-
   const FormBlock = (
     <div className="newsletter-form-card">
       {done ? (
@@ -69,7 +62,7 @@ export default function NewsletterPage({ content }) {
           <div className="newsletter-success-check">✓</div>
           <div className="newsletter-success-title">{c('success.title')}</div>
           <div className="newsletter-success-body">{c('success.body')}</div>
-          <Link className="bp as-btn" href={hrefFor("resources")}>{c('success.ctaLabel')}</Link>
+          <Link className="bp as-btn" href={hrefFor("blog")}>{c('success.ctaLabel')}</Link>
         </div>
       ) : (
         <>
@@ -133,12 +126,6 @@ export default function NewsletterPage({ content }) {
           {ReceiveBlock}
         </div>
       </section>
-
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("resources") }}
-      />
     </>
   );
 }

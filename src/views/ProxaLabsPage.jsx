@@ -1,123 +1,127 @@
-import EditorialHero from '../components/sections/EditorialHero';
-import LongForm from '../components/sections/LongForm';
-import CardGrid from '../components/sections/CardGrid';
-import CTABand from '../components/sections/CTABand';
-import Icon from '../components/Icon';
-import HeroPhoto from '../components/media/HeroPhoto';
-import PhotoBand from '../components/media/PhotoBand';
+import Link from 'next/link';
+import CountUp from '../components/CountUp';
+import Photo from '../components/media/Photo';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
+import './LabPage.css';
 
-// Plain-text equivalents of the two rich (italic) headings. When the content
-// getter returns one of these, render the rich JSX default; otherwise render the
-// override as a plain string.
-const HERO_HEADLINE_DEFAULT = 'Your AI mandate deserves a properly designed experiment.';
-const CTA_HEADING_DEFAULT = 'Bring us your AI mandate.';
+// The heading keeps its orange second half by default, but renders a plain string when an
+// editor overrides it. This must match the manifest default.
+const HERO_HEADING_DEFAULT = 'Prove it before you scale it.';
 
-const FAILURE_PATTERNS = [
-  { icon: <Icon name="gap" size={26} />, title: "The use case is too broad", body: "\"Use AI in training\" is not a use case. It's a mandate. Organizations that succeed with AI start with a specific problem, a measurable outcome, and validation that the problem is real — before they build anything." },
-  { icon: <Icon name="pilot" size={26} />, title: "The experiment isn't designed for evidence", body: "A pilot scoped to succeed in controlled conditions proves nothing. A properly designed experiment tests the solution against your real constraints — governance, data, workflow, compliance — so the results hold up outside the demo." },
-  { icon: <Icon name="checklist" size={26} />, title: "There's no path to a business case", body: "Pilots that work still fail to scale because no one built the business case while the evidence was fresh. Leadership doesn't fund learning metrics. They fund ROI framing, risk assessment, and a credible implementation path." },
+const FAILURES = [
+  { title: 'Too broad.', line: '“Use AI in training” is a mandate, not a use case.' },
+  { title: 'Built to pass, not to prove.', line: 'A controlled demo says nothing about your real constraints.' },
+  { title: 'No business case.', line: 'Leadership funds ROI and risk, not learning metrics.' },
 ];
 
 const PHASES = [
-  { n: "01", title: "Define the Right Use Case", body: "Map your landscape, identify where AI creates value, and produce a prioritized use case hypothesis. Deliverable: validated one-paragraph use case statement with success criteria, scope boundaries, and known risks." },
-  { n: "02", title: "Design the Experiment",      body: "Structure a pilot against your real constraints — compliance, IT, governance — not a controlled demo. Deliverable: experiment design canvas, success and failure thresholds, governance checkpoints, and exit criteria." },
-  { n: "03", title: "Measure Success",             body: "Define metrics before the experiment runs. Commercial performance, not engagement theater. Deliverable: pre-pilot baseline, instrumented measurement plan, and pre-registered analysis approach." },
-  { n: "04", title: "Build the Business Case",    body: "Translate results into a leadership-ready ROI model and implementation roadmap. Deliverable: CCO-ready business case with a phased rollout plan, investment model, and go/no-go decision points." },
+  { title: 'Define the use case', deliverable: 'Validated use case statement' },
+  { title: 'Design the experiment', deliverable: 'Experiment design canvas' },
+  { title: 'Measure what matters', deliverable: 'Baseline and measurement plan' },
+  { title: 'Build the business case', deliverable: 'CCO-ready business case' },
 ];
 
 const RESEARCH = [
-  { icon: <Icon name="roleplay" size={22} />, tag: "Actively recruiting", title: "Open-Source HCP Avatar Engine", body: "Crowdsourcing a real-time, open-source conversational avatar system via hackathon. $10K prize pool. Goal: reduce vendor lock-in for AI roleplay deployments across the industry." },
-  { icon: <Icon name="research" size={22} />, tag: "Early results",       title: "Behavioral Analytics Correlation Study", body: "Early data shows r=0.84 correlation between AI-assessed behavioral competencies and field performance outcomes. Full study ongoing with Stage cohort data." },
-  { icon: <Icon name="readiness" size={22} />, tag: "In development",     title: "AI Readiness Predictive Model", body: "Predictive model for pilot success probability based on pre-deployment organizational readiness scores. Training data drawn from 30+ biopharma advisory engagements." },
+  { figure: '$10K', tone: 'o', status: 'Recruiting', title: 'Open-source HCP avatar engine', line: 'A hackathon prize pool to build a roleplay avatar no vendor owns.' },
+  { figure: '0.84', tone: 'bl', status: 'Early results', title: 'Behaviour vs. field performance', line: 'Correlation between AI-assessed skills and results in the field.' },
+  { figure: '30+', tone: 'dk', status: 'In development', title: 'Pilot success predictor', line: 'Advisory engagements training a model of which pilots will work.' },
 ];
 
+/**
+ * The Lab: "prove it before you scale it". A plain photo of a team reading results beside
+ * the headline; then the three ways pilots fail; the four phases either side of a scientist
+ * cut out of his photo, standing on the page with no frame or background; the open
+ * research as three counting figures; and a quote set large.
+ * Styles: LabPage.css.
+ */
 export default function ProxaLabsPage({ content }) {
   const c = makeGetter(content);
-  // Rich headings keep their italic default but render a plain string if overridden.
   const hh = c('hero.heading');
-  const heroHeadline = hh === HERO_HEADLINE_DEFAULT
-    ? <>Your AI mandate deserves <em>a properly designed experiment.</em></>
+  const heading = hh === HERO_HEADING_DEFAULT
+    ? <>Prove it <em>before you scale&nbsp;it.</em></>
     : hh;
-  const ch = c('cta.heading');
-  const ctaHeading = ch === CTA_HEADING_DEFAULT
-    ? <>Bring us your <em>AI mandate.</em></>
-    : ch;
+
   return (
     <>
-      <EditorialHero
-        eyebrow={c('hero.eyebrow')}
-        headline={heroHeadline}
-        subhead={c('hero.subhead')}
-        visual={(
-          <HeroPhoto
-            name="lab-flasks"
-            position="38% 50%"
-            chip={{ mark: <Icon name="pilot" size={18} />, title: 'Structured pilots', text: 'Evidence before you scale' }}
-          />
-        )}
-        primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
-      />
+      <section className="lab-hero">
+        <div className="lab-hero-text">
+          <div className="t-eyebrow">{c('hero.eyebrow')}</div>
+          <h1 className="lab-hero-h1">{heading}</h1>
+          <p className="lab-hero-sub">{c('hero.subhead')}</p>
+          <Link href={hrefFor('contact')} className="bp as-btn">{c('hero.ctaLabel')}</Link>
+        </div>
+        <div className="lab-hero-visual">
+          <Photo name="lab-team-results" sizes="(max-width: 960px) 100vw, 600px" position="60% 40%" priority />
+        </div>
+      </section>
 
-      <LongForm
-        eyebrow={c('longform.eyebrow')}
-        heading={c('longform.heading')}
-        pullQuote={c('longform.pullQuote')}
-        pullQuoteAttribution={c('longform.pullQuoteAttribution')}
-      >
-        <p>{c('longform.p1')}</p>
-        <p>{c('longform.p2')}</p>
-        <p>{c('longform.p3')}</p>
-      </LongForm>
-
-      <CardGrid
-        eyebrow={c('failures.eyebrow')}
-        heading={c('failures.heading')}
-        media={<PhotoBand name="sticky-notes-glass" position="50% 42%" />}
-        lead={c('failures.lead')}
-        columns={3}
-        cards={FAILURE_PATTERNS}
-        cardStyle="standard"
-        background="tinted"
-      />
-
-      <section className="section section-light">
-        <div className="mw">
-          <div className="proxa-phases-header">
-            <div className="t-eyebrow">{c('phases.eyebrow')}</div>
-            <h2 className="t-h2">{c('phases.heading')}</h2>
-            <p className="t-lead">{c('phases.lead')}</p>
-          </div>
-          <div className="proxa-phases-grid">
-            {PHASES.map(p => (
-              <div key={p.n} className="proxa-phase-card">
-                <div className="proxa-phase-num">{p.n}</div>
-                <div>
-                  <div className="proxa-phase-title">{p.title}</div>
-                  <div className="proxa-phase-body">{p.body}</div>
-                </div>
-              </div>
+      <section className="lab-fail">
+        <div className="lab-wrap">
+          <div className="t-eyebrow">{c('failures.eyebrow')}</div>
+          <h2 className="lab-h2">{c('failures.heading')}</h2>
+          <ol className="lab-fail-list">
+            {FAILURES.map((f, i) => (
+              <li key={f.title}>
+                <span className="lab-fail-n">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{f.title}</h3>
+                <p>{f.line}</p>
+              </li>
             ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="lab-method">
+        <div className="lab-wrap">
+          <div className="lab-method-head">
+            <div className="t-eyebrow">{c('phases.eyebrow')}</div>
+            <h2 className="lab-h2">{c('phases.heading')}</h2>
+            <p className="lab-outcome">{c('phases.outcome')}</p>
+          </div>
+          <div className="lab-method-stage">
+            {[PHASES.slice(0, 2), PHASES.slice(2)].map((pair, side) => (
+              <ol key={side} className={`lab-steps lab-steps-${side ? 'right' : 'left'}`} start={side * 2 + 1}>
+                {pair.map((p, i) => (
+                  <li key={p.title} className="lab-step">
+                    <span className="lab-step-n" aria-hidden="true">{side * 2 + i + 1}</span>
+                    <h3>{p.title}</h3>
+                    <p>{p.deliverable}</p>
+                  </li>
+                ))}
+              </ol>
+            ))}
+            <div className="lab-method-person">
+              <Photo name="scientist-cutout" sizes="(max-width: 960px) 70vw, 380px" />
+            </div>
           </div>
         </div>
       </section>
 
-      <CardGrid
-        eyebrow={c('research.eyebrow')}
-        heading={c('research.heading')}
-        lead={c('research.lead')}
-        columns={3}
-        cards={RESEARCH}
-        cardStyle="compact"
-        background="tinted"
-      />
 
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
-      />
+      <section className="lab-research">
+        <div className="lab-wrap">
+          <div className="t-eyebrow">{c('research.eyebrow')}</div>
+          <h2 className="lab-h2">{c('research.heading')}</h2>
+          <ul className="lab-research-list">
+            {RESEARCH.map((r) => (
+              <li key={r.title}>
+                <span className={`lab-research-n lab-tone-${r.tone}`}><CountUp>{r.figure}</CountUp></span>
+                <span className="lab-status">{r.status}</span>
+                <h3>{r.title}</h3>
+                <p>{r.line}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="lab-quote">
+        <blockquote>
+          <p>{c('longform.pullQuote')}</p>
+          <footer>{c('longform.pullQuoteAttribution')}</footer>
+        </blockquote>
+      </section>
     </>
   );
 }

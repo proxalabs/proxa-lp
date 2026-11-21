@@ -1,3 +1,8 @@
+/*
+ * Editable-content manifest for the Advisory page (pageId: "advisory").
+ * Each field's default is the copy written in AdvisoryPage.jsx; the page renders an
+ * override when present, otherwise the default.
+ */
 export default {
   label: 'Advisory',
   fields: [
@@ -7,74 +12,60 @@ export default {
     { key: 'hero.headline', label: 'Hero headline', type: 'textarea',
       default: 'Most vendors lead with a demo. We lead with a diagnosis.' },
     { key: 'hero.subhead', label: 'Hero subhead', type: 'textarea',
-      default: 'Every Proxa Labs engagement starts with the question your organization actually needs answered: what will determine whether AI succeeds or fails here? Six diagnostic engagements, each time-bounded, each producing a deliverable you can act on. No open-ended retainers.' },
+      default: 'Six short, fixed-scope engagements. Each one ends with something you can act on.' },
 
-    // Why Advisory First (LongForm)
-    { key: 'why.eyebrow', label: 'Why Advisory eyebrow', type: 'text',
-      default: 'Why Advisory First' },
-    { key: 'why.heading', label: 'Why Advisory heading', type: 'text',
-      default: 'The thing that determines whether AI works is rarely the technology.' },
-    { key: 'why.pullQuote', label: 'Why Advisory pull quote', type: 'textarea',
-      default: 'Pharma AI pilots fail because no one defines what success looks like before the pilot runs.' },
-    { key: 'why.pullQuoteAttribution', label: 'Why Advisory pull quote attribution', type: 'text',
-      default: 'Marcus Ellison, Advisory Practice Lead, Proxa Labs' },
-    { key: 'why.body1', label: 'Why Advisory paragraph 1', type: 'textarea',
-      default: "AI implementations in biopharma commercial learning fail in predictable ways. The use case is too broad. The pilot is scoped to succeed in controlled conditions that don't match the real environment. There's no path to a defensible business case. The governance gate kills the deployment after a successful technical demo. The business sponsor moves on. These failure patterns account for 80–95% of pharma AI pilot failures." },
-    { key: 'why.body2', label: 'Why Advisory paragraph 2', type: 'textarea',
-      default: "Proxa Labs' advisory engagements are designed around them. We diagnose where you are in the AI journey, where the specific risks live in your environment, and which engagement gives you the highest-leverage starting point. We don't recommend technology before we understand the constraints it has to operate in." },
-    { key: 'why.body3', label: 'Why Advisory paragraph 3', type: 'textarea',
-      default: 'Every advisory engagement is time-bounded, produces a concrete deliverable — not a slide deck — and feeds directly into either a structured Lab experiment or a focused implementation workstream.' },
+    // The big figure
+    { key: 'why.eyebrow', label: 'Figure eyebrow', type: 'text',
+      default: 'Why diagnose first' },
+    { key: 'why.heading', label: 'Figure (counts up)', type: 'text',
+      default: '80–95%' },
+    { key: 'why.body1', label: 'Figure line', type: 'textarea',
+      default: 'of pharma AI pilots fail for reasons that have nothing to do with the technology. We find yours before you build.' },
 
-    // Six Advisory Engagements (section header)
+    // Engagements
     { key: 'engagements.eyebrow', label: 'Engagements eyebrow', type: 'text',
-      default: 'Six Advisory Engagements' },
+      default: 'Six engagements' },
     { key: 'engagements.heading', label: 'Engagements heading', type: 'text',
-      default: 'Pick the engagement that fits where you are.' },
-    { key: 'engagements.lead', label: 'Engagements lead', type: 'textarea',
-      default: 'Each is time-bounded with a concrete deliverable. None requires a long-term retainer.' },
-
-    // Engagement cards
+      default: 'Start where you are.' },
     { key: 'engagements.0.title', label: 'Engagement 1 title', type: 'text',
       default: 'AI Strategy & Roadmap Workshop' },
-    { key: 'engagements.0.body', label: 'Engagement 1 body', type: 'textarea',
-      default: 'Executive alignment on AI priorities, use cases, and implementation roadmap. Half-day workshop with your leadership team — the lowest-risk starting point. Deliverable: prioritized 12-month AI roadmap.' },
+    { key: 'engagements.0.body', label: 'Engagement 1 line', type: 'textarea',
+      default: 'A half day with your leadership team to agree priorities and use cases. The lowest-risk place to start.' },
     { key: 'engagements.1.title', label: 'Engagement 2 title', type: 'text',
       default: 'AI Readiness & Maturity Assessment' },
-    { key: 'engagements.1.body', label: 'Engagement 2 body', type: 'textarea',
-      default: 'Custom AI maturity model, capability heatmap, technology gap analysis, and prioritized use case roadmap. 4-week engagement. Deliverable: maturity scorecard and readiness gap remediation plan.' },
+    { key: 'engagements.1.body', label: 'Engagement 2 line', type: 'textarea',
+      default: 'Four weeks to see where you stand, where the gaps are, and what to fix first.' },
     { key: 'engagements.2.title', label: 'Engagement 3 title', type: 'text',
       default: 'Learning Technology & GenAI Assessment' },
-    { key: 'engagements.2.body', label: 'Engagement 3 body', type: 'textarea',
-      default: 'Comprehensive vendor evaluation, compliance risk assessment, and integration feasibility study. Built to defend your buying decision against IT, Legal, and Compliance scrutiny.' },
+    { key: 'engagements.2.body', label: 'Engagement 3 line', type: 'textarea',
+      default: 'Vendors, compliance risk and integration, checked so the buying decision holds up with IT, Legal and Compliance.' },
     { key: 'engagements.3.title', label: 'Engagement 4 title', type: 'text',
       default: 'AI Governance & Compliance Framework' },
-    { key: 'engagements.3.body', label: 'Engagement 4 body', type: 'textarea',
-      default: 'End-to-end governance framework for AI-generated commercial content. Role-based guidelines, monitoring protocols, and incident response playbooks — aligned to MLR and FDA guidance.' },
+    { key: 'engagements.3.body', label: 'Engagement 4 line', type: 'textarea',
+      default: 'Rules, monitoring and incident playbooks for AI-generated content, aligned to MLR and FDA guidance.' },
     { key: 'engagements.4.title', label: 'Engagement 5 title', type: 'text',
       default: 'Learning Infrastructure Assessment' },
-    { key: 'engagements.4.body', label: 'Engagement 5 body', type: 'textarea',
-      default: 'Data architecture review, AI infrastructure readiness analysis, and phased modernization roadmap. Identifies the technical prerequisites before AI tools arrive.' },
+    { key: 'engagements.4.body', label: 'Engagement 5 line', type: 'textarea',
+      default: 'Your data and systems reviewed, so the prerequisites are in place before AI tools arrive.' },
     { key: 'engagements.5.title', label: 'Engagement 6 title', type: 'text',
       default: 'AI-Optimized Org Design' },
-    { key: 'engagements.5.body', label: 'Engagement 6 body', type: 'textarea',
-      default: 'Organizational structure recommendations for AI-enabled commercial learning at scale. Role redesign, hiring plans for new capabilities, and reporting structure changes.' },
+    { key: 'engagements.5.body', label: 'Engagement 6 line', type: 'textarea',
+      default: 'Roles, reporting lines and hiring plans for AI-enabled learning at scale.' },
 
-    // Testimonial (PullQuote)
-    { key: 'testimonial.quote', label: 'Testimonial quote', type: 'textarea',
-      default: 'The diagnostic call took 30 minutes and saved us 9 months of building the wrong thing. We had been about to issue an RFP for an AI roleplay vendor. The advisory team showed us our actual blocker was MLR throughput, not roleplay coverage. We funded a Forge pilot instead. Six months later we had measurable launch readiness gains and a CCO-approved AI roadmap.' },
-    { key: 'testimonial.author.name', label: 'Testimonial author name', type: 'text',
+    // Quote
+    { key: 'testimonial.quote', label: 'Quote', type: 'textarea',
+      default: 'The diagnostic call took 30 minutes and saved us 9 months of building the wrong thing. Our blocker was MLR throughput, not roleplay coverage.' },
+    { key: 'testimonial.author.name', label: 'Quote author role', type: 'text',
       default: 'VP, Commercial L&D' },
-    { key: 'testimonial.author.title', label: 'Testimonial author title', type: 'text',
+    { key: 'testimonial.author.title', label: 'Quote author company', type: 'text',
       default: 'Top-10 Global Pharma' },
-    { key: 'testimonial.author.company', label: 'Testimonial author company', type: 'text',
-      default: 'Anonymized advisory client' },
 
-    // Closing CTA (CTABand)
-    { key: 'cta.heading', label: 'Closing CTA heading', type: 'textarea',
-      default: "Not sure where to start? That's the right conversation to have." },
-    { key: 'cta.body', label: 'Closing CTA paragraph', type: 'textarea',
-      default: "30 minutes. No demo. Tell us about your environment, what you've tried, and where you've been stuck. We'll tell you what we'd look at first." },
-    { key: 'cta.label', label: 'Closing CTA button label', type: 'text',
+    // Closing
+    { key: 'cta.heading', label: 'Closing heading', type: 'textarea',
+      default: 'Not sure where to start? Good.' },
+    { key: 'cta.body', label: 'Closing line', type: 'textarea',
+      default: "30 minutes. No demo. We'll tell you what we'd look at first." },
+    { key: 'cta.label', label: 'Button label', type: 'text',
       default: 'Book a Consult' },
   ],
 };

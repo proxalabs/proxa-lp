@@ -12,7 +12,6 @@ import content from './pages/content.js';
 import proxalab from './pages/proxalab.js';
 import about from './pages/about.js';
 import news from './pages/news.js';
-import resources from './pages/resources.js';
 import newsletter from './pages/newsletter.js';
 import contact from './pages/contact.js';
 import futureproof from './pages/futureproof.js';
@@ -22,28 +21,34 @@ export const MANIFEST = {
   home: {
     label: 'Homepage',
     fields: [
+      // No eyebrow unless one is typed in: the hero is the headline over a photograph.
       { key: 'hero.eyebrow', label: 'Hero eyebrow', type: 'text',
-        default: 'FOR COMMERCIAL L&D LEADERS IN BIOPHARMA' },
+        default: '' },
       { key: 'hero.headline', label: 'Hero headline', type: 'textarea',
-        default: 'The AI commercial learning partner built for biopharma. Not adapted for it.' },
+        default: 'Workforce intelligence, reinvented.' },
       { key: 'hero.subhead', label: 'Hero subhead', type: 'textarea',
-        default: 'Most platforms were retrofitted for pharma. Proxa Labs was built from day one around MLR review and launch timelines: advisory, AI literacy and a closed-loop platform.' },
-      { key: 'hero.ctaLabel', label: 'Hero button label', type: 'text', default: 'See the Platform' },
+        default: 'The AI commercial learning partner built for biopharma. Not adapted for it.' },
+      { key: 'hero.ctaLabel', label: 'Hero button label', type: 'text', default: 'See the vision' },
       { key: 'logoBand.label', label: 'Logo band label', type: 'text',
         default: 'Trusted across biopharma and health systems' },
       { key: 'cta.body', label: 'Closing CTA paragraph', type: 'textarea',
         default: "Proxa Labs works with commercial L&D leaders who have been told to deliver on AI but haven't found a partner who understands what that actually requires in a biopharma environment. Start with a conversation. We'll tell you what we'd look at first." },
       { key: 'cta.ctaLabel', label: 'Closing CTA button label', type: 'text', default: 'Book a Consult' },
+      // The floating "what's new" button at the bottom right. The link can be any address:
+      // a page of this site ("/ai-literacy") or a full web address.
+      { key: 'whatsNew.label', label: "What's new button text", type: 'text',
+        default: "See what's new in AI Literacy" },
+      { key: 'whatsNew.link', label: "What's new button link", type: 'text',
+        default: '/ai-literacy' },
     ],
   },
   platform, advisory, literacy, insitex, content, proxalab,
-  about, news, resources, newsletter, contact, futureproof, innovation,
+  about, news, newsletter, contact, futureproof, innovation,
 };
 
-// Special-case constant so the homepage can render its rich (italic) headline as
-// the default but a plain string when overridden.
-export const HOME_HERO_HEADLINE_DEFAULT =
-  'The AI commercial learning partner built for biopharma. Not adapted for it.';
+// Special-case constant so the homepage can render its built-in headline with the last
+// word underlined, but a plain string when overridden.
+export const HOME_HERO_HEADLINE_DEFAULT = 'Workforce intelligence, reinvented.';
 
 // Flat { key: default } map for a page.
 export function defaultsFor(pageId) {

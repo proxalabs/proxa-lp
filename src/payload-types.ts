@@ -128,7 +128,6 @@ export interface Config {
     'page-proxalab': PageProxalab;
     'page-about': PageAbout;
     'page-news': PageNew;
-    'page-resources': PageResource;
     'page-newsletter': PageNewsletter;
     'page-contact': PageContact;
     'page-futureproof': PageFutureproof;
@@ -145,7 +144,6 @@ export interface Config {
     'page-proxalab': PageProxalabSelect<false> | PageProxalabSelect<true>;
     'page-about': PageAboutSelect<false> | PageAboutSelect<true>;
     'page-news': PageNewsSelect<false> | PageNewsSelect<true>;
-    'page-resources': PageResourcesSelect<false> | PageResourcesSelect<true>;
     'page-newsletter': PageNewsletterSelect<false> | PageNewsletterSelect<true>;
     'page-contact': PageContactSelect<false> | PageContactSelect<true>;
     'page-futureproof': PageFutureproofSelect<false> | PageFutureproofSelect<true>;
@@ -488,7 +486,6 @@ export interface Page {
                   | 'advisory'
                   | 'content'
                   | 'proxalab'
-                  | 'resources'
                   | 'blog'
                   | 'newsHub'
                   | 'news'
@@ -583,7 +580,6 @@ export interface Page {
                   | 'advisory'
                   | 'content'
                   | 'proxalab'
-                  | 'resources'
                   | 'blog'
                   | 'newsHub'
                   | 'news'
@@ -1926,7 +1922,6 @@ export interface Navigation {
               | 'advisory'
               | 'content'
               | 'proxalab'
-              | 'resources'
               | 'blog'
               | 'newsHub'
               | 'news'
@@ -1955,7 +1950,6 @@ export interface Navigation {
               | 'advisory'
               | 'content'
               | 'proxalab'
-              | 'resources'
               | 'blog'
               | 'newsHub'
               | 'news'
@@ -1970,7 +1964,7 @@ export interface Navigation {
       }[]
     | null;
   /**
-   * Leave empty to use the default: Resources, Blog, News.
+   * Leave empty to use the default: Blog, News.
    */
   resources?:
     | {
@@ -1984,7 +1978,6 @@ export interface Navigation {
               | 'advisory'
               | 'content'
               | 'proxalab'
-              | 'resources'
               | 'blog'
               | 'newsHub'
               | 'news'
@@ -2016,6 +2009,8 @@ export interface PageHome {
   logoBand_label?: string | null;
   cta_body?: string | null;
   cta_ctaLabel?: string | null;
+  whatsNew_label?: string | null;
+  whatsNew_link?: string | null;
   seo?: {
     /**
      * Leave empty to use the default.
@@ -2089,14 +2084,9 @@ export interface PageAdvisory {
   hero_subhead?: string | null;
   why_eyebrow?: string | null;
   why_heading?: string | null;
-  why_pullQuote?: string | null;
-  why_pullQuoteAttribution?: string | null;
   why_body1?: string | null;
-  why_body2?: string | null;
-  why_body3?: string | null;
   engagements_eyebrow?: string | null;
   engagements_heading?: string | null;
-  engagements_lead?: string | null;
   engagements_0_title?: string | null;
   engagements_0_body?: string | null;
   engagements_1_title?: string | null;
@@ -2112,7 +2102,6 @@ export interface PageAdvisory {
   testimonial_quote?: string | null;
   testimonial_author_name?: string | null;
   testimonial_author_title?: string | null;
-  testimonial_author_company?: string | null;
   cta_heading?: string | null;
   cta_body?: string | null;
   cta_label?: string | null;
@@ -2140,19 +2129,11 @@ export interface PageLiteracy {
   hero_heading?: string | null;
   hero_subhead?: string | null;
   hero_ctaLabel?: string | null;
-  whyLiteracy_eyebrow?: string | null;
-  whyLiteracy_heading?: string | null;
-  whyLiteracy_pullQuote?: string | null;
-  whyLiteracy_pullQuoteAttribution?: string | null;
-  whyLiteracy_body1?: string | null;
-  whyLiteracy_body2?: string | null;
-  whyLiteracy_body3?: string | null;
   tracks_eyebrow?: string | null;
   tracks_heading?: string | null;
-  tracks_lead?: string | null;
-  delivery_eyebrow?: string | null;
+  whyLiteracy_eyebrow?: string | null;
+  whyLiteracy_heading?: string | null;
   delivery_heading?: string | null;
-  delivery_body?: string | null;
   cta_heading?: string | null;
   cta_body?: string | null;
   cta_ctaLabel?: string | null;
@@ -2229,33 +2210,22 @@ export interface PageContent {
   hero_ctaLabel?: string | null;
   tracks_eyebrow?: string | null;
   tracks_heading?: string | null;
-  tracks_lead?: string | null;
   track1_title?: string | null;
   track1_body?: string | null;
   track2_title?: string | null;
   track2_body?: string | null;
   standards_label?: string | null;
   standards_item1_title?: string | null;
-  standards_item1_desc?: string | null;
   standards_item2_title?: string | null;
-  standards_item2_desc?: string | null;
   standards_item3_title?: string | null;
-  standards_item3_desc?: string | null;
   scenario_eyebrow?: string | null;
   scenario_heading?: string | null;
   scenario_phase1_title?: string | null;
-  scenario_phase1_body?: string | null;
   scenario_phase2_title?: string | null;
-  scenario_phase2_body?: string | null;
   scenario_phase3_title?: string | null;
-  scenario_phase3_body?: string | null;
   scenario_outcome?: string | null;
   therapeutic_eyebrow?: string | null;
   therapeutic_heading?: string | null;
-  therapeutic_lead?: string | null;
-  cta_heading?: string | null;
-  cta_body?: string | null;
-  cta_ctaLabel?: string | null;
   seo?: {
     /**
      * Leave empty to use the default.
@@ -2280,25 +2250,15 @@ export interface PageProxalab {
   hero_heading?: string | null;
   hero_subhead?: string | null;
   hero_ctaLabel?: string | null;
-  longform_eyebrow?: string | null;
-  longform_heading?: string | null;
-  longform_p1?: string | null;
-  longform_p2?: string | null;
-  longform_p3?: string | null;
-  longform_pullQuote?: string | null;
-  longform_pullQuoteAttribution?: string | null;
   failures_eyebrow?: string | null;
   failures_heading?: string | null;
-  failures_lead?: string | null;
   phases_eyebrow?: string | null;
   phases_heading?: string | null;
-  phases_lead?: string | null;
+  phases_outcome?: string | null;
+  longform_pullQuote?: string | null;
+  longform_pullQuoteAttribution?: string | null;
   research_eyebrow?: string | null;
   research_heading?: string | null;
-  research_lead?: string | null;
-  cta_heading?: string | null;
-  cta_body?: string | null;
-  cta_ctaLabel?: string | null;
   seo?: {
     /**
      * Leave empty to use the default.
@@ -2382,72 +2342,6 @@ export interface PageNew {
   recent_cards_2_tag?: string | null;
   recent_cards_2_title?: string | null;
   recent_cards_2_body?: string | null;
-  cta_heading?: string | null;
-  cta_body?: string | null;
-  cta_ctaLabel?: string | null;
-  seo?: {
-    /**
-     * Leave empty to use the default.
-     */
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-    noindex?: boolean | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * Leave a field empty to use the built-in copy shown in grey.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page-resources".
- */
-export interface PageResource {
-  id: number;
-  hero_eyebrow?: string | null;
-  hero_headline?: string | null;
-  hero_subhead?: string | null;
-  hero_ctaLabel?: string | null;
-  frameworks_eyebrow?: string | null;
-  frameworks_heading?: string | null;
-  frameworks_lead?: string | null;
-  frameworks_cards_0_tag?: string | null;
-  frameworks_cards_0_title?: string | null;
-  frameworks_cards_0_body?: string | null;
-  frameworks_cards_0_linkLabel?: string | null;
-  frameworks_cards_1_tag?: string | null;
-  frameworks_cards_1_title?: string | null;
-  frameworks_cards_1_body?: string | null;
-  frameworks_cards_1_linkLabel?: string | null;
-  frameworks_cards_2_tag?: string | null;
-  frameworks_cards_2_title?: string | null;
-  frameworks_cards_2_body?: string | null;
-  frameworks_cards_2_linkLabel?: string | null;
-  frameworks_cards_3_tag?: string | null;
-  frameworks_cards_3_title?: string | null;
-  frameworks_cards_3_body?: string | null;
-  frameworks_cards_3_linkLabel?: string | null;
-  frameworks_cards_4_tag?: string | null;
-  frameworks_cards_4_title?: string | null;
-  frameworks_cards_4_body?: string | null;
-  frameworks_cards_4_linkLabel?: string | null;
-  frameworks_cards_5_tag?: string | null;
-  frameworks_cards_5_title?: string | null;
-  frameworks_cards_5_body?: string | null;
-  frameworks_cards_5_linkLabel?: string | null;
-  research_eyebrow?: string | null;
-  research_heading?: string | null;
-  research_body?: string | null;
-  research_cards_0_tag?: string | null;
-  research_cards_0_title?: string | null;
-  research_cards_0_body?: string | null;
-  research_cards_1_tag?: string | null;
-  research_cards_1_title?: string | null;
-  research_cards_1_body?: string | null;
-  research_cards_2_tag?: string | null;
-  research_cards_2_title?: string | null;
-  research_cards_2_body?: string | null;
   cta_heading?: string | null;
   cta_body?: string | null;
   cta_ctaLabel?: string | null;
@@ -2688,6 +2582,8 @@ export interface PageHomeSelect<T extends boolean = true> {
   logoBand_label?: T;
   cta_body?: T;
   cta_ctaLabel?: T;
+  whatsNew_label?: T;
+  whatsNew_link?: T;
   seo?:
     | T
     | {
@@ -2755,14 +2651,9 @@ export interface PageAdvisorySelect<T extends boolean = true> {
   hero_subhead?: T;
   why_eyebrow?: T;
   why_heading?: T;
-  why_pullQuote?: T;
-  why_pullQuoteAttribution?: T;
   why_body1?: T;
-  why_body2?: T;
-  why_body3?: T;
   engagements_eyebrow?: T;
   engagements_heading?: T;
-  engagements_lead?: T;
   engagements_0_title?: T;
   engagements_0_body?: T;
   engagements_1_title?: T;
@@ -2778,7 +2669,6 @@ export interface PageAdvisorySelect<T extends boolean = true> {
   testimonial_quote?: T;
   testimonial_author_name?: T;
   testimonial_author_title?: T;
-  testimonial_author_company?: T;
   cta_heading?: T;
   cta_body?: T;
   cta_label?: T;
@@ -2803,19 +2693,11 @@ export interface PageLiteracySelect<T extends boolean = true> {
   hero_heading?: T;
   hero_subhead?: T;
   hero_ctaLabel?: T;
-  whyLiteracy_eyebrow?: T;
-  whyLiteracy_heading?: T;
-  whyLiteracy_pullQuote?: T;
-  whyLiteracy_pullQuoteAttribution?: T;
-  whyLiteracy_body1?: T;
-  whyLiteracy_body2?: T;
-  whyLiteracy_body3?: T;
   tracks_eyebrow?: T;
   tracks_heading?: T;
-  tracks_lead?: T;
-  delivery_eyebrow?: T;
+  whyLiteracy_eyebrow?: T;
+  whyLiteracy_heading?: T;
   delivery_heading?: T;
-  delivery_body?: T;
   cta_heading?: T;
   cta_body?: T;
   cta_ctaLabel?: T;
@@ -2886,33 +2768,22 @@ export interface PageContentSelect<T extends boolean = true> {
   hero_ctaLabel?: T;
   tracks_eyebrow?: T;
   tracks_heading?: T;
-  tracks_lead?: T;
   track1_title?: T;
   track1_body?: T;
   track2_title?: T;
   track2_body?: T;
   standards_label?: T;
   standards_item1_title?: T;
-  standards_item1_desc?: T;
   standards_item2_title?: T;
-  standards_item2_desc?: T;
   standards_item3_title?: T;
-  standards_item3_desc?: T;
   scenario_eyebrow?: T;
   scenario_heading?: T;
   scenario_phase1_title?: T;
-  scenario_phase1_body?: T;
   scenario_phase2_title?: T;
-  scenario_phase2_body?: T;
   scenario_phase3_title?: T;
-  scenario_phase3_body?: T;
   scenario_outcome?: T;
   therapeutic_eyebrow?: T;
   therapeutic_heading?: T;
-  therapeutic_lead?: T;
-  cta_heading?: T;
-  cta_body?: T;
-  cta_ctaLabel?: T;
   seo?:
     | T
     | {
@@ -2934,25 +2805,15 @@ export interface PageProxalabSelect<T extends boolean = true> {
   hero_heading?: T;
   hero_subhead?: T;
   hero_ctaLabel?: T;
-  longform_eyebrow?: T;
-  longform_heading?: T;
-  longform_p1?: T;
-  longform_p2?: T;
-  longform_p3?: T;
-  longform_pullQuote?: T;
-  longform_pullQuoteAttribution?: T;
   failures_eyebrow?: T;
   failures_heading?: T;
-  failures_lead?: T;
   phases_eyebrow?: T;
   phases_heading?: T;
-  phases_lead?: T;
+  phases_outcome?: T;
+  longform_pullQuote?: T;
+  longform_pullQuoteAttribution?: T;
   research_eyebrow?: T;
   research_heading?: T;
-  research_lead?: T;
-  cta_heading?: T;
-  cta_body?: T;
-  cta_ctaLabel?: T;
   seo?:
     | T
     | {
@@ -3030,69 +2891,6 @@ export interface PageNewsSelect<T extends boolean = true> {
   recent_cards_2_tag?: T;
   recent_cards_2_title?: T;
   recent_cards_2_body?: T;
-  cta_heading?: T;
-  cta_body?: T;
-  cta_ctaLabel?: T;
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-        noindex?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "page-resources_select".
- */
-export interface PageResourcesSelect<T extends boolean = true> {
-  hero_eyebrow?: T;
-  hero_headline?: T;
-  hero_subhead?: T;
-  hero_ctaLabel?: T;
-  frameworks_eyebrow?: T;
-  frameworks_heading?: T;
-  frameworks_lead?: T;
-  frameworks_cards_0_tag?: T;
-  frameworks_cards_0_title?: T;
-  frameworks_cards_0_body?: T;
-  frameworks_cards_0_linkLabel?: T;
-  frameworks_cards_1_tag?: T;
-  frameworks_cards_1_title?: T;
-  frameworks_cards_1_body?: T;
-  frameworks_cards_1_linkLabel?: T;
-  frameworks_cards_2_tag?: T;
-  frameworks_cards_2_title?: T;
-  frameworks_cards_2_body?: T;
-  frameworks_cards_2_linkLabel?: T;
-  frameworks_cards_3_tag?: T;
-  frameworks_cards_3_title?: T;
-  frameworks_cards_3_body?: T;
-  frameworks_cards_3_linkLabel?: T;
-  frameworks_cards_4_tag?: T;
-  frameworks_cards_4_title?: T;
-  frameworks_cards_4_body?: T;
-  frameworks_cards_4_linkLabel?: T;
-  frameworks_cards_5_tag?: T;
-  frameworks_cards_5_title?: T;
-  frameworks_cards_5_body?: T;
-  frameworks_cards_5_linkLabel?: T;
-  research_eyebrow?: T;
-  research_heading?: T;
-  research_body?: T;
-  research_cards_0_tag?: T;
-  research_cards_0_title?: T;
-  research_cards_0_body?: T;
-  research_cards_1_tag?: T;
-  research_cards_1_title?: T;
-  research_cards_1_body?: T;
-  research_cards_2_tag?: T;
-  research_cards_2_title?: T;
-  research_cards_2_body?: T;
   cta_heading?: T;
   cta_body?: T;
   cta_ctaLabel?: T;

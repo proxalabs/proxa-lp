@@ -12,7 +12,7 @@ export default function CTABand({ heading, body, primaryCta, secondaryLink }) {
         {body && <p className="cta-band-body">{body}</p>}
         <div className="cta-band-actions">
           <Cta cta={primaryCta} className="bp" />
-          <Cta cta={secondaryLink} className="quiet-link" style={{ color: 'rgba(255,255,255,.7)' }}>
+          <Cta cta={secondaryLink} className="quiet-link">
             <span className="quiet-link-arrow">→</span>
           </Cta>
         </div>

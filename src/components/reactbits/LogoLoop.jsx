@@ -2,7 +2,7 @@
 
 // LogoLoop from React Bits (https://reactbits.dev), copied unmodified apart from this note.
 // Copyright (c) 2026 David Haz. MIT + Commons Clause: see ./LICENSE.md.
-// Use it through ../media/NameLoop.jsx, which sets the site's defaults.
+// Use it through ../media/ClientLogoLoop.jsx, which sets the site's defaults.
 
 import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import './LogoLoop.css';

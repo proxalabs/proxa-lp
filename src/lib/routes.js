@@ -11,7 +11,6 @@ export const PAGE_PATHS = {
   proxalab: '/the-lab',
   about: '/about',
   news: '/announcements',
-  resources: '/resources',
   newsletter: '/newsletter',
   contact: '/contact',
   futureproof: '/future-proof-your-organization',

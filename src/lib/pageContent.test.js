@@ -44,7 +44,7 @@ test('every manifest key maps to a unique column-safe field name', () => {
       seen.set(column, field.key)
     }
   }
-  assert.ok(total > 300, `expected the full manifest, saw ${total} fields`)
+  assert.ok(total > 250, `expected the full manifest, saw ${total} fields`)
 })
 
 test('resolveContent merges overrides onto defaults, skipping blank ones', () => {

@@ -12,7 +12,7 @@ import { getVideos } from './videos'
 /** Fixed routes that are open to indexing, with the page key that owns each. */
 export const INDEXABLE_FIXED: { path: string; pageId?: string }[] = [
   { path: '/', pageId: 'home' },
-  ...(['platform', 'advisory', 'literacy', 'insitex', 'content', 'proxalab', 'about', 'news', 'resources', 'newsletter', 'contact'] as const).map(
+  ...(['platform', 'advisory', 'literacy', 'insitex', 'content', 'proxalab', 'about', 'news', 'newsletter', 'contact'] as const).map(
     (pageId) => ({ path: (PAGE_PATHS as Record<string, string>)[pageId], pageId }),
   ),
   { path: '/blog' },

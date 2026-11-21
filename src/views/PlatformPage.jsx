@@ -1,7 +1,6 @@
 import EditorialHero from '../components/sections/EditorialHero';
 import ProductShowcase from '../components/sections/ProductShowcase';
 import UpgradeComparison from '../components/sections/UpgradeComparison';
-import CTABand from '../components/sections/CTABand';
 import ProductGlimpse from '../components/media/ProductGlimpse';
 import LoopVisual from '../components/LoopVisual';
 import { PRODUCT_TOUR } from '../content/productTour';
@@ -23,18 +22,19 @@ function RealScreens({ app }) {
 // Plain-text defaults for headings that carry inline markup. When the override
 // equals the default, render the rich (italic) JSX; otherwise render the plain string.
 const HERO_HEADLINE_DEFAULT = 'One platform. Four products. A closed loop that never breaks.';
-const CTA_HEADING_DEFAULT = 'See the closed loop in action.';
 
 export default function PlatformPage({ content }) {
   const c = makeGetter(content);
   const hh = c('hero.headline');
   const heroHeadline = hh === HERO_HEADLINE_DEFAULT
-    ? <>One platform. Four products. <em>A closed loop that never breaks.</em></>
+    ? (
+      // Each short sentence stays whole, so beside the diagram the lines break between them.
+      <>
+        <span className="hero-sentence">One platform.</span> <span className="hero-sentence">Four products.</span>{' '}
+        <em>A closed loop that never breaks.</em>
+      </>
+    )
     : <>{hh}</>;
-  const ch = c('cta.heading');
-  const ctaHeading = ch === CTA_HEADING_DEFAULT
-    ? <>See the closed loop <em>in action.</em></>
-    : <>{ch}</>;
   return (
     <>
       <EditorialHero
@@ -42,27 +42,9 @@ export default function PlatformPage({ content }) {
         headline={heroHeadline}
         subhead={c('hero.subhead')}
         primaryCta={{ label: c('hero.ctaLabel'), href: hrefFor("contact") }}
+        visual={<LoopVisual />}
+        className="hero-with-loop"
       />
-
-      <section className="section section-light">
-        <div className="mw">
-          <div className="platform-loop-header">
-            <div className="t-eyebrow">{c('loop.eyebrow')}</div>
-            <h2 className="t-h2">{c('loop.heading')}</h2>
-            <p className="t-lead">{c('loop.lead')}</p>
-          </div>
-          <div className="platform-loop-slice">
-            <div className="platform-loop-visual">
-              <LoopVisual />
-            </div>
-            <div className="platform-loop-copy">
-              <p>{c('loop.body1')}</p>
-              <p>{c('loop.body2')}</p>
-              <p>{c('loop.body3')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <ProductShowcase
         id="forge"
@@ -129,12 +111,6 @@ export default function PlatformPage({ content }) {
         eyebrow={c('compare.eyebrow')}
         heading={c('compare.heading')}
         lead={c('compare.lead')}
-      />
-
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("contact") }}
       />
     </>
   );

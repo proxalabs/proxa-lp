@@ -6,9 +6,10 @@ The Proxa Labs marketing site and its CMS, in one app:
 - **Payload CMS 3** runs inside the same app: the admin is at `/admin`, the API at `/api`.
 - **Postgres** stores the content. Uploaded media is kept on disk in `media/`.
 
-> **Not deployed yet.** The live site is still the previous Vite + Firebase build.
-> Do not merge this branch to `main` until hosting is set up: `.github/workflows/deploy.yml`
-> still deploys `main` to Firebase Hosting and expects the old build.
+> **Not live yet.** The live site is still the previous Vite + Firebase build, deployed from
+> `main`. This branch has a temporary copy on AWS (`infra/temp-host/`) and no longer carries
+> the Firebase files or a deploy workflow. Do not merge it to `main` until production hosting
+> is set up.
 
 ## Run it locally
 
@@ -123,8 +124,9 @@ scripts/              content import, SEO check
 
 ## Before going live
 
-- **Hosting.** Replace `.github/workflows/deploy.yml`. The server needs Node 22, a Postgres
-  database and the variables in `.env.example`. Run `npm run ci` then `npm start`.
+- **Hosting.** Set up the production server and a deploy workflow. The server needs Node 22,
+  a Postgres database and the variables in `.env.example`. Run `npm run ci` then `npm start`.
+  `infra/temp-host/` is a temporary single-server copy with no domain, not the production setup.
 - **Media storage.** Uploads are written to local disk (`media/`, `files/`). On AWS, add
   Payload's S3 storage adapter so they survive a redeploy. Gated files are served through
   `/api/gated-file`, which reads from disk and will need the same change.
@@ -132,5 +134,6 @@ scripts/              content import, SEO check
   written to the server log (submissions are still stored under *Leads* and *Form submissions*).
 - **Content.** Run the import against the production database, then create the admin and
   editor accounts.
-- **Firebase.** `functions/`, `firebase.json` and the Firestore rules are still in the repo
-  for the live site. Remove them once the new site has replaced it.
+- **Firebase.** `functions/`, `firebase.json`, the Firestore and Storage rules and the Hosting
+  deploy workflow have been removed from this branch. They are still on `main`, which serves
+  the live site. Retire the Firebase project once the new site has replaced it.

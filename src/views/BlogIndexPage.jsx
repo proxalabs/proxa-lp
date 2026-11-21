@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { dateTs, cardImg } from '../lib/blog';
 import { hrefFor } from '../lib/routes';
+import BlogLead from '../components/BlogLead';
 import '../components/ArticleLayout.css';
 
 const SYMBOL = '/assets/blog/proxa-symbol.png';
@@ -12,6 +13,7 @@ const SYMBOL = '/assets/blog/proxa-symbol.png';
  * Blog index — lists published articles with live filter + sort. The list is
  * rendered on the server; filtering and sorting happen in the browser. Filter
  * options are derived from the list, so they appear only when there's something to pick.
+ * With no filter set, the first article is shown large as the lead story.
  */
 export default function BlogIndexPage({ articles }) {
   const [topic, setTopic] = useState('');
@@ -35,6 +37,9 @@ export default function BlogIndexPage({ articles }) {
 
   const filtersActive = topic || author || featuredOnly || sort !== 'default';
   const clearFilters = () => { setTopic(''); setAuthor(''); setFeaturedOnly(false); setSort('default'); };
+  // The lead story shows only on the unfiltered list, so a filter never hides an article.
+  const lead = filtersActive ? null : shown[0];
+  const rest = lead ? shown.slice(1) : shown;
   const showFilterBar = articles.length > 0 && (topics.length > 1 || authors.length > 1 || anyFeatured);
 
   return (
@@ -43,46 +48,38 @@ export default function BlogIndexPage({ articles }) {
         <p className="eyebrow blog-eyebrow"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" />Blog</p>
         <h1 className="blog-title">Perspectives on commercial readiness</h1>
         <p className="blog-sub">
-          Field notes and frameworks from inside biopharma commercial learning, on closing the gap between AI ambition and a field that is demonstrably ready.
+          Field notes and frameworks from inside biopharma commercial learning.
         </p>
 
         {showFilterBar && (
           <div className="blog-filters">
             {topics.length > 1 && (
-              <label className="blog-filter">
-                <span>Topic</span>
-                <select value={topic} onChange={(e) => setTopic(e.target.value)}>
-                  <option value="">All topics</option>
-                  {topics.map((t) => <option key={t} value={t}>{t}</option>)}
-                </select>
-              </label>
+              <div className="blog-chips" role="group" aria-label="Topic">
+                <button type="button" className="blog-chip" aria-pressed={!topic} onClick={() => setTopic('')}>All</button>
+                {topics.map((t) => (
+                  <button key={t} type="button" className="blog-chip" aria-pressed={topic === t} onClick={() => setTopic(topic === t ? '' : t)}>{t}</button>
+                ))}
+              </div>
             )}
-            {authors.length > 1 && (
-              <label className="blog-filter">
-                <span>Author</span>
-                <select value={author} onChange={(e) => setAuthor(e.target.value)}>
+            <div className="blog-filter-side">
+              {anyFeatured && (
+                <button type="button" className="blog-chip" aria-pressed={featuredOnly} onClick={() => setFeaturedOnly(!featuredOnly)}>Featured</button>
+              )}
+              {authors.length > 1 && (
+                <select className="blog-select" aria-label="Author" value={author} onChange={(e) => setAuthor(e.target.value)}>
                   <option value="">All authors</option>
                   {authors.map((a) => <option key={a} value={a}>{a}</option>)}
                 </select>
-              </label>
-            )}
-            <label className="blog-filter">
-              <span>Sort</span>
-              <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              )}
+              <select className="blog-select" aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value)}>
                 <option value="default">Featured first</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
               </select>
-            </label>
-            {anyFeatured && (
-              <label className="blog-filter blog-filter-check">
-                <input type="checkbox" checked={featuredOnly} onChange={(e) => setFeaturedOnly(e.target.checked)} />
-                <span>Featured only</span>
-              </label>
-            )}
-            {filtersActive && (
-              <button type="button" className="blog-filter-clear" onClick={clearFilters}>Clear</button>
-            )}
+              {filtersActive && (
+                <button type="button" className="blog-filter-clear" onClick={clearFilters}>Clear</button>
+              )}
+            </div>
           </div>
         )}
 
@@ -91,18 +88,21 @@ export default function BlogIndexPage({ articles }) {
         ) : shown.length === 0 ? (
           <p className="blog-sub">No articles match these filters. <button type="button" className="blog-filter-clear" onClick={clearFilters}>Clear filters</button></p>
         ) : (
-          <div className="blog-grid">
-            {shown.map((a) => (
-              <Link key={a.id} className="blog-card as-block" href={hrefFor('article', { slug: a.slug })}>
-                <div className="blog-card-img">
-                  {cardImg(a) && <img src={cardImg(a)} alt={a.cardImageAlt || ''} loading="lazy" decoding="async" />}
-                </div>
-                <p className="card-pillar">{a.pillar}{a.featured ? ' · Featured' : ''}</p>
-                <p className="card-title">{a.title}</p>
-                <p className="card-meta">{a.date}{a.readTime ? ` • ${a.readTime}` : ''}</p>
-              </Link>
-            ))}
-          </div>
+          <>
+            {lead && <BlogLead article={lead} kicker={`${lead.pillar}${lead.featured ? ' · Featured' : ''}`} />}
+            <div className="blog-grid">
+              {rest.map((a) => (
+                <Link key={a.id} className="blog-card as-block" href={hrefFor('article', { slug: a.slug })}>
+                  <div className="blog-card-img">
+                    {cardImg(a) && <img src={cardImg(a)} alt={a.cardImageAlt || ''} loading="lazy" decoding="async" />}
+                  </div>
+                  <p className="card-pillar">{a.pillar}{a.featured ? ' · Featured' : ''}</p>
+                  <p className="card-title">{a.title}</p>
+                  <p className="card-meta">{a.date}{a.readTime ? ` · ${a.readTime}` : ''}</p>
+                </Link>
+              ))}
+            </div>
+          </>
         )}
       </section>
     </div>

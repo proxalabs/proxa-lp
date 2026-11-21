@@ -1,7 +1,6 @@
 import EditorialHero from '../components/sections/EditorialHero';
 import SplitFeature from '../components/sections/SplitFeature';
 import CardGrid from '../components/sections/CardGrid';
-import CTABand from '../components/sections/CTABand';
 import Icon from '../components/Icon';
 import { makeGetter } from '../lib/pageContent';
 import { hrefFor } from '../lib/routes';
@@ -10,7 +9,6 @@ import { hrefFor } from '../lib/routes';
 // When the override still equals these, we render the rich JSX; otherwise the
 // editor's plain string.
 const NEWS_HERO_HEADLINE_DEFAULT = "What's new at Proxa Labs.";
-const NEWS_CTA_HEADING_DEFAULT = "Get the announcements before they're public.";
 
 const SECONDARY_NEWS = [
   { icon: <Icon name="update" size={22} />,      tag: "March 2026 · Platform Update", title: "Proxa Labs Stage — ComplianceGuard v2 Released",                 body: "Real-time compliance monitoring now includes enhanced MLR flag categorization, automated rephrasing suggestions, and expanded banned phrase detection across all six commercial verticals. Available to all Stage clients immediately." },
@@ -24,10 +22,6 @@ export default function NewsPage({ content }) {
   const heroHeadline = hh === NEWS_HERO_HEADLINE_DEFAULT
     ? <>What's new at <em>Proxa Labs.</em></>
     : hh;
-  const ch = c('cta.heading');
-  const ctaHeading = ch === NEWS_CTA_HEADING_DEFAULT
-    ? <>Get the announcements <em>before they're public.</em></>
-    : ch;
   return (
     <>
       <EditorialHero
@@ -70,12 +64,6 @@ export default function NewsPage({ content }) {
         }))}
         cardStyle="standard"
         background="tinted"
-      />
-
-      <CTABand
-        heading={ctaHeading}
-        body={c('cta.body')}
-        primaryCta={{ label: c('cta.ctaLabel'), href: hrefFor("newsletter") }}
       />
     </>
   );

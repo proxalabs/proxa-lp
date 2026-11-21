@@ -63,13 +63,12 @@ export default function VideoGalleryPage({ videos }) {
 
         {topics.length > 1 && (
           <div className="blog-filters">
-            <label className="blog-filter">
-              <span>Topic</span>
-              <select value={topic} onChange={(e) => setTopic(e.target.value)}>
-                <option value="">All topics</option>
-                {topics.map((t) => <option key={t} value={t}>{t}</option>)}
-              </select>
-            </label>
+            <div className="blog-chips" role="group" aria-label="Topic">
+              <button type="button" className="blog-chip" aria-pressed={!topic} onClick={() => setTopic('')}>All</button>
+              {topics.map((t) => (
+                <button key={t} type="button" className="blog-chip" aria-pressed={topic === t} onClick={() => setTopic(topic === t ? '' : t)}>{t}</button>
+              ))}
+            </div>
           </div>
         )}
 

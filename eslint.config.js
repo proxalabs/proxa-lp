@@ -29,7 +29,6 @@ export default defineConfig([
     'dist/**',
     '.superpowers/**',
     'next-env.d.ts',
-    'functions/**',
     'media/**',
     'files/**',
     'src/payload-types.ts',

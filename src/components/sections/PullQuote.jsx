@@ -1,3 +1,4 @@
+import CountUp from '../CountUp';
 import Photo from '../media/Photo';
 
 /** `photo` (a name from content/images.js) sets the quote over a photograph instead of the tinted card. */
@@ -30,7 +31,7 @@ export default function PullQuote({ quote, author, stats, photo, photoPosition, 
             <div className="pull-quote-stats">
               {stats.map(s => (
                 <div key={s.n} className="pull-quote-stat">
-                  <div className="pull-quote-stat-n">{s.n}</div>
+                  <div className="pull-quote-stat-n"><CountUp>{s.n}</CountUp></div>
                   <div className="pull-quote-stat-l">{s.l}</div>
                 </div>
               ))}

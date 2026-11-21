@@ -11,10 +11,11 @@ const Arrow = () => (
 
 /**
  * A dark, full-width section that presents a few topics one after another. On a wide screen
- * their titles stay fixed on the left while the topics rise past on the right, one at a
- * time from the bottom of the screen to the top, each an animation with its explanation
- * under it; the title of the topic on screen is lit. On a narrow screen the topics are
- * simply stacked, each under its own title.
+ * their titles stay fixed on the left while the topics rise on the right, one at a time from
+ * the bottom of the screen to the top, each an animation with its explanation under it. A
+ * topic slows to a drift as it passes the titles (styles.css, `story-drift`), so it can be
+ * taken in even when the page is scrolled fast; the title of the topic on screen is lit. On
+ * a narrow screen the topics are simply stacked, each under its own title.
  *
  * `steps` are `{ id, title, heading, text }`, where `id` names a LineMotion scene.
  */
@@ -26,13 +27,13 @@ export default function ScrollStory({ label, steps }) {
   useEffect(() => {
     const els = stepRefs.current.filter(Boolean);
     let frame = 0;
-    // A step takes over once its animation has risen fully onto the screen, which is when
-    // its top is about 340px above the bottom edge. So the lit title is the last step to
-    // have got that far: the first while the section is still arriving, the last once
-    // they have all gone by.
+    // A step takes over once its top has risen past the middle of the screen, by which
+    // time most of the step before it has left by the top. So the lit title is the last
+    // step to have got that far: the first while the section is still arriving, the last
+    // once they have all gone by.
     const update = () => {
       frame = 0;
-      const line = Math.max(window.innerHeight * 0.4, window.innerHeight - 340);
+      const line = window.innerHeight / 2;
       let index = 0;
       els.forEach((el, i) => { if (el.getBoundingClientRect().top <= line) index = i; });
       setActive(index);
@@ -76,10 +77,12 @@ export default function ScrollStory({ label, steps }) {
         <div className="scroll-story-steps">
           {steps.map((step, i) => (
             <article key={step.id} id={`story-${step.id}`} className="scroll-story-step" data-index={i} ref={(el) => { stepRefs.current[i] = el; }}>
-              <p className="scroll-story-step-name"><span>{String(i + 1).padStart(2, '0')}</span>{step.title}</p>
-              <LineMotion scene={step.id} />
-              <h3 className="scroll-story-heading">{step.heading}</h3>
-              <p className="scroll-story-text">{step.text}</p>
+              <div className="scroll-story-pin">
+                <p className="scroll-story-step-name"><span>{String(i + 1).padStart(2, '0')}</span>{step.title}</p>
+                <LineMotion scene={step.id} />
+                <h3 className="scroll-story-heading">{step.heading}</h3>
+                <p className="scroll-story-text">{step.text}</p>
+              </div>
             </article>
           ))}
         </div>

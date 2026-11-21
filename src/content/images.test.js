@@ -25,11 +25,11 @@ test('every stock photo records where it came from', () => {
 })
 
 test('imageProps gives an <img> everything it needs to load the right size without layout shift', () => {
-  const props = imageProps(PHOTOS['lab-flasks'], '(max-width: 960px) 100vw, 560px')
-  assert.equal(props.src, '/assets/photos/lab-flasks-1600.webp')
-  assert.equal(props.srcSet, '/assets/photos/lab-flasks-800.webp 800w, /assets/photos/lab-flasks-1600.webp 1600w')
+  const props = imageProps(PHOTOS['team-round-table'], '(max-width: 960px) 100vw, 560px')
+  assert.equal(props.src, '/assets/photos/team-round-table-1600.webp')
+  assert.equal(props.srcSet, '/assets/photos/team-round-table-800.webp 800w, /assets/photos/team-round-table-1600.webp 1600w')
   assert.equal(props.sizes, '(max-width: 960px) 100vw, 560px')
   assert.equal(props.width, 1600)
   assert.equal(props.height, 1067)
-  assert.equal(props.alt, PHOTOS['lab-flasks'].alt)
+  assert.equal(props.alt, PHOTOS['team-round-table'].alt)
 })

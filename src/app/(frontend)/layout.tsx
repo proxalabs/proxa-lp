@@ -43,13 +43,16 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const draft = await isDraft()
 
   return (
-    <html lang="en">
+    // Browser extensions (Grammarly, ColorZilla, Dark Reader...) add attributes to
+    // <html> and <body> before React loads. This ignores attribute differences on
+    // these two elements only; mismatches inside them are still reported.
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* The two fonts every page needs for its first paint; see src/fonts.css. */}
         <link rel="preload" href="/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/dm-sans-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <JsonLd data={buildSiteLd()} />
         <Nav menus={menus} />
         <main>{children}</main>

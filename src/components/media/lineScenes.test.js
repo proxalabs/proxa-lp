@@ -40,6 +40,19 @@ for (const [name, scene] of Object.entries(SCENES)) {
     }
   })
 
+  test(`${name}: by the time it is ready its fixed parts have arrived, and it stays whole for most of the loop`, () => {
+    const { ready } = scene()
+    const fade = tracks.find((t) => t.id === 'scene').frames.find(([, values]) => values.opacity === 0)[0] - 0.6
+    assert.ok(ready > 0 && ready < 2, 'ready comes early in the loop')
+    assert.ok(fade - ready > duration / 2, 'the picture is whole for more than half the loop')
+    // Everything that draws itself or grows from nothing at the start has finished by then.
+    for (const { id, frames } of tracks) {
+      const [first, second] = frames
+      const hidden = first[1].opacity === 0 || first[1].transform === 'scaleY(0)'
+      if (hidden && first[0] < 0.75) assert.ok(second[0] <= ready + 0.4, `${id} is still arriving at ${second[0]}s`)
+    }
+  })
+
   test(`${name}: the picture is empty at the end of the loop, so it repeats without a jump`, () => {
     const frames = toKeyframes(tracks.find((t) => t.id === 'scene').frames, duration)
     assert.equal(frames[frames.length - 1].opacity, 0)

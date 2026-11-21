@@ -94,7 +94,7 @@ test('a service page names the organisation as its provider', () => {
   assert.equal(ld.provider['@id'], `${SITE}/#org`)
   assert.equal(buildPageLd('about', { name: 'About', url: `${SITE}/about` })['@type'], 'AboutPage')
   assert.equal(buildPageLd('contact', { name: 'Contact', url: `${SITE}/contact` })['@type'], 'ContactPage')
-  assert.equal(buildPageLd('resources', { name: 'Resources', url: `${SITE}/resources` })['@type'], 'WebPage')
+  assert.equal(buildPageLd('newsletter', { name: 'Newsletter', url: `${SITE}/newsletter` })['@type'], 'WebPage')
 })
 
 test('a listing page carries its items in order', () => {
