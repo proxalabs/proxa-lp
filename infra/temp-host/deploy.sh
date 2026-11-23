@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Puts the last commit of the current branch on the temporary server, builds it there and
-# restarts the site. Uncommitted changes are not sent.
+# Puts the last commit of the current branch on the server, builds it there and restarts the
+# site. Uncommitted changes are not sent. The build goes into a second folder while the site
+# keeps running from the current one, so visitors only see a few seconds of restart.
 #
 #   ./deploy.sh              the code only
 #   ./deploy.sh --with-data  also copies this machine's CMS database and uploaded media
@@ -32,7 +33,7 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 git -C "$repo" archive HEAD | tar -x -C "$tmp"
 rsync -az --delete -e "ssh ${ssh_opts[*]}" \
-  --exclude /.env --exclude /node_modules --exclude /.next --exclude /next-env.d.ts \
+  --exclude /.env --exclude /node_modules --exclude /.next --exclude '/.next-*' --exclude /next-env.d.ts \
   --exclude /media --exclude /files \
   "$tmp/" "$host:$app/"
 
@@ -53,8 +54,8 @@ if [ ! -f .env ]; then
     echo "PREVIEW_SECRET=$(openssl rand -hex 32)"
   } > .env
 fi
-if [ ! -f /etc/systemd/system/proxa-lp.service ]; then
-  sudo tee /etc/systemd/system/proxa-lp.service >/dev/null <<'UNIT'
+unit=/etc/systemd/system/proxa-lp.service
+new_unit="$(cat <<'UNIT'
 [Unit]
 Description=Proxa site (temporary host)
 After=network-online.target docker.service
@@ -64,6 +65,8 @@ Wants=network-online.target
 User=ubuntu
 WorkingDirectory=/opt/proxa-lp/app
 Environment=NODE_ENV=production
+# Which build folder is live (NEXT_DIST_DIR=.next-a or .next-b), written by the deploy.
+EnvironmentFile=-/opt/proxa-lp/active-build
 ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -p 80
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 Restart=always
@@ -72,6 +75,9 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.target
 UNIT
+)"
+if [ "$(cat "$unit" 2>/dev/null || true)" != "$new_unit" ]; then
+  echo "$new_unit" | sudo tee "$unit" >/dev/null
   sudo systemctl daemon-reload
   sudo systemctl enable proxa-lp >/dev/null 2>&1
 fi
@@ -100,12 +106,30 @@ if [ "$(cat node_modules/.lock-hash 2>/dev/null || true)" != "$lock" ]; then
   npm ci --no-audit --no-fund
   echo "$lock" > node_modules/.lock-hash
 fi
-npm run build
-sudo systemctl restart proxa-lp
-for _ in $(seq 1 30); do
-  curl -sf -o /dev/null http://127.0.0.1/robots.txt && break
-  sleep 2
-done
+# Build into whichever folder is not live, then switch to it. If the new build does not come
+# up, switch back to the previous one.
+active_file=/opt/proxa-lp/active-build
+prev="$(sed -n 's/^NEXT_DIST_DIR=//p' "$active_file" 2>/dev/null || true)"
+prev="${prev:-.next}"
+next=.next-a
+[ "$prev" = .next-a ] && next=.next-b
+NEXT_DIST_DIR="$next" npm run build
+switch_to() {
+  echo "NEXT_DIST_DIR=$1" > "$active_file"
+  sudo systemctl restart proxa-lp
+  for _ in $(seq 1 30); do
+    curl -sf -o /dev/null http://127.0.0.1/robots.txt && return 0
+    sleep 2
+  done
+  return 1
+}
+if ! switch_to "$next"; then
+  echo "The new build did not start; going back to the previous one ($prev)." >&2
+  switch_to "$prev" || true
+  exit 1
+fi
+# The very first build folder (.next) is replaced by the two alternating ones.
+[ -d .next ] && rm -rf .next
 curl -s -o /dev/null -w "home page on the server: %{http_code}\n" http://127.0.0.1/
 REMOTE
 

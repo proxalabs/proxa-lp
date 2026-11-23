@@ -33,6 +33,8 @@ const SECURITY_HEADERS = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // The AWS deploy builds into a second folder while the site keeps running from the first.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   async headers() {
     return [
       { source: '/:path*', headers: SECURITY_HEADERS },
