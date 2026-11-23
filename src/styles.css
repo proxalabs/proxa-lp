@@ -281,11 +281,17 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
 /* Narrow screens: the hero's words come first and its photograph follows them; the tour's
    arrows move under the stack. */
 @media (max-width:900px) {
-  .photo-hero { display:block; height:auto; padding:var(--space-6) 20px 0; }
-  .photo-hero-words { max-width:none; padding-bottom:var(--space-5); }
+  .photo-hero { display:block; height:auto; padding:var(--space-5) 20px 0; }
+  .photo-hero-words { max-width:none; padding-bottom:var(--space-3); }
   .photo-hero-headline { font-size:clamp(40px,11vw,60px); }
-  .photo-hero-picture { position:relative; width:auto; margin:0 -20px; aspect-ratio:4 / 3; -webkit-mask-image:none; mask-image:none; }
-  .photo-hero-picture img { object-position:right center; }
+  /* Both links stay on one row, even on a 360px phone. */
+  .photo-hero-actions { flex-wrap:nowrap; gap:var(--space-3); }
+  .photo-hero-button { padding:11px 16px; }
+  .photo-hero-button, .photo-hero-link { white-space:nowrap; }
+  /* A wider frame trims the empty wall above the people, so they sit right under the
+     links; the top edge fades into the hero's background. */
+  .photo-hero-picture { position:relative; width:auto; margin:0 -20px; aspect-ratio:16 / 9; -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%); mask-image:linear-gradient(180deg,transparent 0,#000 16%); }
+  .photo-hero-picture img { object-position:right bottom; }
   .product-deck { --deck-w:min(calc(100vw - 40px),calc((100vh - 258px) / .82)); padding:var(--space-6) 20px; }
   .product-deck-stage { margin-bottom:60px; }
   .deck-arrow { top:auto; bottom:-60px; margin-top:0; }
@@ -1102,6 +1108,10 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
   .nav-logo-img { width:118px; }
   .nav-right { gap:6px; }
   .nav .no { font-size:13px; padding:8px 16px; }
+}
+/* Narrow phones: the hero's two links get slightly smaller text to share one row. */
+@media (max-width:380px) {
+  .photo-hero-button, .photo-hero-link { font-size:14px; }
 }
 @media (max-width:359px) {
   .nav-logo-img { width:100px; }
