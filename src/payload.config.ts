@@ -1,5 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -29,16 +29,13 @@ import { plugins } from './plugins'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// Gmail / Google Workspace SMTP, as the site has always used. Without SMTP_EMAIL
-// (local development) Payload writes outgoing email to the server log instead.
-const email = process.env.SMTP_EMAIL
-  ? nodemailerAdapter({
-      defaultFromAddress: process.env.FROM_EMAIL || process.env.SMTP_EMAIL,
+// Resend (resend.com). FROM_EMAIL must be on a domain verified in Resend. Without
+// RESEND_API_KEY (local development) Payload writes outgoing email to the server log instead.
+const email = process.env.RESEND_API_KEY
+  ? resendAdapter({
+      apiKey: process.env.RESEND_API_KEY,
+      defaultFromAddress: process.env.FROM_EMAIL || 'no-reply@insitehub.com',
       defaultFromName: process.env.FROM_NAME || 'Proxa Labs Website',
-      transportOptions: {
-        service: 'gmail',
-        auth: { user: process.env.SMTP_EMAIL, pass: process.env.SMTP_PASSWORD },
-      },
     })
   : undefined
 

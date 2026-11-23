@@ -98,7 +98,7 @@ Legend: ✅ done · 🟡 done but needs a client input to be _live_ · ⚠️ pa
    link a button to it** (the destination list is fixed — see §7); no "form" or
    "logo strip" section block; no page-duplicate.
 3. **Create a form, gate a file, submit, stored + notified + exportable** — 🟡 All
-   built and the gate is now secure (§4). Notification email needs SMTP secrets
+   built and the gate is now secure (§4). Notification email needs the Resend key
    set (§4). Gated file can now be a PDF.
 4. **GA4 tracking page views + key actions** — 🟡 Page views + `generate_lead`
    (form submit) + `file_download` (gated download) are wired. **No-op until a GA4
@@ -170,7 +170,7 @@ None of these are doable by a non-technical person alone; all block full accepta
 - **`EDITOR_PASSWORD`** secret (optional) — set it to enable the editor role /
   second login; leave unset to keep admin-only. Bind it to the functions so it's
   in `process.env` (e.g. `firebase functions:secrets:set EDITOR_PASSWORD`).
-- **SMTP creds** (`SMTP_EMAIL` / `SMTP_PASSWORD`) — form/contact notification email
+- **Resend key** (`RESEND_API_KEY`) — form/contact notification email
   is fire-and-forget; a bad/missing config fails silently.
 - **Form CAPTCHA / App Check keys** — for the durable spam fix.
 - **Custom domain + TLS** setup in the Firebase console.

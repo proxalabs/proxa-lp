@@ -130,7 +130,7 @@ scripts/              content import, SEO check
 - **Media storage.** Uploads are written to local disk (`media/`, `files/`). On AWS, add
   Payload's S3 storage adapter so they survive a redeploy. Gated files are served through
   `/api/gated-file`, which reads from disk and will need the same change.
-- **Email.** Set `SMTP_EMAIL` and `SMTP_PASSWORD`. Without them, notification emails are only
+- **Email.** Set `RESEND_API_KEY` and a `FROM_EMAIL` on a domain verified in Resend. Without the key, notification emails are only
   written to the server log (submissions are still stored under *Leads* and *Form submissions*).
 - **Content.** Run the import against the production database, then create the admin and
   editor accounts.
