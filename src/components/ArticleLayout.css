@@ -52,7 +52,7 @@
 /* ---------- HERO: charcoal field + dial graphic ---------- */
 .proxa-article .pa-hero {
   position: relative; border-radius: 16px; overflow: hidden;
-  background: var(--hero-grey) url('/assets/blog/hero-dial.png') center/cover no-repeat;
+  background: var(--hero-grey) url('/assets/blog/hero-dial.webp') center/cover no-repeat;
   margin-top: 34px; aspect-ratio: 1700/897; display: flex; align-items: center;
 }
 .proxa-article .hero-content { position: relative; z-index: 1; padding: 0 6%; max-width: 58%; }

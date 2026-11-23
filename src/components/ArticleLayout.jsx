@@ -26,7 +26,7 @@ export default function ArticleLayout({ article }) {
   const rootRef = useRef(null);
   // The hero picture is a CSS background, which the browser would only find after the
   // stylesheets; it is the largest thing on screen, so ask for it straight away.
-  preload(article.showHero && article.thumb ? article.thumb : '/assets/blog/hero-dial.png', { as: 'image', fetchPriority: 'high' });
+  preload(article.showHero && article.thumb ? article.thumb : '/assets/blog/hero-dial.webp', { as: 'image', fetchPriority: 'high' });
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
