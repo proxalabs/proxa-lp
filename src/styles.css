@@ -282,7 +282,7 @@ h1,h2,h3,h4 { font-family:var(--font-manrope),sans-serif; }
    arrows move under the stack. */
 @media (max-width:900px) {
   .photo-hero { display:block; height:auto; padding:var(--space-5) 20px 0; }
-  .photo-hero-words { max-width:none; padding-bottom:var(--space-3); }
+  .photo-hero-words { max-width:none; padding-bottom:40px; }
   .photo-hero-headline { font-size:clamp(40px,11vw,60px); }
   /* Both links stay on one row, even on a 360px phone. */
   .photo-hero-actions { flex-wrap:nowrap; gap:var(--space-3); }
