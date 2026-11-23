@@ -20,7 +20,11 @@ export function initAnalytics() {
   const s = document.createElement('script');
   s.async = true;
   s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-  document.head.appendChild(s);
+  // Loaded after the page itself, so it never competes with the first photo. Events sent
+  // before then wait in dataLayer.
+  const load = () => document.head.appendChild(s);
+  if (document.readyState === 'complete') load();
+  else window.addEventListener('load', load, { once: true });
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };

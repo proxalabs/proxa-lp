@@ -60,6 +60,8 @@ const nextConfig: NextConfig = {
     return [
       { source: '/proxa-labs', destination: '/the-lab', permanent: true },
       { source: '/letsmeet', destination: '/contact', permanent: true },
+      // The Resources page was removed; its menu held the articles.
+      { source: '/resources', destination: '/blog', permanent: true },
     ]
   },
 }

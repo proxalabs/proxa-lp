@@ -24,7 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getPost(slug)
   if (!article) return { title: `Article not found · ${SITE_NAME}` }
   return buildMetadata({
-    title: article.metaTitle || `${article.title} · ${SITE_NAME}`,
+    // Google shows about 60 characters, so a long headline goes without the site name.
+    title: article.metaTitle || (article.title.length > 48 ? article.title : `${article.title} · ${SITE_NAME}`),
     description: article.description,
     path: `/blog/${article.slug}`,
     canonical: article.canonical,

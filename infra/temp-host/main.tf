@@ -1,6 +1,7 @@
 # Hosting for the new site on AWS: one small server that runs the app and its database, with
 # CloudFront in front of it for HTTPS and caching. Started as a temporary copy with no domain
-# (hence the names); it becomes www.proxalabs.com when go_live = true (see below).
+# (hence the names). It becomes www.proxalabs.com on its own once the domain's DNS records
+# are in place: see "Going live" below.
 #
 # Everything here is its own, separate set of resources (own network, own server), tagged
 # Project = proxa-lp-temp. It shares nothing with Forge, Stage or Trace.
@@ -17,6 +18,10 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.0"
     }
   }
 }
@@ -41,23 +46,10 @@ variable "ssh_public_key" {
   type        = string
 }
 
-# Going live is two steps, so the site never goes down:
-#   1. With go_live = false, apply: this requests the HTTPS certificate. Its check records
-#      (output cert_dns_records) and nothing else go into the domain's DNS.
-#   2. Once the certificate is issued, set go_live = true and apply: CloudFront then answers for
-#      the domain and search engines may list it. Only after that do www and the bare domain
-#      get pointed at CloudFront in DNS.
-variable "go_live" {
-  description = "Serve www.proxalabs.com and proxalabs.com (the certificate must be issued first)"
-  type        = bool
-  default     = false
-}
-
 locals {
-  name    = "proxa-lp-temp"
-  domain  = "www.proxalabs.com"
-  apex    = "proxalabs.com"
-  aliases = var.go_live ? [local.domain, local.apex] : []
+  name   = "proxa-lp-temp"
+  domain = "www.proxalabs.com"
+  apex   = "proxalabs.com"
 }
 
 # ── Network: one small public network of its own ─────────────────────────────
@@ -232,12 +224,6 @@ resource "aws_acm_certificate" "site" {
   }
 }
 
-# Waits until the certificate is issued; only needed once the domain is attached.
-resource "aws_acm_certificate_validation" "site" {
-  count           = var.go_live ? 1 : 0
-  certificate_arn = aws_acm_certificate.site.arn
-}
-
 # ── CloudFront ───────────────────────────────────────────────────────────────
 
 data "aws_cloudfront_cache_policy" "disabled" {
@@ -254,16 +240,22 @@ data "aws_cloudfront_origin_request_policy" "all_viewer" {
   name = "Managed-AllViewer"
 }
 
-# Until the site goes live, search engines are told not to list this copy.
-resource "aws_cloudfront_response_headers_policy" "noindex" {
-  name = "${local.name}-noindex"
-  custom_headers_config {
-    items {
-      header   = "X-Robots-Tag"
-      value    = "noindex, nofollow"
-      override = true
+# Search engines are told not to list the site under any address but www.proxalabs.com
+# (the CloudFront address stays reachable and must not compete with the real one).
+resource "aws_cloudfront_function" "noindex_other_hosts" {
+  name    = "${local.name}-noindex-other-hosts"
+  runtime = "cloudfront-js-2.0"
+  publish = true
+  code    = <<-JS
+    function handler(event) {
+      var res = event.response;
+      var host = event.request.headers.host;
+      if (!host || host.value !== '${local.domain}') {
+        res.headers['x-robots-tag'] = { value: 'noindex, nofollow' };
+      }
+      return res;
     }
-  }
+  JS
 }
 
 # The bare domain sends visitors to www, keeping the path and query.
@@ -297,7 +289,6 @@ resource "aws_cloudfront_distribution" "this" {
   comment             = "Proxa Labs website (proxa-lp)"
   price_class         = "PriceClass_100"
   wait_for_deployment = false
-  aliases             = local.aliases
 
   origin {
     origin_id   = "server"
@@ -313,18 +304,21 @@ resource "aws_cloudfront_distribution" "this" {
   # Pages, the CMS and forms are not cached here: every request goes to the server, so
   # content edits show at once and forms work exactly as they do on the server itself.
   default_cache_behavior {
-    target_origin_id           = "server"
-    viewer_protocol_policy     = "redirect-to-https"
-    allowed_methods            = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods             = ["GET", "HEAD"]
-    compress                   = true
-    cache_policy_id            = data.aws_cloudfront_cache_policy.disabled.id
-    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer.id
-    response_headers_policy_id = var.go_live ? null : aws_cloudfront_response_headers_policy.noindex.id
+    target_origin_id         = "server"
+    viewer_protocol_policy   = "redirect-to-https"
+    allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods           = ["GET", "HEAD"]
+    compress                 = true
+    cache_policy_id          = data.aws_cloudfront_cache_policy.disabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
 
     function_association {
       event_type   = "viewer-request"
       function_arn = aws_cloudfront_function.apex_redirect.arn
+    }
+    function_association {
+      event_type   = "viewer-response"
+      function_arn = aws_cloudfront_function.noindex_other_hosts.arn
     }
   }
 
@@ -333,14 +327,18 @@ resource "aws_cloudfront_distribution" "this" {
   dynamic "ordered_cache_behavior" {
     for_each = ["/_next/static/*", "/_next/image*", "/fonts/*", "/assets/*"]
     content {
-      path_pattern               = ordered_cache_behavior.value
-      target_origin_id           = "server"
-      viewer_protocol_policy     = "redirect-to-https"
-      allowed_methods            = ["GET", "HEAD"]
-      cached_methods             = ["GET", "HEAD"]
-      compress                   = true
-      cache_policy_id            = data.aws_cloudfront_cache_policy.origin_headers.id
-      response_headers_policy_id = var.go_live ? null : aws_cloudfront_response_headers_policy.noindex.id
+      path_pattern           = ordered_cache_behavior.value
+      target_origin_id       = "server"
+      viewer_protocol_policy = "redirect-to-https"
+      allowed_methods        = ["GET", "HEAD"]
+      cached_methods         = ["GET", "HEAD"]
+      compress               = true
+      cache_policy_id        = data.aws_cloudfront_cache_policy.origin_headers.id
+
+      function_association {
+        event_type   = "viewer-response"
+        function_arn = aws_cloudfront_function.noindex_other_hosts.arn
+      }
     }
   }
 
@@ -351,13 +349,89 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = var.go_live ? null : true
-    acm_certificate_arn            = var.go_live ? aws_acm_certificate_validation.site[0].certificate_arn : null
-    ssl_support_method             = var.go_live ? "sni-only" : null
-    minimum_protocol_version       = var.go_live ? "TLSv1.2_2021" : null
+    cloudfront_default_certificate = true
+  }
+
+  # The domain and its certificate are attached by the go_live function below, once the
+  # certificate is issued; Terraform leaves them alone.
+  lifecycle {
+    ignore_changes = [aliases, viewer_certificate]
   }
 
   tags = { Name = local.name }
+}
+
+# ── Going live, without anyone having to come back ──────────────────────────────
+# Every 5 minutes a small function checks for an issued certificate for the domain and,
+# once there is one, attaches the domain to CloudFront (see go_live.py). So the DNS records
+# (output cert_dns_records, plus www and the bare domain pointed at cloudfront_domain) can
+# all be added at once: the site answers on the domain a few minutes after the certificate
+# is issued.
+
+data "archive_file" "go_live" {
+  type        = "zip"
+  source_file = "${path.module}/go_live.py"
+  output_path = "${path.module}/.go_live.zip"
+}
+
+resource "aws_iam_role" "go_live" {
+  name = "${local.name}-go-live"
+  assume_role_policy = jsonencode({
+    Version   = "2012-10-17"
+    Statement = [{ Effect = "Allow", Action = "sts:AssumeRole", Principal = { Service = "lambda.amazonaws.com" } }]
+  })
+}
+
+resource "aws_iam_role_policy" "go_live" {
+  role = aws_iam_role.go_live.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      { Effect = "Allow", Action = ["cloudfront:GetDistributionConfig", "cloudfront:UpdateDistribution"], Resource = aws_cloudfront_distribution.this.arn },
+      { Effect = "Allow", Action = ["acm:ListCertificates", "acm:DescribeCertificate", "acm:RequestCertificate"], Resource = "*" },
+      { Effect = "Allow", Action = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"], Resource = "*" },
+    ]
+  })
+}
+
+resource "aws_lambda_function" "go_live" {
+  function_name    = "${local.name}-go-live"
+  role             = aws_iam_role.go_live.arn
+  runtime          = "python3.12"
+  handler          = "go_live.handler"
+  filename         = data.archive_file.go_live.output_path
+  source_code_hash = data.archive_file.go_live.output_base64sha256
+  timeout          = 30
+  environment {
+    variables = {
+      DOMAINS         = "${local.domain},${local.apex}"
+      DISTRIBUTION_ID = aws_cloudfront_distribution.this.id
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "go_live" {
+  name              = "/aws/lambda/${aws_lambda_function.go_live.function_name}"
+  retention_in_days = 30
+}
+
+resource "aws_cloudwatch_event_rule" "go_live" {
+  name                = "${local.name}-go-live"
+  schedule_expression = "rate(5 minutes)"
+}
+
+resource "aws_cloudwatch_event_target" "go_live" {
+  rule       = aws_cloudwatch_event_rule.go_live.name
+  arn        = aws_lambda_function.go_live.arn
+  depends_on = [aws_cloudwatch_log_group.go_live]
+}
+
+resource "aws_lambda_permission" "go_live" {
+  statement_id  = "schedule"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.go_live.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.go_live.arn
 }
 
 output "server_ip" {
