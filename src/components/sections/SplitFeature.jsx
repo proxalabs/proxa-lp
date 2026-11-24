@@ -1,3 +1,5 @@
+import Cta from '../Cta';
+
 export default function SplitFeature({
   ratio = '60-40',
   eyebrow,
@@ -29,7 +31,7 @@ export default function SplitFeature({
           {children}
           {cta && (
             <div style={{ marginTop: 'var(--space-5)' }}>
-              <button className="bp" onClick={cta.onClick}>{cta.label}</button>
+              <Cta cta={cta} className="bp" />
             </div>
           )}
         </div>

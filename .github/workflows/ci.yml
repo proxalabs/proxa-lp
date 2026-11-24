@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  # PRs only — the deploy workflow already builds the same tree on push to main
+  # PRs only
   pull_request:
 
 # a newer push supersedes the run before it — don't pay for both
@@ -14,17 +14,26 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # The build prerenders pages from the database, so it needs one. This is a
+    # throwaway Postgres for the job; the values below are not secrets.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: proxa
+          POSTGRES_PASSWORD: proxa
+          POSTGRES_DB: proxa_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U proxa -d proxa_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
-      VITE_CONTACT_FUNCTION_URL: ${{ secrets.VITE_CONTACT_FUNCTION_URL }}
-      VITE_NEWSLETTER_FUNCTION_URL: ${{ secrets.VITE_NEWSLETTER_FUNCTION_URL }}
-      VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
-      VITE_SENTRY_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-      VITE_SENTRY_TRACES_SAMPLE_RATE: ${{ vars.VITE_SENTRY_TRACES_SAMPLE_RATE || '0.1' }}
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      SENTRY_RELEASE: ${{ github.sha }}
-      SENTRY_ENVIRONMENT: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      DATABASE_URL: postgres://proxa:proxa@localhost:5432/proxa_ci
+      PAYLOAD_SECRET: ci-only-not-a-real-secret
+      PREVIEW_SECRET: ci-only-not-a-real-secret
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -34,14 +43,35 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      # Apply the migrations to the empty database, then build against it.
+      - name: Migrate and build
+        run: npm run ci
+
+      # Serve the build and check it the way a crawler and an editor would:
+      # status codes, metadata, structured data, sitemap; then publish, edit,
+      # unpublish and trash content through the CMS API and watch the public site.
+      - name: Check the running site
+        run: |
+          npm start > server.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/robots.txt && break; sleep 1; done
+          node scripts/verify-site.mjs
+          node scripts/e2e-check.mjs
+
+      - name: Server log
+        if: failure()
+        run: tail -n 100 server.log
 
   # the one check to require: fails unless every job above passed or was skipped
   ci-ok:

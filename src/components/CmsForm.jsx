@@ -1,9 +1,11 @@
+'use client';
+
 import { useState } from 'react';
 import { submitForm, readUtm } from '../lib/forms';
 import { trackLead, trackDownload } from '../analytics';
 import './CmsForm.css';
 
-// Renders a CMS-defined form and submits it to the submitForm Cloud Function.
+// Renders a CMS-defined form and submits it to /api/submit-form.
 export default function CmsForm({ form }) {
   const [values, setValues] = useState({});
   const [consent, setConsent] = useState(false);

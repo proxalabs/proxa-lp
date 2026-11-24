@@ -1,0 +1,30 @@
+/* ── INSITEX LMS (views/InsiteXPage) ───────────────────────────
+   The proof panel: the figures and the credentials either side of a man cut out of his
+   photo, standing on the white page with no frame or background, his lower edge on the
+   top of the next section. Prefix: ix-. */
+
+.ix-proof { max-width:1312px; margin:0 auto; padding:88px 56px 0; }
+.ix-proof-stage { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,460px) minmax(0,1fr); gap:40px; align-items:end; }
+.ix-proof-side { align-self:center; padding-bottom:40px; }
+.ix-proof-label { margin-bottom:22px; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--o); }
+.ix-proof-numbers { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:28px; }
+.ix-proof-numbers li { display:flex; flex-direction:column; gap:6px; padding-top:20px; border-top:1px solid var(--br); }
+.ix-proof-numbers strong { font-family:var(--font-manrope),sans-serif; font-size:clamp(56px,6vw,84px); font-weight:900; line-height:.95; letter-spacing:-.06em; color:var(--o); }
+.ix-proof-numbers li > span { font-size:15px; color:var(--bd); }
+.ix-proof-person { display:flex; justify-content:center; }
+.ix-proof-person img { display:block; width:100%; max-width:460px; height:auto; max-height:calc(100vh - 120px); object-fit:contain; object-position:50% 100%; }
+.ix-creds { list-style:none; margin:0; padding:0; }
+.ix-creds li { display:flex; align-items:flex-start; gap:14px; padding:16px 0; border-top:1px solid var(--br); font-size:15px; line-height:1.4; color:var(--dk); }
+.ix-creds strong { font-weight:700; }
+.ix-cred-status { display:block; margin-top:2px; font-size:13px; color:var(--bd); }
+.ix-cred-check { flex:none; display:grid; place-items:center; width:28px; height:28px; border-radius:50%; color:var(--o); background:var(--o10); border:1px solid var(--o20); }
+
+@media (max-width:960px) {
+  .ix-proof { padding:64px 20px 0; }
+  .ix-proof-stage { grid-template-columns:1fr; gap:32px; }
+  .ix-proof-side { padding-bottom:0; }
+  .ix-proof-numbers { flex-direction:row; gap:24px; }
+  .ix-proof-numbers li { flex:1 1 0; }
+  .ix-proof-person { order:3; }
+  .ix-proof-person img { max-height:420px; width:auto; }
+}

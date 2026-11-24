@@ -42,7 +42,7 @@ export default function PlatformPreviews({ eyebrow = "Platform Previews", headin
             <div key={p.name} className="prod-preview">
               <div className="pp-topbar">
                 {["#FF5F57", "#FEBC2E", "#28C840"].map(c => <div key={c} className="pp-dot" style={{ background: c }} />)}
-                <div style={{ marginLeft: 8, fontSize: 11, color: "rgba(255,255,255,.28)", fontFamily: "DM Sans,sans-serif" }}>{p.name} · {p.sub}</div>
+                <div style={{ marginLeft: 8, fontSize: 11, color: "rgba(255,255,255,.28)", fontFamily: "var(--font-dm-sans),sans-serif" }}>{p.name} · {p.sub}</div>
               </div>
               <div className="pp-content">
                 <div style={{ fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: p.c, fontWeight: 700, marginBottom: 12, opacity: .85 }}>{p.sub}</div>

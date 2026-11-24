@@ -12,7 +12,6 @@ export const DEFAULT_MENUS = {
     { label: 'Content', page: 'content' },
   ],
   resources: [
-    { label: 'Resources', page: 'resources' },
     { label: 'Blog', page: 'blog' },
     { label: 'News', page: 'newsHub' },
   ],
@@ -29,7 +28,6 @@ export const NAV_DESTINATIONS = [
   { page: 'advisory', label: 'Advisory' },
   { page: 'content', label: 'Content Development' },
   { page: 'proxalab', label: 'The Lab' },
-  { page: 'resources', label: 'Resources' },
   { page: 'blog', label: 'Blog / Articles' },
   { page: 'newsHub', label: 'News' },
   { page: 'news', label: 'Announcements' },

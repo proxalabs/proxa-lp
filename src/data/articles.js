@@ -85,6 +85,6 @@ export const blogArticles = [
     title: readinessGap.title,
     date: readinessGap.date,
     readTime: readinessGap.readTime,
-    thumb: '/assets/blog/hero-dial.png',
+    thumb: '/assets/blog/hero-dial.webp',
   },
 ];

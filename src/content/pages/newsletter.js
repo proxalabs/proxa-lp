@@ -51,15 +51,15 @@ export default {
     { key: 'success.title', label: 'Success — title', type: 'text',
       default: "You're subscribed." },
     { key: 'success.body', label: 'Success — body', type: 'textarea',
-      default: 'First issue lands when we have something genuinely worth your time. Browse the resources page in the meantime.' },
+      default: 'First issue lands when we have something genuinely worth your time. Read the blog in the meantime.' },
     { key: 'success.ctaLabel', label: 'Success — button label', type: 'text',
-      default: 'Browse Frameworks & Guides' },
+      default: 'Read the Blog' },
 
     { key: 'cta.heading', label: 'Closing CTA heading', type: 'text',
       default: 'One newsletter. Worth your time.' },
     { key: 'cta.body', label: 'Closing CTA paragraph', type: 'textarea',
       default: "If we ever send something you'd skip — unsubscribe in one click. We promise we'll understand." },
     { key: 'cta.ctaLabel', label: 'Closing CTA button label', type: 'text',
-      default: 'Browse the Resources Page' },
+      default: 'Read the Blog' },
   ],
 };

@@ -1,3 +1,5 @@
+import Cta from '../Cta';
+
 export default function EditorialHero({ eyebrow, headline, subhead, primaryCta, secondaryLink, visual, badge, dark = false, className = '' }) {
   const hasVisual = !!visual;
   return (
@@ -10,13 +12,10 @@ export default function EditorialHero({ eyebrow, headline, subhead, primaryCta, 
           {subhead && <p className="editorial-hero-subhead">{subhead}</p>}
           {(primaryCta || secondaryLink) && (
             <div className="editorial-hero-actions">
-              {primaryCta && <button className="bp" onClick={primaryCta.onClick}>{primaryCta.label}</button>}
-              {secondaryLink && (
-                <button className="quiet-link" onClick={secondaryLink.onClick}>
-                  {secondaryLink.label}
-                  <span className="quiet-link-arrow">→</span>
-                </button>
-              )}
+              <Cta cta={primaryCta} className="bp" />
+              <Cta cta={secondaryLink} className="quiet-link">
+                <span className="quiet-link-arrow">→</span>
+              </Cta>
             </div>
           )}
         </div>

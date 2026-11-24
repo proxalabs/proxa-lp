@@ -20,7 +20,7 @@ export default {
     { key: 'loop.eyebrow', label: 'Closed Loop eyebrow', type: 'text',
       default: 'The Closed Loop' },
     { key: 'loop.heading', label: 'Closed Loop heading', type: 'textarea',
-      default: 'Build → Deliver → Assess → Trace → Repeat. Most learning platforms stop where ours begins.' },
+      default: 'Most learning platforms stop where ours begins.' },
     { key: 'loop.lead', label: 'Closed Loop lead', type: 'textarea',
       default: 'Forge builds the content. Cue delivers the learning. Stage assesses the readiness. Trace verifies the competency. When a gap appears, the loop closes itself.' },
     { key: 'loop.body1', label: 'Closed Loop paragraph 1', type: 'textarea',

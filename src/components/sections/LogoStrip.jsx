@@ -9,7 +9,7 @@ export default function LogoStrip({ heading, logos }) {
       <div className="logostrip-inner">
         {heading && <p className="logostrip-heading">{heading}</p>}
         <div className="logostrip-row">
-          {items.map((l, i) => <img key={i} className="logostrip-logo" src={l.image} alt={l.name || ''} loading="lazy" />)}
+          {items.map((l, i) => <img key={i} className="logostrip-logo" src={l.image} alt={l.name || ''} loading="lazy" decoding="async" />)}
         </div>
       </div>
     </section>

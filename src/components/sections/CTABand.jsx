@@ -1,4 +1,5 @@
 import { HexMark } from '../HexMark';
+import Cta from '../Cta';
 
 export default function CTABand({ heading, body, primaryCta, secondaryLink }) {
   return (
@@ -10,13 +11,10 @@ export default function CTABand({ heading, body, primaryCta, secondaryLink }) {
         <h2 className="cta-band-heading">{heading}</h2>
         {body && <p className="cta-band-body">{body}</p>}
         <div className="cta-band-actions">
-          {primaryCta && <button className="bp" onClick={primaryCta.onClick}>{primaryCta.label}</button>}
-          {secondaryLink && (
-            <button className="quiet-link" onClick={secondaryLink.onClick} style={{ color: 'rgba(255,255,255,.7)' }}>
-              {secondaryLink.label}
-              <span className="quiet-link-arrow">→</span>
-            </button>
-          )}
+          <Cta cta={primaryCta} className="bp" />
+          <Cta cta={secondaryLink} className="quiet-link">
+            <span className="quiet-link-arrow">→</span>
+          </Cta>
         </div>
       </div>
     </section>

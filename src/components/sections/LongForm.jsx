@@ -1,3 +1,5 @@
+import Cta from '../Cta';
+
 export default function LongForm({ eyebrow, heading, children, pullQuote, pullQuoteAttribution, cta, background = 'light', className = '' }) {
   const bg = background === 'tinted' ? 'section-tinted' : background === 'dark' ? 'section-dark' : 'section-light';
   return (
@@ -14,7 +16,7 @@ export default function LongForm({ eyebrow, heading, children, pullQuote, pullQu
         )}
         {cta && (
           <div style={{ marginTop: 'var(--space-5)' }}>
-            <button className="bp" onClick={cta.onClick}>{cta.label}</button>
+            <Cta cta={cta} className="bp" />
           </div>
         )}
       </div>

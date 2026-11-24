@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
-import DOMPurify from 'dompurify';
+import { preload } from 'react-dom';
 import Breadcrumbs from './Breadcrumbs';
 import { isNewsCategory } from '../lib/blog';
 import './ArticleLayout.css';
@@ -7,21 +9,24 @@ import './ArticleLayout.css';
 const SYMBOL = '/assets/blog/proxa-symbol.png';
 const QUOTE_BARS = '/assets/blog/quote-bars.png';
 
-// Sanitize admin-authored HTML before it hits dangerouslySetInnerHTML (defense in
-// depth — strips <script>, event handlers, javascript: URLs, etc.).
-const clean = (html) => ({ __html: DOMPurify.sanitize(html || '') });
+// Body HTML is produced on the server from the CMS rich text by lexicalToHtml,
+// which escapes all text and emits only a fixed set of tags.
+const html = (markup) => ({ __html: markup || '' });
 
 /*
  * Reusable Proxa Labs blog article page. Renders from an `article` data object
- * (see src/data/articles.js). The site's Nav/Footer wrap this automatically via
- * App.jsx, so only the article body lives here.
+ * (built from a CMS post by src/lib/data/posts.ts). The site's Nav/Footer wrap
+ * this in the root layout, so only the article body lives here.
  *
  * Ported behaviors from the mock: reading-progress bar, scrollspy TOC
  * (IntersectionObserver), LinkedIn + copy-link share. Mobile TOC is a native
  * <details> accordion (no JS).
  */
-export default function ArticleLayout({ article, setPage }) {
+export default function ArticleLayout({ article }) {
   const rootRef = useRef(null);
+  // The hero picture is a CSS background, which the browser would only find after the
+  // stylesheets; it is the largest thing on screen, so ask for it straight away.
+  preload(article.showHero && article.thumb ? article.thumb : '/assets/blog/hero-dial.webp', { as: 'image', fetchPriority: 'high' });
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -87,14 +92,14 @@ export default function ArticleLayout({ article, setPage }) {
         <div className={'pa-hero' + (article.showHero && article.thumb ? ' has-bg' : '')}
           style={article.showHero && article.thumb ? { backgroundImage: `url("${article.thumb}")` } : undefined}>
           <div className="hero-content">
-            <Breadcrumbs go={setPage} items={[
+            <Breadcrumbs items={[
               { name: 'Home', page: 'home' },
               // News posts live under the News hub; everything else under Blog.
               isNewsCategory(article.pillar)
                 ? { name: 'News', page: 'newsHub' }
                 : { name: 'Blog', page: 'blog' },
             ]} />
-            <p className="eyebrow"><img src={SYMBOL} alt="Proxa Labs" />{article.pillar}</p>
+            <p className="eyebrow"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" />{article.pillar}</p>
             <h1>{article.title}</h1>
             <div className="byline">
               {!hideAuthor && <span className="b-name">{author.name}</span>}
@@ -113,7 +118,7 @@ export default function ArticleLayout({ article, setPage }) {
           {!!(article.summary || '').trim() && article.hideSummary !== true && (
             <div className="summary">
               <p className="summary-kicker">Article summary</p>
-              <p dangerouslySetInnerHTML={clean(article.summary)} />
+              <p dangerouslySetInnerHTML={html(article.summary)} />
             </div>
           )}
 
@@ -137,7 +142,7 @@ export default function ArticleLayout({ article, setPage }) {
               if (b.type === 'quote') {
                 return (
                   <blockquote key={i} className="pull">
-                    <img className="pmark" src={QUOTE_BARS} alt="" />
+                    <img className="pmark" src={QUOTE_BARS} alt="" width="220" height="425" loading="lazy" decoding="async" />
                     <p>{b.text}</p>
                   </blockquote>
                 );
@@ -146,7 +151,7 @@ export default function ArticleLayout({ article, setPage }) {
                 if (!b.src) return null;
                 return (
                   <figure key={i} className="body-img">
-                    <img src={b.src} alt={b.alt || ''} loading="lazy" />
+                    <img src={b.src} alt={b.alt || ''} width={b.width} height={b.height} loading="lazy" decoding="async" />
                     {b.caption && <figcaption>{b.caption}</figcaption>}
                   </figure>
                 );
@@ -173,15 +178,17 @@ export default function ArticleLayout({ article, setPage }) {
                   </section>
                 );
               }
-              return <p key={i} dangerouslySetInnerHTML={clean(b.html)} />;
+              // Lists and other block-level markup cannot live inside a <p>.
+              if (b.type === 'html') return <div key={i} dangerouslySetInnerHTML={html(b.html)} />;
+              return <p key={i} dangerouslySetInnerHTML={html(b.html)} />;
             })}
           </div>
 
-          <div className="endmark"><img src={SYMBOL} alt="Proxa Labs" /></div>
+          <div className="endmark"><img src={SYMBOL} alt="Proxa Labs" width="183" height="280" /></div>
 
           {!hideAuthor && !!(author.name || '').trim() && (
             <div className="biocard">
-              {author.headshot && <img className="headshot" src={author.headshot} alt={author.name} />}
+              {author.headshot && <img className="headshot" src={author.headshot} alt={author.name} width="66" height="66" loading="lazy" decoding="async" />}
               <div>
                 <p className="bio-name">{author.name}</p>
                 <p className="bio-role">{author.role}</p>
@@ -220,7 +227,7 @@ export default function ArticleLayout({ article, setPage }) {
             <a key={c.title} className={'card card-' + c.variant} href={c.href}>
               <div className="card-img" />
               <p className="card-pillar">{c.pillar}</p>
-              <p className="card-title" dangerouslySetInnerHTML={clean(c.title)} />
+              <p className="card-title">{c.title}</p>
               <p className="card-meta">{c.meta}</p>
             </a>
           ))}

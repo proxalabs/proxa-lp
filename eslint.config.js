@@ -1,29 +1,40 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import nextTs from 'eslint-config-next/typescript'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  ...nextVitals,
+  ...nextTs,
   {
-    files: ['**/*.{js,jsx}'],
-    extends: [
-      js.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-    ],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
-    },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' },
+      ],
+      // The marketing copy is written as plain text in JSX; apostrophes are fine.
+      'react/no-unescaped-entities': 'off',
+      // The content manifest files export plain objects by design.
+      'import/no-anonymous-default-export': 'off',
+      // Existing images are sized by CSS; next/image is used where it is a clear win.
+      '@next/next/no-img-element': 'off',
     },
   },
+  {
+    files: ['**/*.cjs'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
+  globalIgnores([
+    '.next/**',
+    'dist/**',
+    '.superpowers/**',
+    'next-env.d.ts',
+    'media/**',
+    'files/**',
+    'src/payload-types.ts',
+    'src/migrations/**',
+    'src/app/(payload)/**',
+    // Third-party components copied in unmodified (see the licence in that folder).
+    'src/components/reactbits/**',
+  ]),
 ])

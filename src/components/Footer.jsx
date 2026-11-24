@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import { hrefFor } from '../lib/routes';
+
 const FOOTER_COLUMNS = [
   ["Platform", [
     ["AI Platform", "platform"],
@@ -12,8 +15,8 @@ const FOOTER_COLUMNS = [
     ["Overview", "proxalab"],
   ]],
   ["Resources", [
-    ["Frameworks & Guides", "resources", "frameworks"],
-    ["Research", "resources", "research"],
+    ["Blog", "blog"],
+    ["News", "newsHub"],
   ]],
   ["About", [
     ["About Proxa Labs", "about"],
@@ -24,36 +27,24 @@ const CREDENTIALS = [
   { full: "SOC 2 Type II in progress", short: "SOC 2 in progress" },
 ];
 
-const Footer = ({ setPage }) => {
-  const go = (p, track) => {
-    if (!p) return;
-    setPage(p, track ? { hash: track } : undefined);
-  };
-
-  return (
+const Footer = () => (
     <footer className="site-footer">
       <div className="site-footer-inner">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="footer-logo-wrap" onClick={() => go("home")}>
-              <img className="footer-logo-img" src="/assets/proxa_horiz_overdark.png" alt="Proxa Labs" />
-            </div>
+            <Link className="footer-logo-wrap as-block" href="/" aria-label="Proxa Labs home">
+              <img className="footer-logo-img" src="/assets/proxa_horiz.png" alt="Proxa Labs" width="600" height="137" loading="lazy" />
+            </Link>
             <p className="footer-tagline">The AI-native platform and implementation partner built for the organizational complexity of biopharma commercial learning — not adapted for it.</p>
-            <div className="footer-cta-row">
-              <button className="footer-cta-primary" onClick={() => go("contact")}>Book a Consult</button>
-            </div>
+            <Link className="footer-cta as-btn" href={hrefFor("contact")}>Book a Consult</Link>
           </div>
           {FOOTER_COLUMNS.map(([h, links]) => (
             <div key={h} className="footer-col">
               <div className="footer-col-head">{h}</div>
               {links.map(([l, p, hash], i) => (
-                <div
-                  key={typeof l === "string" ? l : i}
-                  className={"footer-col-link" + (p ? "" : " footer-col-link-disabled")}
-                  onClick={() => go(p, hash)}
-                >
-                  {l}
-                </div>
+                p
+                  ? <Link key={l} className="footer-col-link as-block" href={hrefFor(p, hash)}>{l}</Link>
+                  : <div key={i} className="footer-col-link footer-col-link-disabled">{l}</div>
               ))}
             </div>
           ))}
@@ -85,13 +76,14 @@ const Footer = ({ setPage }) => {
         <div className="footer-bottom">
           <div className="footer-copyright">© 2026 Proxa Labs LLC · Proxa Labs LLC is a Delaware limited liability company</div>
           <div className="footer-legal">
-            <a href="/privacy" onClick={(e) => { e.preventDefault(); }}>Privacy Policy</a>
-            <a href="/terms" onClick={(e) => { e.preventDefault(); }}>Terms</a>
+            {/* These pages do not exist yet, so the links carry no href: a crawler
+                must not follow them to a 404. */}
+            <a role="link" aria-disabled="true">Privacy Policy</a>
+            <a role="link" aria-disabled="true">Terms</a>
           </div>
         </div>
       </div>
     </footer>
-  );
-};
+);
 
 export default Footer;

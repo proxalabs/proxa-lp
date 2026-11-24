@@ -50,18 +50,20 @@ When asked to start:
    git pull
    ```
    If there are local changes, do not overwrite them. Explain that there are existing changes and continue from the current state.
-4. Install dependencies if needed:
+4. Install dependencies if needed, and start the local database (needs Docker and a
+   `.env` file; see the README):
    ```bash
    npm install
+   npm run db:up
    ```
 5. Start or restart the preview server:
    ```bash
-   pkill -f "vite --host 0.0.0.0" || true
-   npm run dev -- --host 0.0.0.0
+   pkill -f "next dev" || true
+   npm run dev -- --hostname 0.0.0.0
    ```
 6. Tell the person the preview URL:
    ```text
-   http://54.87.37.185:5173/
+   http://54.87.37.185:3000/
    ```
 
 If the EC2 instance public IP changes, discover it before giving the preview URL:
@@ -73,7 +75,7 @@ curl -s http://checkip.amazonaws.com
 Then use:
 
 ```text
-http://<public-ip>:5173/
+http://<public-ip>:3000/
 ```
 
 Do not push to `main` during "start". The purpose of "start" is only to get the workspace and preview ready.
@@ -90,7 +92,7 @@ Acceptable preview links include:
 
 - Firebase Hosting preview channel URL.
 - GitHub pull request preview URL.
-- EC2/Vite preview URL if it is reachable by the reviewer.
+- EC2/Next.js preview URL if it is reachable by the reviewer.
 
 ## Git Rules
 
@@ -123,9 +125,15 @@ Public browser keys such as a Sentry DSN may be present in frontend env configur
 
 ## Project Notes
 
-- App stack: React + Vite.
-- Hosting: Firebase Hosting.
-- Forms: Firebase Cloud Functions.
-- Monitoring: Sentry frontend monitoring.
-- Build command: `npm run build`.
-- Main local dev command: `npm run dev -- --host 0.0.0.0`.
+- App stack: Next.js (App Router) + React, with Payload CMS inside the same app. See the README.
+- Database: Postgres (`npm run db:up` starts it locally in Docker on port 5433).
+- CMS admin: `/admin`.
+- Hosting: AWS (`infra/temp-host/`: one server behind CloudFront), serving www.proxalabs.com
+  once the domain's DNS points there (it attaches itself; see `main.tf`). Pushing to `main`
+  does not deploy anything: `infra/temp-host/deploy.sh` puts the last commit on the server.
+  The preview address is the CloudFront URL in `terraform output site_url`.
+- Forms: server endpoints in `src/endpoints/`; notification emails go through Resend.
+- Monitoring: Sentry (browser and server), active when `NEXT_PUBLIC_SENTRY_DSN` is set.
+- Build command: `npm run build` (needs the database running and migrated; `npm run ci` does both).
+- Checks: `npm run lint`, `npm test`, `node scripts/verify-site.mjs`.
+- Main local dev command: `npm run dev -- --hostname 0.0.0.0`.

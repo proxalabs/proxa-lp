@@ -1,16 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import Icon from './Icon';
-import { useNavMenus } from '../lib/content';
+'use client';
 
-const WHERE_ITEMS = [
-  {icon:<Icon name="strategy" size={20} />,title:"I need an AI strategy",desc:"Assess your readiness and build a roadmap before any technology decision.",tag:"Advisory",p:"advisory"},
-  {icon:<Icon name="pilot" size={20} />,title:"I want to run an AI pilot",desc:"Structure the experiment, define success criteria, build the business case.",tag:"The Lab",p:"proxalab"},
-  {icon:<Icon name="literacy" size={20} />,title:"I need AI literacy training",desc:"Build AI fluency across your commercial organization before deploying tools.",tag:"AI Literacy",p:"literacy"},
-  {icon:<Icon name="platform" size={20} />,title:"I'm ready for a platform",desc:"See Forge, Cue, Stage, and Trace — the only closed-loop AI platform.",tag:"AI Platform",p:"platform"},
-  {icon:<Icon name="content" size={20} />,title:"I need content for a launch",desc:"AI-generated or human-led, MLR-compliant content on your timeline.",tag:"Content",p:"content"},
-  {icon:<Icon name="lms" size={20} />,title:"I need an LMS first",desc:"Enterprise learning infrastructure built for biopharma compliance.",tag:"InsiteX LMS",p:"insitex"},
-  {icon:<Icon name="chat" size={20} />,title:"I'm not sure yet",desc:"30 minutes. No pitch. Tell us where you're stuck.",tag:"Book a Consult",p:"contact"},
-];
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { hrefFor, pageKeyForPath } from '../lib/routes';
 
 const Chevron = ({ open }) => (
   <svg width="11" height="7" viewBox="0 0 12 8" fill="none" style={{ marginLeft: 4, transform: open ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>
@@ -18,12 +11,34 @@ const Chevron = ({ open }) => (
   </svg>
 );
 
-const Nav = ({ page, setPage, scrolled }) => {
+// The two shapes of the bar inside the menu button; styles.css animates between them.
+const TOGGLE_BAR_CLOSED = { x: 8.5, y: 5, width: 1.75, height: 14, rx: 0 };
+const TOGGLE_BAR_OPEN = { x: 5.75, y: 8, width: 3.75, height: 8, rx: 1.4 };
+
+// The phone menu's open/close mark; styles.css turns it over and tints it when its section is open.
+const AccordionChevron = () => (
+  <span className="mobile-accordion-chevron" aria-hidden="true">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M3.5 6L8 10.5L12.5 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  </span>
+);
+
+const Nav = ({ menus }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef(null);
-  const menus = useNavMenus(); // { platform, solutions, resources } — CMS-overridable
+  // The fixed page this URL belongs to (null on slug routes), for the active state.
+  const page = pageKeyForPath(usePathname());
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    fn();
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
 
   useEffect(() => {
     if (!openDropdown) return;
@@ -34,175 +49,85 @@ const Nav = ({ page, setPage, scrolled }) => {
     return () => { document.removeEventListener("mousedown", handler); document.removeEventListener("keydown", esc); };
   }, [openDropdown]);
 
-  const go = (p, track) => {
-    setOpenDropdown(null); setMobileOpen(false); setMobileAccordion(null);
-    setPage(p, track ? { hash: track } : undefined);
-  };
+  // Every nav link closes the menus on click; the link itself does the navigating.
+  const close = () => { setOpenDropdown(null); setMobileOpen(false); setMobileAccordion(null); };
 
   const toggle = (k) => setOpenDropdown(o => o === k ? null : k);
   const toggleMobile = (k) => setMobileAccordion(o => o === k ? null : k);
   const isActive = (items) => items.some((it) => it.page === page);
 
+  // Menus stay in the HTML when closed (hidden) so crawlers see every link.
+  const miniMenu = (key, label) => (
+    <div style={{ position: "relative" }}>
+      <button
+        className={"nl nl-drop" + (isActive(menus[key]) ? " on" : "")}
+        onClick={() => toggle(key)}
+        aria-expanded={openDropdown === key}
+        style={{ color: openDropdown === key ? "var(--o)" : undefined }}
+      >
+        {label}
+        <Chevron open={openDropdown === key} />
+      </button>
+      <div className="nav-mini-menu" hidden={openDropdown !== key}>
+        {menus[key].map((it, i) => (
+          <Link key={i} className={"nav-mini-item as-btn" + (page === it.page ? " on" : "")} href={hrefFor(it.page)} onClick={close}>{it.label}</Link>
+        ))}
+      </div>
+    </div>
+  );
+
+  const mobileMenu = (key, label) => (
+    <>
+      <button className="mobile-accordion-head" onClick={() => toggleMobile(key)} aria-expanded={mobileAccordion === key}>
+        <span>{label}</span>
+        <AccordionChevron />
+      </button>
+      <div className="mobile-accordion-body" hidden={mobileAccordion !== key}>
+        {menus[key].map((it, i) => (
+          <Link key={i} className={page === it.page ? "on" : ""} href={hrefFor(it.page)} onClick={close}>{it.label}</Link>
+        ))}
+      </div>
+    </>
+  );
+
   return (
     <>
       <nav ref={navRef} className={"nav" + (scrolled ? " up" : "")}>
-        <div className="nav-logo" onClick={() => go("home")}>
-          <img className="nav-logo-img" src="/assets/proxa_horiz.png" alt="Proxa Labs" />
-        </div>
+        <Link className="nav-logo" href="/" onClick={close} aria-label="Proxa Labs home">
+          <img className="nav-logo-img" src="/assets/proxa_horiz.png" alt="Proxa Labs" width="600" height="137" />
+        </Link>
         <div className="nav-links">
-          {/* Where to Start (mega) */}
-          <div style={{ position: "relative" }}>
-            <button
-              className="nl nl-drop"
-              onClick={() => toggle("where")}
-              style={{ color: openDropdown === "where" ? "var(--o)" : undefined }}
-            >
-              Where to Start
-              <Chevron open={openDropdown === "where"} />
-            </button>
-            {openDropdown === "where" && (
-              <div className="nav-mega-menu">
-                {WHERE_ITEMS.map(d => (
-                  <div key={d.title} onClick={() => go(d.p, d.track)} className="ndm-item">
-                    <div style={{ color: 'var(--o)', marginBottom: 5 }}>{d.icon}</div>
-                    <div className="ndm-title">{d.title}</div>
-                    <div className="ndm-desc">{d.desc}</div>
-                    <span className="ndm-tag">{d.tag}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {miniMenu("platform", "Platform")}
+          {miniMenu("solutions", "Solutions")}
 
-          {/* Platform */}
-          <div style={{ position: "relative" }}>
-            <button
-              className={"nl nl-drop" + (isActive(menus.platform) ? " on" : "")}
-              onClick={() => toggle("platform")}
-              style={{ color: openDropdown === "platform" ? "var(--o)" : undefined }}
-            >
-              Platform
-              <Chevron open={openDropdown === "platform"} />
-            </button>
-            {openDropdown === "platform" && (
-              <div className="nav-mini-menu">
-                {menus.platform.map((it, i) => (
-                  <button key={i} className={"nav-mini-item" + (page === it.page ? " on" : "")} onClick={() => go(it.page)}>{it.label}</button>
-                ))}
-              </div>
-            )}
-          </div>
+          <Link className={"nl as-btn" + (page === "proxalab" ? " on" : "")} href={hrefFor("proxalab")} onClick={close}>The Lab</Link>
 
-          {/* Solutions */}
-          <div style={{ position: "relative" }}>
-            <button
-              className={"nl nl-drop" + (isActive(menus.solutions) ? " on" : "")}
-              onClick={() => toggle("solutions")}
-              style={{ color: openDropdown === "solutions" ? "var(--o)" : undefined }}
-            >
-              Solutions
-              <Chevron open={openDropdown === "solutions"} />
-            </button>
-            {openDropdown === "solutions" && (
-              <div className="nav-mini-menu">
-                {menus.solutions.map((it, i) => (
-                  <button key={i} className={"nav-mini-item" + (page === it.page ? " on" : "")} onClick={() => go(it.page)}>{it.label}</button>
-                ))}
-              </div>
-            )}
-          </div>
+          {miniMenu("resources", "Resources")}
 
-          {/* The Lab */}
-          <button className={"nl" + (page === "proxalab" ? " on" : "")} onClick={() => go("proxalab")}>The Lab</button>
-
-          {/* Resources (mini) */}
-          <div style={{ position: "relative" }}>
-            <button
-              className={"nl nl-drop" + (isActive(menus.resources) ? " on" : "")}
-              onClick={() => toggle("resources")}
-              style={{ color: openDropdown === "resources" ? "var(--o)" : undefined }}
-            >
-              Resources
-              <Chevron open={openDropdown === "resources"} />
-            </button>
-            {openDropdown === "resources" && (
-              <div className="nav-mini-menu">
-                {menus.resources.map((it, i) => (
-                  <button key={i} className={"nav-mini-item" + (page === it.page ? " on" : "")} onClick={() => go(it.page)}>{it.label}</button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* About */}
-          <button className={"nl" + (page === "about" ? " on" : "")} onClick={() => go("about")}>About</button>
+          <Link className={"nl as-btn" + (page === "about" ? " on" : "")} href={hrefFor("about")} onClick={close}>About</Link>
         </div>
 
         <div className="nav-right">
-          <button className="no" onClick={() => go("contact")}>Book a Consult</button>
-          <button className="nav-hamburger" onClick={() => setMobileOpen(o => !o)} aria-label="Menu">
-            <span style={mobileOpen ? { transform: "rotate(45deg) translate(5px,5px)" } : {}} />
-            <span style={mobileOpen ? { opacity: 0 } : {}} />
-            <span style={mobileOpen ? { transform: "rotate(-45deg) translate(5px,-5px)" } : {}} />
+          <Link className="no as-btn" href={hrefFor("contact")} onClick={close}>Book a Consult</Link>
+          <button className="nav-hamburger" onClick={() => setMobileOpen(o => !o)} aria-label="Menu" aria-expanded={mobileOpen}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2.75" y="5" width="18.5" height="14" rx="3.5" stroke="currentColor" strokeWidth="1.75" />
+              {/* The panel's edge: a thin line while the menu is closed, a filled bar while it is open. */}
+              <rect className="nav-toggle-bar" fill="currentColor" {...(mobileOpen ? TOGGLE_BAR_OPEN : TOGGLE_BAR_CLOSED)} />
+            </svg>
           </button>
         </div>
       </nav>
 
       <div className={"nav-mobile-menu" + (mobileOpen ? " open" : "")}>
-        <button className="mobile-accordion-head" onClick={() => toggleMobile("where")}>
-          <span>Where to Start</span>
-          <span style={{ transform: mobileAccordion === "where" ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>▾</span>
-        </button>
-        {mobileAccordion === "where" && (
-          <div className="mobile-accordion-body">
-            {WHERE_ITEMS.map(d => (
-              <button key={d.title} onClick={() => go(d.p, d.track)}>
-                <span style={{ marginRight: 10 }}>{d.icon}</span>{d.title}
-              </button>
-            ))}
-          </div>
-        )}
+        {mobileMenu("platform", "Platform")}
+        {mobileMenu("solutions", "Solutions")}
 
-        <button className="mobile-accordion-head" onClick={() => toggleMobile("platform")}>
-          <span>Platform</span>
-          <span style={{ transform: mobileAccordion === "platform" ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>▾</span>
-        </button>
-        {mobileAccordion === "platform" && (
-          <div className="mobile-accordion-body">
-            {menus.platform.map((it, i) => (
-              <button key={i} className={page === it.page ? "on" : ""} onClick={() => go(it.page)}>{it.label}</button>
-            ))}
-          </div>
-        )}
+        <Link className={page === "proxalab" ? "on" : ""} href={hrefFor("proxalab")} onClick={close}>The Lab</Link>
 
-        <button className="mobile-accordion-head" onClick={() => toggleMobile("solutions")}>
-          <span>Solutions</span>
-          <span style={{ transform: mobileAccordion === "solutions" ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>▾</span>
-        </button>
-        {mobileAccordion === "solutions" && (
-          <div className="mobile-accordion-body">
-            {menus.solutions.map((it, i) => (
-              <button key={i} className={page === it.page ? "on" : ""} onClick={() => go(it.page)}>{it.label}</button>
-            ))}
-          </div>
-        )}
+        {mobileMenu("resources", "Resources")}
 
-        <button className={page === "proxalab" ? "on" : ""} onClick={() => go("proxalab")}>The Lab</button>
-
-        <button className="mobile-accordion-head" onClick={() => toggleMobile("resources")}>
-          <span>Resources</span>
-          <span style={{ transform: mobileAccordion === "resources" ? "rotate(180deg)" : "rotate(0)", transition: "transform .2s" }}>▾</span>
-        </button>
-        {mobileAccordion === "resources" && (
-          <div className="mobile-accordion-body">
-            {menus.resources.map((it, i) => (
-              <button key={i} className={page === it.page ? "on" : ""} onClick={() => go(it.page)}>{it.label}</button>
-            ))}
-          </div>
-        )}
-
-        <button className={page === "about" ? "on" : ""} onClick={() => go("about")}>About</button>
-        <button className="mobile-cta" onClick={() => go("contact")}>Book a Consult</button>
+        <Link className={page === "about" ? "on" : ""} href={hrefFor("about")} onClick={close}>About</Link>
       </div>
     </>
   );

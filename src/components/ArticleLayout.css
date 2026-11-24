@@ -21,8 +21,8 @@
   --line-soft: #efede8;
   --blue-tint: #eef4f6;
   --hero-grey: #2a2f2e;
-  --display: 'Manrope', system-ui, sans-serif;
-  --text: 'DM Sans', system-ui, sans-serif;
+  --display: var(--font-manrope), system-ui, sans-serif;
+  --text: var(--font-dm-sans), system-ui, sans-serif;
   --measure: 700px;
   /* Match the site container: content maxes at 1200px with 56px gutters
      (max-width 1312 - 2*56 = 1200), same as .section + .mw elsewhere. */
@@ -52,7 +52,7 @@
 /* ---------- HERO: charcoal field + dial graphic ---------- */
 .proxa-article .pa-hero {
   position: relative; border-radius: 16px; overflow: hidden;
-  background: var(--hero-grey) url('/assets/blog/hero-dial.png') center/cover no-repeat;
+  background: var(--hero-grey) url('/assets/blog/hero-dial.webp') center/cover no-repeat;
   margin-top: 34px; aspect-ratio: 1700/897; display: flex; align-items: center;
 }
 .proxa-article .hero-content { position: relative; z-index: 1; padding: 0 6%; max-width: 58%; }
@@ -193,22 +193,65 @@
 .proxa-article .card-meta { font-family: var(--display); font-weight: 500; color: var(--muted); font-size: .82rem; }
 
 /* ---------- Blog index (/blog) ---------- */
-.proxa-article .blog-index { padding: 32px 56px 80px; }
-.proxa-article .blog-eyebrow { margin-bottom: 16px; }
-.proxa-article .blog-title { font-family: var(--display); font-weight: 800; color: var(--ink); font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.1; letter-spacing: -.022em; margin: 0 0 12px; }
-.proxa-article .blog-sub { color: var(--muted); font-size: 1.06rem; line-height: 1.55; max-width: var(--measure); margin: 0 0 44px; }
-.proxa-article .blog-filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin: -16px 0 36px; }
-.proxa-article .blog-filter { display: flex; flex-direction: column; gap: 5px; font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
-.proxa-article .blog-filter select { font: inherit; font-size: .92rem; text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--ink); padding: 8px 12px; border: 1px solid #e3e5ea; border-radius: 8px; background: #fff; cursor: pointer; }
-.proxa-article .blog-filter-check { flex-direction: row; align-items: center; gap: 8px; text-transform: none; letter-spacing: 0; font-size: .92rem; font-weight: 500; color: var(--ink); cursor: pointer; padding-bottom: 8px; }
-.proxa-article .blog-filter-check input { accent-color: var(--coral); width: 16px; height: 16px; }
+.proxa-article .blog-index { padding: 32px 56px 96px; }
+.proxa-article .blog-eyebrow { margin-bottom: 10px; }
+.proxa-article .blog-title { font-family: var(--display); font-weight: 800; color: var(--ink); font-size: clamp(1.9rem, 3.4vw, 2.6rem); line-height: 1.06; letter-spacing: -.035em; margin: 0 0 6px; }
+.proxa-article .blog-sub { color: var(--muted); font-size: 1rem; line-height: 1.5; max-width: var(--measure); margin: 0 0 24px; }
+
+/* Filters: topics as chips on the left, the rest on the right, over one hairline. */
+.proxa-article .blog-filters { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; padding-bottom: 16px; margin: 0 0 28px; border-bottom: 1px solid var(--line-soft); }
+.proxa-article .blog-chips, .proxa-article .blog-filter-side { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.proxa-article .blog-chip { font: inherit; font-family: var(--display); font-size: .86rem; font-weight: 600; color: var(--body); padding: 7px 15px; border: 1px solid var(--line); border-radius: 100px; background: #fff; cursor: pointer; transition: color .15s, background .15s, border-color .15s; }
+.proxa-article .blog-chip:hover { border-color: var(--ink); color: var(--ink); }
+.proxa-article .blog-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.proxa-article .blog-chip:focus-visible, .proxa-article .blog-select:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+.proxa-article .blog-select { font: inherit; font-family: var(--display); font-size: .86rem; font-weight: 600; color: var(--ink); padding: 7px 30px 7px 14px; border: 1px solid var(--line); border-radius: 100px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%236b7680' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") right 11px center/11px no-repeat; appearance: none; cursor: pointer; }
 .proxa-article .blog-filter-clear { background: none; border: none; padding: 8px 2px; font: inherit; font-size: .85rem; font-weight: 600; color: var(--coral-deep); cursor: pointer; text-decoration: underline; }
-.proxa-article .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
-@media (max-width: 860px) { .proxa-article .blog-grid { grid-template-columns: 1fr; gap: 22px; max-width: var(--measure); } }
+
+/* Lead story: a picture beside the title, kept short so it shows on the first screen. */
+.proxa-article .blog-lead { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: center; margin-bottom: 56px; color: inherit; }
+.proxa-article .blog-lead-img { border-radius: 16px; aspect-ratio: 16/10; max-height: min(300px, calc(100vh - 340px)); width: 100%; overflow: hidden; background: var(--hero-grey); }
+.proxa-article .blog-lead-img img, .proxa-article .blog-card-img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.proxa-article .blog-lead:hover .blog-lead-img img, .proxa-article .blog-card:hover .blog-card-img img { transform: scale(1.04); }
+.proxa-article .blog-lead-title { font-family: var(--display); font-weight: 800; color: var(--ink); font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.14; letter-spacing: -.03em; margin: 0 0 10px; transition: color .15s; }
+.proxa-article .blog-lead:hover .blog-lead-title { color: var(--coral-deep); }
+.proxa-article .blog-lead-desc { font-size: .98rem; line-height: 1.55; color: var(--body); margin: 0 0 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.proxa-article .blog-lead-more { display: inline-flex; gap: 6px; margin-top: 10px; font-family: var(--display); font-weight: 700; font-size: .9rem; color: var(--ink); }
+.proxa-article .blog-lead-more span { color: var(--coral); transition: transform .2s; }
+.proxa-article .blog-lead:hover .blog-lead-more span { transform: translateX(4px); }
+
+/* The rest, three to a row. */
+.proxa-article .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 28px; }
+@media (max-width: 860px) {
+  .proxa-article .blog-grid { grid-template-columns: 1fr; gap: 32px; max-width: var(--measure); }
+  .proxa-article .blog-lead { grid-template-columns: 1fr; gap: 20px; margin-bottom: 44px; }
+  .proxa-article .blog-filters { flex-direction: column; align-items: flex-start; }
+}
 .proxa-article .blog-card { display: block; width: 100%; text-align: left; background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
-.proxa-article .blog-card .blog-card-img { border-radius: 12px; aspect-ratio: 16/10; overflow: hidden; margin-bottom: 14px; background: var(--hero-grey) center/cover no-repeat; transition: transform .25s ease; }
-.proxa-article .blog-card:hover .blog-card-img { transform: translateY(-3px); }
+.proxa-article .blog-card .blog-card-img { border-radius: 14px; aspect-ratio: 16/10; overflow: hidden; margin-bottom: 16px; background: var(--hero-grey) center/cover no-repeat; }
 .proxa-article .blog-card:hover .card-title { color: var(--coral-deep); }
+.proxa-article .blog-card .card-title { font-size: 1.14rem; }
+
+/* News: older items as a dated list under the lead, then a way to hear it first. */
+.proxa-article .news-list { list-style: none; margin: 0 0 56px; padding: 0; border-top: 1px solid var(--line); }
+.proxa-article .news-list li { border-bottom: 1px solid var(--line); }
+.proxa-article .news-row { display: grid; grid-template-columns: 160px 1fr 24px; gap: 24px; align-items: baseline; padding: 22px 4px; color: inherit; }
+.proxa-article .news-row time { font-family: var(--display); font-size: .86rem; font-weight: 600; color: var(--muted); }
+.proxa-article .news-row-title { font-family: var(--display); font-weight: 700; font-size: 1.15rem; line-height: 1.3; letter-spacing: -.015em; color: var(--ink); transition: color .15s; }
+.proxa-article .news-row-go { color: var(--coral); transition: transform .2s; }
+.proxa-article .news-row:hover .news-row-title { color: var(--coral-deep); }
+.proxa-article .news-row:hover .news-row-go { transform: translateX(4px); }
+.proxa-article .news-follow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding: 22px 28px; border-radius: 16px; background: #FFF6F2; color: var(--body); font-size: 1rem; }
+.proxa-article .news-follow strong { font-family: var(--display); color: var(--ink); }
+.proxa-article .news-follow-go { font-family: var(--display); font-weight: 700; color: var(--coral-deep); white-space: nowrap; }
+.proxa-article a.news-follow:hover, .proxa-article a.news-row:hover, .proxa-article a.blog-lead:hover { text-decoration: none; }
+@media (max-width: 860px) {
+  .proxa-article .news-row { grid-template-columns: 1fr 20px; gap: 4px 16px; }
+  .proxa-article .news-row time { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proxa-article .blog-lead-img img, .proxa-article .blog-card-img img { transition: none; }
+}
 
 /* Match the site's mobile gutter (.section/.nav use 20px at <=960px) */
 @media (max-width: 960px) {
@@ -219,7 +262,7 @@
 
 /* inline images in the article body */
 .prose .body-img { margin: 34px 0; }
-.prose .body-img img { display: block; width: 100%; border-radius: 14px; }
+.prose .body-img img { display: block; width: 100%; height: auto; border-radius: 14px; }
 .prose .body-img figcaption { margin-top: 10px; font-size: 0.86rem; color: #7b8794; text-align: center; }
 
 /* key-takeaways box */
@@ -236,3 +279,12 @@
 /* deeper heading levels inside the body */
 .proxa-article .prose h3 { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 1.22rem; line-height: 1.3; margin: 1.8em 0 .6em; scroll-margin-top: 96px; }
 .proxa-article .prose h4 { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 1.05rem; line-height: 1.3; margin: 1.6em 0 .5em; scroll-margin-top: 96px; }
+
+/* Lists in an article body are their own block now (they used to sit inside a <p>),
+   so they take the same spacing a paragraph has. */
+.proxa-article .prose > div { margin: 0 0 1.35em; }
+
+/* Cards and the "all case studies" link are anchors now. The article link style
+   underlines on hover; these never had an underline. */
+.proxa-article a.blog-card:hover,
+.proxa-article a.cs-back:hover { text-decoration: none; }

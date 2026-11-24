@@ -16,13 +16,13 @@ export default function EchoShowcase() {
       <div style={{ padding: '14px 18px', borderBottom: '1px solid #E3E5EA', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 11, color: '#5e6b7a', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>Stage · HCP Roleplay</div>
-          <div style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Dr. Kim · Hematologist · Live Session</div>
+          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Dr. Kim · Hematologist · Live Session</div>
         </div>
         <div style={{ fontSize: 10, color: '#5e6b7a', fontWeight: 600 }}>● RECORDING</div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', flex: 1 }}>
         <div style={{ background: 'linear-gradient(180deg, #2b313c, #1b1f28)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div style={{ width: 70, height: 70, borderRadius: '50%', background: 'linear-gradient(135deg, #5e6b7a, #3a4350)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'Manrope, sans-serif', fontWeight: 700, fontSize: 22 }}>DK</div>
+          <div style={{ width: 70, height: 70, borderRadius: '50%', background: 'linear-gradient(135deg, #5e6b7a, #3a4350)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 700, fontSize: 22 }}>DK</div>
         </div>
         <div style={{ padding: 14, fontSize: 12, lineHeight: 1.55 }}>
           {TRANSCRIPT.map((t, i) => (
@@ -42,7 +42,7 @@ export default function EchoShowcase() {
         {SCORES.map(s => (
           <div key={s.label} style={{ flex: 1 }}>
             <div style={{ fontSize: 9.5, color: '#5C6370', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</div>
-            <div style={{ fontSize: 18, fontFamily: 'Manrope, sans-serif', fontWeight: 800, color: s.value >= 85 ? '#9ca979' : s.value >= 70 ? '#F59E0B' : '#DC2626' }}>{s.value}</div>
+            <div style={{ fontSize: 18, fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, color: s.value >= 85 ? '#9ca979' : s.value >= 70 ? '#F59E0B' : '#DC2626' }}>{s.value}</div>
           </div>
         ))}
       </div>

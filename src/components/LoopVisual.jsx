@@ -1,177 +1,102 @@
-import { useEffect, useState } from 'react';
+'use client';
 
-const NODES = [
-  {
-    id: 0,
-    label: 'Forge',
-    sub: 'Builds MLR-compliant content',
-    color: '#c25c39',
-    text: '#9e4527',
-    fill: '#fcebe4',
-    x: 40,
-    y: 80,
-  },
-  {
-    id: 1,
-    label: 'Cue',
-    sub: 'Delivers adaptive learning',
-    color: '#7e8c57',
-    text: '#5f6e3f',
-    fill: '#eef0e6',
-    x: 440,
-    y: 80,
-  },
-  {
-    id: 2,
-    label: 'Stage',
-    sub: 'Assesses in live HCP roleplay',
-    color: '#5e6b7a',
-    text: '#3a4350',
-    fill: '#edeff2',
-    x: 440,
-    y: 320,
-  },
-  {
-    id: 3,
-    label: 'Trace',
-    sub: 'Verifies behavioral competency',
-    color: '#4a8aa6',
-    text: '#2f6a85',
-    fill: '#e9f2f6',
-    x: 40,
-    y: 320,
-  },
-];
+import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState } from 'react';
 
-const FLOWS = [
-  { from: 0, label: 'content published', color: '#5F5E5A', d: 'M 240 120 Q 340 80 440 120', tx: 340, ty: 80, anchor: 'middle' },
-  { from: 1, label: 'readiness reached', color: '#5F5E5A', d: 'M 540 160 Q 620 240 540 320', tx: 640, ty: 244, anchor: 'end' },
-  { from: 2, label: 'competency demonstrated', color: '#5F5E5A', d: 'M 440 360 Q 340 400 240 360', tx: 340, ty: 424, anchor: 'middle' },
-  { from: 3, label: 'gap → rebuild', color: '#c25c39', d: 'M 140 320 Q 60 240 140 160', tx: 40, ty: 244, anchor: 'start', dashed: true },
-];
+import { STEPS, pickLayout } from './loop/loopLayout';
 
-const CALLOUTS = [
-  'AI agents generate MLR-compliant content from your PI, CSRs, and brand assets, with every claim cited automatically.',
-  'Adaptive learning pathways deliver competency-targeted content and close knowledge gaps before reps reach the field.',
-  'Live HCP roleplay assesses readiness with real-time compliance monitoring and behavioral scoring against benchmarks.',
-  'Competency-gated certification verifies demonstrated field readiness. Gaps automatically trigger Forge to rebuild.',
-];
+// React Flow measures the page to lay itself out, so the canvas only exists in
+// the browser. It loads as its own chunk and fades in over the space kept for it.
+const LoopCanvas = dynamic(() => import('./loop/LoopCanvas'), { ssr: false });
 
 export default function LoopVisual() {
   const [active, setActive] = useState(0);
+  const [layout, setLayout] = useState(null);
+  const [playing, setPlaying] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(true);
+  const cardRef = useRef(null);
+  const stageRef = useRef(null);
 
   useEffect(() => {
-    const timer = setInterval(() => setActive(current => (current + 1) % NODES.length), 3500);
-    return () => clearInterval(timer);
+    const stage = stageRef.current;
+    const card = cardRef.current;
+    const sizes = new ResizeObserver(([entry]) => setLayout(pickLayout(entry.contentRect.width)));
+    sizes.observe(stage);
+    const visibility = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    visibility.observe(card);
+    return () => {
+      sizes.disconnect();
+      visibility.disconnect();
+    };
   }, []);
 
-  const activeNode = NODES[active];
+  // The loop advances when the active step's progress bar finishes its CSS
+  // animation, so pausing the animation pauses the loop with nothing else to keep
+  // in sync. It pauses for the pause button, while the mouse is over the text
+  // below the diagram (someone is reading), when scrolled out of view, and under
+  // reduced motion (in CSS).
+  const paused = !playing || hovered || !inView;
+  const advance = () => setActive((current) => (current + 1) % STEPS.length);
 
   return (
-    <div className="loop-card">
-      <style>{`
-        @keyframes loopDash { to { stroke-dashoffset: -22; } }
-        .loop-active-flow { animation: loopDash 0.8s linear infinite; }
-      `}</style>
-      <div className="lc-label">The Closed Loop · Intelligent Commercial Readiness</div>
-      <svg viewBox="0 0 680 480" role="img" aria-labelledby="loop-title loop-desc" className="loop-oval-svg">
-        <title id="loop-title">Proxa Labs closed-loop diagram</title>
-        <desc id="loop-desc">Four-product oval cycle showing Forge building content, Cue delivering learning, Stage assessing readiness, and Trace verifying competency.</desc>
-        <defs>
-          {FLOWS.map(flow => (
-            <marker key={flow.from} id={`loop-arrow-${flow.from}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M2 1L8 5L2 9" fill="none" stroke={flow.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </marker>
-          ))}
-          {NODES.map(node => (
-            <filter key={node.id} id={`loop-glow-${node.id}`} x="-25%" y="-60%" width="150%" height="220%">
-              <feGaussianBlur stdDeviation="9" result="blur" />
-              <feFlood floodColor={node.color} floodOpacity="0.18" result="color" />
-              <feComposite in="color" in2="blur" operator="in" result="glow" />
-              <feMerge>
-                <feMergeNode in="glow" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          ))}
-        </defs>
-
-        <ellipse cx="340" cy="240" rx="280" ry="180" fill="none" stroke="#B4B2A9" strokeWidth="0.5" strokeDasharray="3 4" />
-        <text x="340" y="228" textAnchor="middle" dominantBaseline="central" className="loop-center-text">Intelligent Commercial</text>
-        <text x="340" y="252" textAnchor="middle" dominantBaseline="central" className="loop-center-text">Readiness</text>
-
-        {FLOWS.map(flow => {
-          const isActive = active === flow.from;
-          return (
-            <g key={flow.from}>
-              <path
-                d={flow.d}
-                fill="none"
-                stroke={flow.color}
-                strokeWidth={isActive ? 2.2 : 1}
-                strokeOpacity={isActive ? 0.9 : 0.5}
-                strokeDasharray={flow.dashed || isActive ? '4 4' : undefined}
-                className={isActive ? 'loop-active-flow' : undefined}
-                markerEnd={`url(#loop-arrow-${flow.from})`}
-              />
-              <text
-                x={flow.tx}
-                y={flow.ty}
-                textAnchor={flow.anchor}
-                fill={isActive ? activeNode.color : '#3D3D3A'}
-                className={isActive ? 'loop-flow-label loop-flow-label-active' : 'loop-flow-label'}
-              >
-                {flow.label}
-              </text>
-            </g>
-          );
-        })}
-
-        {NODES.map(node => {
-          const isActive = active === node.id;
-          return (
-            <g key={node.id} onClick={() => setActive(node.id)} className="loop-node" filter={isActive ? `url(#loop-glow-${node.id})` : undefined}>
-              <rect
-                x={node.x}
-                y={node.y}
-                width="200"
-                height="80"
-                rx="12"
-                fill={node.fill}
-                stroke={node.color}
-                strokeWidth={isActive ? 2.4 : 0.7}
-              />
-              <rect
-                x={node.x + 7}
-                y={node.y + 7}
-                width="186"
-                height="66"
-                rx="9"
-                fill="none"
-                stroke={node.color}
-                strokeWidth="1"
-                strokeOpacity={isActive ? 0.24 : 0}
-              />
-              <text x={node.x + 100} y={node.y + 32} textAnchor="middle" dominantBaseline="central" fill={node.text} className="loop-node-title">{node.label}</text>
-              <text x={node.x + 100} y={node.y + 56} textAnchor="middle" dominantBaseline="central" fill={node.color} className="loop-node-sub">{node.sub}</text>
-            </g>
-          );
-        })}
-      </svg>
-
-      <div className="lc-callout" style={{ background: activeNode.fill, border: `1px solid ${activeNode.color}25` }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: activeNode.color, marginBottom: 4, fontFamily: 'Manrope,sans-serif' }}>{activeNode.label} is active</div>
-        <div style={{ fontSize: 12, color: 'var(--bd)', lineHeight: 1.55 }}>{CALLOUTS[active]}</div>
+    <div ref={cardRef} className="loop-card" data-paused={paused}>
+      <div ref={stageRef} className="loop-stage">
+        <div className="loop-label">Proxa Labs Loop <span>Intelligent Commercial Readiness</span></div>
+        <div className="loop-canvas">
+          {layout && <LoopCanvas key={layout} layout={layout} active={active} onSelect={setActive} />}
+        </div>
       </div>
-      <div className="lc-dots">
-        {NODES.map(node => (
-          <div
-            key={node.id}
-            className="lc-dot"
-            style={{ width: active === node.id ? 22 : 6, background: active === node.id ? activeNode.color : 'var(--br)' }}
-            onClick={() => setActive(node.id)}
-          />
-        ))}
+
+      <div
+        className="loop-foot"
+        onPointerEnter={(event) => event.pointerType === 'mouse' && setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+      >
+        <div className="loop-steps" role="group" aria-label="Steps of the Proxa Labs loop">
+          {STEPS.map((step, i) => (
+            <button
+              key={step.id}
+              type="button"
+              className={i === active ? 'loop-step is-active' : 'loop-step'}
+              style={{ '--c': step.color, '--ink': step.ink }}
+              aria-pressed={i === active}
+              onClick={() => setActive(i)}
+            >
+              <span className="loop-step-no">{`0${i + 1}`}</span>
+              <span className="loop-step-name">{step.name}</span>
+              <span className="loop-step-bar">
+                {i === active && <span className="loop-step-fill" onAnimationEnd={advance} />}
+              </span>
+            </button>
+          ))}
+          <button
+            type="button"
+            className="loop-toggle"
+            aria-label={playing ? 'Pause the loop animation' : 'Play the loop animation'}
+            onClick={() => setPlaying((value) => !value)}
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+              {playing
+                ? <path d="M1.5 1h2.4v8H1.5zM6.1 1h2.4v8H6.1z" fill="currentColor" />
+                : <path d="M2 .8v8.4L9 5z" fill="currentColor" />}
+            </svg>
+          </button>
+        </div>
+        {/* All four descriptions share one grid cell: the panel keeps the height of the
+            longest, so the page below never shifts as the loop advances. */}
+        <div className="loop-details">
+          {STEPS.map((step, i) => (
+            <p
+              key={step.id}
+              className={i === active ? 'loop-detail is-active' : 'loop-detail'}
+              style={{ '--ink': step.ink }}
+              aria-hidden={i !== active}
+            >
+              <strong>{step.name}.</strong> {step.detail}
+            </p>
+          ))}
+        </div>
       </div>
     </div>
   );

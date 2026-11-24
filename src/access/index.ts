@@ -1,0 +1,35 @@
+import type { Access, FieldAccess, Where } from 'payload'
+
+type Role = 'admin' | 'editor'
+const roleOf = (user: unknown): Role | null =>
+  user && typeof user === 'object' && 'role' in user ? ((user as { role?: Role }).role ?? null) : null
+
+export const anyone: Access = () => true
+
+/** Any signed-in CMS user (admin or editor). */
+export const isStaff: Access = ({ req: { user } }) => Boolean(user)
+
+/** Admins only: users, navigation, redirects, fixed-page copy. */
+export const isAdmin: Access = ({ req: { user } }) => roleOf(user) === 'admin'
+
+export const isAdminField: FieldAccess = ({ req: { user } }) => roleOf(user) === 'admin'
+
+export const isStaffField: FieldAccess = ({ req: { user } }) => Boolean(user)
+
+/** Staff see everything; the public sees published documents only. */
+export const publishedOrStaff: Access = ({ req: { user } }) => {
+  if (user) return true
+  return { _status: { equals: 'published' } }
+}
+
+/**
+ * The same, for collections with a trash. Moving a document to the trash leaves it
+ * "published", and the API's `?trash=true` switch lifts the usual trash filter, so
+ * the public must be kept out of the trash explicitly.
+ */
+export const publishedNotTrashedOrStaff: Access = ({ req: { user } }) => {
+  if (user) return true
+  const published: Where = { _status: { equals: 'published' } }
+  const notTrashed: Where = { deletedAt: { exists: false } }
+  return { and: [published, notTrashed] }
+}

@@ -12,14 +12,14 @@ export default function CertifyShowcase() {
       <div style={{ padding: '20px 24px', borderBottom: '1px solid #E3E5EA', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 11, color: '#75abc0', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>Trace · Audit Record</div>
-          <div style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Certification of Field Readiness</div>
+          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, fontSize: 14, color: '#12141A' }}>Certification of Field Readiness</div>
         </div>
         <div style={{ width: 44, height: 44, borderRadius: 22, background: '#75abc0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 18 }}>✓</div>
       </div>
       <div style={{ padding: 24, flex: 1 }}>
         <div style={{ marginBottom: 16 }}>
           <div style={{ fontSize: 10, color: '#5C6370', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>Issued To</div>
-          <div style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 700, fontSize: 16, color: '#12141A' }}>Sarah Chen, Oncology Specialist</div>
+          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 700, fontSize: 16, color: '#12141A' }}>Sarah Chen, Oncology Specialist</div>
           <div style={{ fontSize: 12, color: '#5C6370', marginTop: 2 }}>Northeast Region · Cohort A26-04</div>
         </div>
         <div style={{ marginBottom: 16 }}>
@@ -42,7 +42,7 @@ export default function CertifyShowcase() {
           </div>
         </div>
         <div style={{ marginTop: 12, padding: 10, background: '#fff', border: '1px solid #E3E5EA', borderRadius: 8, fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#5C6370', wordBreak: 'break-all' }}>
-          <div style={{ fontSize: 9, color: '#75abc0', fontWeight: 700, fontFamily: 'DM Sans, sans-serif', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>SHA-256 Audit Hash</div>
+          <div style={{ fontSize: 9, color: '#75abc0', fontWeight: 700, fontFamily: 'var(--font-dm-sans), sans-serif', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>SHA-256 Audit Hash</div>
           a3f9c2b8e1d47f6c5a82b9e3d1c4f7a8b2e6d9c1f4a7b3e8d2c5f9a1b4e7c3d
         </div>
         <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>

@@ -1,0 +1,6 @@
+# Terraform's working files and state stay on the machine that created the server.
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+tfplan

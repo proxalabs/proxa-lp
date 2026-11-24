@@ -1,12 +1,12 @@
 // GA4 analytics. Active in production builds (Proxa Labs Web stream, G-Y4K353NB4T);
 // no-ops in dev so local work doesn't pollute the property. Override with
-// VITE_GA4_MEASUREMENT_ID if the stream ever changes.
+// NEXT_PUBLIC_GA4_MEASUREMENT_ID if the stream ever changes.
 // We send page_view manually on each route change (this is a client-rendered
 // SPA), so automatic page_view is turned off in the config call below.
-const GA_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || (import.meta.env.PROD ? 'G-Y4K353NB4T' : '');
-// Optional Google Tag Manager container (set VITE_GTM_ID). Lets marketing add
+const GA_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || (process.env.NODE_ENV === 'production' ? 'G-Y4K353NB4T' : '');
+// Optional Google Tag Manager container (set NEXT_PUBLIC_GTM_ID). Lets marketing add
 // tracking/marketing tags later without a developer. GA4 + GTM can coexist.
-const GTM_ID = import.meta.env.VITE_GTM_ID;
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 let started = false;
 
@@ -20,7 +20,11 @@ export function initAnalytics() {
   const s = document.createElement('script');
   s.async = true;
   s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-  document.head.appendChild(s);
+  // Loaded after the page itself, so it never competes with the first photo. Events sent
+  // before then wait in dataLayer.
+  const load = () => document.head.appendChild(s);
+  if (document.readyState === 'complete') load();
+  else window.addEventListener('load', load, { once: true });
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };

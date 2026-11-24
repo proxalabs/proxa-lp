@@ -29,3 +29,18 @@ functions/.env
 .env.sentry-build-plugin
 .firebase/
 .playwright-mcp/
+
+# Stray screenshots in the repo root (site images live in public/assets)
+/*.png
+/*.jpg
+/*.jpeg
+
+# Next.js
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# Payload uploads (content, not code)
+/media/
+/files/
+infra/temp-host/.go_live.zip
